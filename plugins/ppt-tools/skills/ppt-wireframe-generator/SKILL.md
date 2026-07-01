@@ -15,6 +15,7 @@ description: >
 
 ## 제약 (MUST DO / MUST NOT DO) — 스텝 위에 둔다
 - ✅ 화면/페이지 목록, 사용자 흐름, 주요 UI 영역, CTA/상태/메모 수준을 먼저 정리한다
+- ✅ 플러그인 통합 실행처럼 `ppt-planning-harness`와 함께 쓰는 요청은 `ppt-planning-harness`로 요구사항/검토 결과를 먼저 정리한 뒤 이 스킬로 PPTX를 생성한다
 - ✅ 실제 deck 생성 전 Presentations 스킬을 로드하고 그 workspace, artifact-tool, QA 규칙을 따른다
 - ✅ 와이어프레임은 저충실도 구조와 흐름 전달에 집중하되, 의미 구분용 색상은 기본 적용한다
 - ✅ 색상은 사용자/어드민/공통 영역, CTA, 상태, 우선순위, 확인 필요 항목처럼 정보 구분에 쓰고 과한 장식은 피한다

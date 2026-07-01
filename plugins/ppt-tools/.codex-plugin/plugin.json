@@ -1,0 +1,23 @@
+{
+  "name": "ppt-tools",
+  "version": "0.1.0",
+  "description": "PPT planning and wireframe skills for Codex.",
+  "author": {
+    "name": "idong-geol"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["codex", "ppt", "planning", "wireframe", "skills"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PPT Tools",
+    "shortDescription": "PPT planning and wireframe workflows.",
+    "longDescription": "PPT Tools packages PPT planning and PPT wireframe skills as an installable Codex plugin.",
+    "developerName": "idong-geol",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "defaultPrompt": [
+      "PPT 기획서를 구현 가능하게 보강해줘.",
+      "PPT 와이어프레임을 만들어줘."
+    ]
+  }
+}

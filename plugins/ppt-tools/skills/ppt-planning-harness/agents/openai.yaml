@@ -1,0 +1,4 @@
+interface:
+  display_name: PPT Planning Harness
+  short_description: PPTX 기획서를 구현 준비 상태까지 검토하고 보강합니다.
+  default_prompt: 이 내용을 구현 가능한 PPTX 기획서로 보강해줘

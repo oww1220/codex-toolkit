@@ -25,7 +25,7 @@ description: >
 - ✅ `테이블명세서`, `DB 명세서`, `테이블 정의서`, `컬럼 명세`, `스키마 명세서` 요청은 화면 와이어프레임과 별도 `Table Spec` 분기로 처리한다
 - ✅ PPT Planning Harness 검토 결과는 별도 체크리스트 슬라이드가 아니라 각 슬라이드의 설명 레일, 상태/예외, 구현 메모, 확인 필요 영역에 나눠 반영한다
 - ✅ 내부 검토 항목은 `State`, `Validation`, `API/Data`, `Access`, `Verify`, `Open Questions`처럼 짧은 실무형 라벨로 녹이고, 검토 항목명을 그대로 노출하지 않는다
-- ✅ PPTX 생성/수정 후 PPT Planning Harness의 `check_planning_doc.py <file.pptx>` 검사를 실행하고, 실패하면 `FAIL:` 항목을 deck에 반영한 뒤 통과할 때까지 재검증한다
+- ✅ PPTX 생성/수정 후 `scripts/check_wireframe_deck.py <file.pptx>`와 PPT Planning Harness의 `check_planning_doc.py <file.pptx>` 검사를 실행하고, 실패하면 `FAIL:` 항목을 deck에 반영한 뒤 통과할 때까지 재검증한다
 - ⛔ Presentations 스킬을 우회해 python-pptx, 임의 SVG 드로잉, 별도 렌더링 엔진으로 PPT를 만들지 않는다
 - ⛔ Google Slides import나 네이티브 Slides 생성은 사용자가 별도로 요청하지 않는 한 포함하지 않는다
 - ⛔ 브랜드 최종 디자인, 고충실도 mockup, 마케팅용 hero deck으로 범위를 넓히지 않는다
@@ -80,7 +80,7 @@ description: >
    - 개발 지시 문서로 이어질 수 있게 API/데이터 출처, 권한 분기, 빈 상태/오류 상태, 구현 확인 포인트가 있으면 페이지 안에 짧게 주입한다
    - 불확실한 내용은 확정처럼 쓰지 말고 `확인 필요`로 표시한다
    - 오른쪽 설명은 화면 박스보다 보조 정보로 보이게 만들고, 텍스트가 많으면 내용을 줄인다
-5. 검증: Presentations의 최종 preview/contact-sheet QA를 완료하고, 각 슬라이드에 화면명 또는 테이블명이 있으며, 화면 흐름 PPT는 흐름상 위치, 주요 UI 영역, CTA 또는 상태 메모와 의미 구분 색상이 있고, 테이블명세서 PPT는 컬럼 타입/필수/키/설명, 관계/제약, 민감정보/권한/상태값 표시가 있으며 마지막에 ERD 슬라이드가 있고, 개발 지시 문서로 필요한 구현 메모가 페이지별로 녹아 있고, 필요한 화면에는 `Sequence`와 `Business Rules`가 짧고 추적 가능하게 포함되어 있으며, 불확실한 내용은 `확인 필요`로 표시되어 있으며, 필요한 경우 오른쪽 상세 설명이 있고, 여백/정렬/폰트 계층/색상 일관성이 유지되며, 배지/flag/조건 라벨의 텍스트가 박스 안에서 가로·세로 중앙정렬되고 세로 정렬이 middle이며 역할별 위치가 일관되며, 읽는 순서가 명확하고, 한 슬라이드에 정보가 과밀하지 않으며, overlap/wrapping/clipping 문제가 없고, 내부 검토 항목명이 슬라이드에 그대로 노출되지 않았음을 확인한다. 이어서 PPT Planning Harness의 `check_planning_doc.py <file.pptx>` 검사를 실행하고, 실패하면 `FAIL:` 항목을 반영해 deck을 수정한 뒤 다시 실행한다.
+5. 검증: Presentations의 최종 preview/contact-sheet QA를 완료하고, 각 슬라이드에 화면명 또는 테이블명이 있으며, 화면 흐름 PPT는 흐름상 위치, 주요 UI 영역, CTA 또는 상태 메모와 의미 구분 색상이 있고, 테이블명세서 PPT는 컬럼 타입/필수/키/설명, 관계/제약, 민감정보/권한/상태값 표시가 있으며 마지막에 ERD 슬라이드가 있고, 개발 지시 문서로 필요한 구현 메모가 페이지별로 녹아 있고, 필요한 화면에는 `Sequence`와 `Business Rules`가 짧고 추적 가능하게 포함되어 있으며, 불확실한 내용은 `확인 필요`로 표시되어 있으며, 필요한 경우 오른쪽 상세 설명이 있고, 여백/정렬/폰트 계층/색상 일관성이 유지되며, 배지/flag/조건 라벨의 텍스트가 박스 안에서 가로·세로 중앙정렬되고 세로 정렬이 middle이며 역할별 위치가 일관되며, 읽는 순서가 명확하고, 한 슬라이드에 정보가 과밀하지 않으며, overlap/wrapping/clipping 문제가 없고, 내부 검토 항목명이 슬라이드에 그대로 노출되지 않았음을 확인한다. 이어서 `scripts/check_wireframe_deck.py <file.pptx>`와 PPT Planning Harness의 `check_planning_doc.py <file.pptx>` 검사를 실행하고, 실패하면 `FAIL:` 항목을 반영해 deck을 수정한 뒤 다시 실행한다.
 6. 출력: 산출물을 cwd 상대 경로에 둔다.
 
 ## 출력 위치 (필수)

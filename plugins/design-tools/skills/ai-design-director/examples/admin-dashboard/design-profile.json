@@ -1,0 +1,40 @@
+{
+  "project": "admin-dashboard",
+  "generatedAt": "2026-06-20T11:00:00Z",
+  "visual_tone": ["restrained", "utilitarian", "high-density", "low-decoration", "neutral-cool"],
+  "brand_impression": [
+    { "trait": "속도", "priority": 1 },
+    { "trait": "전문성", "priority": 2 },
+    { "trait": "신뢰", "priority": 3 },
+    { "trait": "기술적", "priority": 4 }
+  ],
+  "information_density": {
+    "level": "high",
+    "notes": ["compact 행 높이", "고정 테이블 헤더", "작은 컨트롤", "여백 최소화", "한 화면 최대 정보"]
+  },
+  "typography": {
+    "direction": ["neutral-ui-sans", "tabular-numeric-mono"],
+    "hierarchy": "medium",
+    "body_readability": "medium"
+  },
+  "color": {
+    "direction": ["cool off-white background", "slate gray surfaces", "single muted teal accent", "tabular numbers in mono"],
+    "avoid": ["high-saturation gradients", "multiple accent colors", "tailwind violet/blue defaults"]
+  },
+  "layout": {
+    "navigation": "persistent-left-sidebar + command-search",
+    "content_width": "fluid",
+    "alignment": "table-aligned (left labels, right numbers)",
+    "spacing": "compact"
+  },
+  "surface": "subtle-elevation",
+  "radius": "small",
+  "shadow": "subtle",
+  "motion_level": "minimal",
+  "accessibility": ["상태는 색+아이콘/텍스트 병행", "키보드 포커스 가시", "모든 입력 레이블", "터치 타깃 모바일 44px", "대비 AA"],
+  "avoid": ["card-grid-dashboard", "marketing-saas-tone", "decorative-gradients", "oversized-stat-widgets", "fake-kpi-numbers", "excessive-rounded-corners"],
+  "weighting": { "product": 0.6, "taste": 0.4, "brand": 0.0 },
+  "confirmed": ["테이블 중심", "높은 정보 밀도", "강력한 검색·필터", "일괄 처리", "강조색 절제"],
+  "assumed": ["우측 슬라이드 상세 패널", "키보드 단축키 상시 노출", "compact 행 높이 기본"],
+  "sources": ["DESIGN-BRIEF.md 인터뷰", "사용자 발언(빠른 게 중요/엑셀처럼 표/강조색 절제)", "JTBD 동선(검색·필터→표→일괄→상세)"]
+}

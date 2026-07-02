@@ -1,0 +1,23 @@
+{
+  "name": "workflow-tools",
+  "version": "0.1.0",
+  "description": "Completion and git workflow skills for Codex.",
+  "author": {
+    "name": "idong-geol"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["codex", "workflow", "completion", "git", "commit"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Workflow Tools",
+    "shortDescription": "Completion summaries and Conventional Commit workflows.",
+    "longDescription": "Workflow Tools packages completion-summary and git-conventional-commit as installable Codex skills.",
+    "developerName": "idong-geol",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "defaultPrompt": [
+      "완료 요약을 정리해줘.",
+      "Conventional Commits 형식으로 커밋해줘."
+    ]
+  }
+}

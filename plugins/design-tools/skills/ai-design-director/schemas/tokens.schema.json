@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/tokens.schema.json",
+  "title": "디자인 토큰 (TOKENS.json)",
+  "description": "/design-system 단계 산출물. 색상/타이포/간격/모서리의 단일 출처. design/TOKENS.json 에 저장된다. 모든 구현은 이 파일에서만 값을 가져온다. 색상 값은 OKLCH 또는 hex 를 쓰되 순수 #000/#fff 는 금지(살짝 톤 띤 off-black/off-white).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["color", "typography", "spacing", "radius", "shadow"],
+  "$defs": {
+    "tokenValue": {
+      "description": "토큰 leaf 값. 문자열(색상 OKLCH/hex — 순수 #000/#fff 금지, 길이 px/rem, 폰트 family, cubic-bezier 등) 또는 숫자(폰트 weight 400, lineHeight 1.5, zIndex 10, 무단위 letterSpacing 등).",
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        { "type": "number" }
+      ]
+    },
+    "tokenGroup": {
+      "type": "object",
+      "description": "토큰 키 → 값 맵. 값은 leaf(문자열/숫자) 또는 중첩 그룹(예: color.semantic.success → { surface, text }). 중첩 대신 flat 점표기(success.surface) 도 허용.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[A-Za-z0-9][A-Za-z0-9._-]*$": {
+          "oneOf": [
+            { "$ref": "#/$defs/tokenValue" },
+            { "$ref": "#/$defs/tokenGroup" }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "이 토큰 파일을 검증하는 스키마 경로(선택)."
+    },
+    "$comment": {
+      "type": "string",
+      "description": "토큰 파일 설명 주석(선택). 발췌 여부·디자인 의도 등을 기록한다."
+    },
+    "color": {
+      "type": "object",
+      "description": "색상 토큰 그룹. 배경/표면/텍스트/테두리/강조/시맨틱 하위 그룹으로 구성. 강조색은 1색 원칙.",
+      "additionalProperties": false,
+      "required": ["background", "surface", "text", "border", "accent", "semantic"],
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "배경색. 키 예시: base, subtle, muted."
+        },
+        "surface": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "표면(패널/카드)색. 키 예시: default, raised, sunken."
+        },
+        "text": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "텍스트색. 키 예시: primary, secondary, muted, inverse."
+        },
+        "border": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "테두리색. 키 예시: default, strong, subtle."
+        },
+        "accent": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "강조색(1색 원칙). 키 예시: default, hover, subtle, contrast."
+        },
+        "semantic": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "시맨틱 상태색. success/warning/danger/info(+ 각 surface/text). 키 예시: success, success.surface, warning, danger, info."
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "description": "타이포그래피 토큰 그룹. display 폰트는 800+, body 는 400~500 으로 분리.",
+      "additionalProperties": false,
+      "required": ["fontFamily", "fontSize", "fontWeight", "lineHeight", "letterSpacing"],
+      "properties": {
+        "fontFamily": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "폰트 패밀리. 키 예시: display, body, mono."
+        },
+        "fontSize": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "폰트 크기 스케일. 키 예시: xs, sm, base, lg, xl, 2xl, 3xl, 4xl."
+        },
+        "fontWeight": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "폰트 굵기. 키 예시: regular(400), medium(500), semibold(600), bold(700), black(800-900)."
+        },
+        "lineHeight": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "행간. 키 예시: tight, normal, relaxed."
+        },
+        "letterSpacing": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "자간. 키 예시: tight, normal, wide."
+        }
+      }
+    },
+    "spacing": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "간격 스케일(4px 기반). 키 예시: 0,1,2,3,4,5,6,8,10,12,16."
+    },
+    "radius": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "모서리 둥글기. 키 예시: none, sm, md, lg, full."
+    },
+    "shadow": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "그림자(고도). 키 예시: none, sm, md, lg."
+    },
+    "borderWidth": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "테두리 두께. 키 예시: none, hairline, thin, thick."
+    },
+    "breakpoint": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "반응형 분기점. 키 예시: mobile(<640), tablet(640-1024), desktop(>1024)."
+    },
+    "motion": {
+      "type": "object",
+      "description": "모션 토큰. duration/easing 하위 그룹.",
+      "additionalProperties": false,
+      "required": ["duration", "easing"],
+      "properties": {
+        "duration": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "전환 시간. 키 예시: fast, base, slow."
+        },
+        "easing": {
+          "$ref": "#/$defs/tokenGroup",
+          "description": "이징 함수. 키 예시: standard, decelerate, accelerate."
+        }
+      }
+    },
+    "zIndex": {
+      "$ref": "#/$defs/tokenGroup",
+      "description": "레이어 z-index. 키 예시: base, dropdown, sticky, overlay, modal, toast."
+    }
+  }
+}

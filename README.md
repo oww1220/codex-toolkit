@@ -4,28 +4,44 @@ Installable Codex plugins and skills.
 
 ## Plugins
 
-### `ppt-tools`
-
-PPT 문서 작업용 Codex 스킬 플러그인입니다.
-
-- `ppt-planning-harness`
-- `ppt-wireframe-generator`
-
-원본은 `plugins/ppt-tools`에서 관리합니다. 전역 설치는 플러그인 소스를 GitHub에 올린 뒤 별도로 진행합니다.
-
-설치:
+마켓플레이스 등록:
 
 ```bash
 codex plugin marketplace add oww1220/codex-toolkit --ref main
+```
+
+전체 설치:
+
+```bash
 codex plugin add ppt-tools@codex-toolkit
+codex plugin add frontend-tools@codex-toolkit
+codex plugin add skill-tools@codex-toolkit
+codex plugin add agent-tools@codex-toolkit
+codex plugin add design-tools@codex-toolkit
+codex plugin add workflow-tools@codex-toolkit
+```
+
+개별 설치:
+
+```bash
+codex plugin add <plugin-name>@codex-toolkit
 ```
 
 업데이트 후 재설치:
 
 ```bash
 codex plugin marketplace upgrade codex-toolkit
-codex plugin add ppt-tools@codex-toolkit
+codex plugin add <plugin-name>@codex-toolkit
 ```
+
+로컬 소스는 `plugins/<plugin-name>`에서 관리합니다.
+
+### `ppt-tools`
+
+PPT 문서 작업용 Codex 스킬 플러그인입니다.
+
+- `ppt-planning-harness`
+- `ppt-wireframe-generator`
 
 ### `frontend-tools`
 
@@ -35,43 +51,11 @@ codex plugin add ppt-tools@codex-toolkit
 - `figma-implementation-audit`
 - `frontend-reuse-scout`
 
-원본은 `plugins/frontend-tools`에서 관리합니다. 전역 설치는 플러그인 소스를 GitHub에 올린 뒤 별도로 진행합니다.
-
-설치:
-
-```bash
-codex plugin marketplace add oww1220/codex-toolkit --ref main
-codex plugin add frontend-tools@codex-toolkit
-```
-
-업데이트 후 재설치:
-
-```bash
-codex plugin marketplace upgrade codex-toolkit
-codex plugin add frontend-tools@codex-toolkit
-```
-
 ### `skill-tools`
 
 스킬 제작/검증용 Codex 스킬 플러그인입니다.
 
 - `skill-enhancer-codex`
-
-원본은 `plugins/skill-tools`에서 관리합니다. 전역 설치는 플러그인 소스를 GitHub에 올린 뒤 별도로 진행합니다.
-
-설치:
-
-```bash
-codex plugin marketplace add oww1220/codex-toolkit --ref main
-codex plugin add skill-tools@codex-toolkit
-```
-
-업데이트 후 재설치:
-
-```bash
-codex plugin marketplace upgrade codex-toolkit
-codex plugin add skill-tools@codex-toolkit
-```
 
 ### `agent-tools`
 
@@ -79,18 +63,16 @@ codex plugin add skill-tools@codex-toolkit
 
 - `subagent-orchestration`
 
-원본은 `plugins/agent-tools`에서 관리합니다. 전역 설치는 플러그인 소스를 GitHub에 올린 뒤 별도로 진행합니다.
+### `design-tools`
 
-설치:
+디자인 방향 설정/오케스트레이션용 Codex 스킬 플러그인입니다.
 
-```bash
-codex plugin marketplace add oww1220/codex-toolkit --ref main
-codex plugin add agent-tools@codex-toolkit
-```
+- `ai-design-director`
+- `design-orchestrator`
 
-업데이트 후 재설치:
+### `workflow-tools`
 
-```bash
-codex plugin marketplace upgrade codex-toolkit
-codex plugin add agent-tools@codex-toolkit
-```
+작업 완료/커밋 워크플로우용 Codex 스킬 플러그인입니다.
+
+- `completion-summary`
+- `git-conventional-commit`

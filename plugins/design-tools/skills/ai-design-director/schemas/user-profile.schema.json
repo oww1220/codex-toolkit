@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/user-profile.schema.json",
+  "title": "사용자 취향 프로필 (~/.design-director/profile.json)",
+  "description": "프로젝트를 횡단하는 사용자 취향 프로필. 홈 디렉토리 ~/.design-director/profile.json 에 저장된다. 여러 프로젝트의 선택 이력에서 누적된 선호를 기록해 다음 프로젝트의 가중 입력으로 쓴다(절대 규칙이 아님).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "preferredMood": {
+      "type": "array",
+      "description": "선호하는 분위기 키워드. 예: warm, editorial, restrained.",
+      "items": {
+        "type": "string",
+        "description": "분위기 키워드 한 개."
+      }
+    },
+    "preferredDensity": {
+      "type": "string",
+      "description": "선호하는 정보 밀도.",
+      "enum": ["compact", "comfortable", "spacious"]
+    },
+    "preferredTypography": {
+      "type": "array",
+      "description": "선호하는 타이포 방향. 예: humanist-sans, serif-display.",
+      "items": {
+        "type": "string",
+        "description": "타이포 방향 키워드 한 개."
+      }
+    },
+    "preferredRadius": {
+      "type": "string",
+      "description": "선호하는 모서리 둥글기.",
+      "enum": ["none", "small", "medium", "large"]
+    },
+    "preferredNavigation": {
+      "type": "array",
+      "description": "선호하는 내비게이션 패턴. 예: left-sidebar, command-search.",
+      "items": {
+        "type": "string",
+        "description": "내비게이션 패턴 한 개."
+      }
+    },
+    "preferredSurface": {
+      "type": "string",
+      "description": "선호하는 표면 처리. 예: flat-with-border, subtle-elevation."
+    },
+    "avoids": {
+      "type": "array",
+      "description": "반복적으로 회피하는 요소. 예: purple-gradients, glassmorphism, floating-cards, oversized-hero.",
+      "items": {
+        "type": "string",
+        "description": "회피 요소 한 개."
+      }
+    },
+    "history": {
+      "type": "array",
+      "description": "프로젝트별 선택 이력.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["project", "selectedAt", "summary"],
+        "properties": {
+          "project": {
+            "type": "string",
+            "description": "프로젝트 이름."
+          },
+          "selectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "선택을 확정한 시각(ISO 8601 date-time)."
+          },
+          "summary": {
+            "type": "string",
+            "description": "그 프로젝트에서 선택한 디자인 방향 요약."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "design-tools",
+  "version": "0.1.0",
+  "description": "Design direction and orchestration workflow skills for Codex.",
+  "author": {
+    "name": "idong-geol"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["codex", "design", "ux", "orchestration", "skills"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Design Tools",
+    "shortDescription": "Design direction and design workflow routing.",
+    "longDescription": "Design Tools packages AI design direction and design orchestration workflows as installable Codex skills.",
+    "developerName": "idong-geol",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "defaultPrompt": [
+      "디자인 방향을 잡아줘.",
+      "디자인 작업을 역할별로 검토해줘."
+    ]
+  }
+}

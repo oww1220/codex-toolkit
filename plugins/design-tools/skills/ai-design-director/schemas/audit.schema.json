@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/audit.schema.json",
+  "title": "감사 산출물 (audit-score.json / issues.json)",
+  "description": "/design-audit 단계 산출물 스키마. 두 형태를 모두 검증한다 — design/audit/audit-score.json(감사 점수 객체)과 design/audit/issues.json(Audit Issue 배열). 입력이 객체면 점수 스키마로, 배열이면 이슈 목록 스키마로 검증된다.",
+  "oneOf": [
+    { "$ref": "#/$defs/auditScore" },
+    { "$ref": "#/$defs/issues" }
+  ],
+  "$defs": {
+    "auditScore": {
+      "type": "object",
+      "title": "감사 점수 (audit-score.json)",
+      "description": "한 회차(iteration)의 7개 영역 100점 만점 점수와 통과 여부.",
+      "additionalProperties": false,
+      "required": ["iteration", "scores", "average", "pass"],
+      "properties": {
+        "iteration": {
+          "type": "integer",
+          "description": "감사 반복 회차(1부터). 최대 반복 기본 3회.",
+          "minimum": 1
+        },
+        "scores": {
+          "type": "object",
+          "description": "7개 영역별 점수(각 0~100).",
+          "additionalProperties": false,
+          "required": [
+            "product_fit",
+            "information_architecture",
+            "visual_consistency",
+            "usability",
+            "distinctiveness",
+            "responsive",
+            "accessibility"
+          ],
+          "properties": {
+            "product_fit": {
+              "type": "number",
+              "description": "제품 적합성 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "information_architecture": {
+              "type": "number",
+              "description": "정보 구조 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "visual_consistency": {
+              "type": "number",
+              "description": "시각 일관성 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "usability": {
+              "type": "number",
+              "description": "사용성 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "distinctiveness": {
+              "type": "number",
+              "description": "차별성(탈-진부함) 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "responsive": {
+              "type": "number",
+              "description": "반응형 점수(0~100).",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "accessibility": {
+              "type": "number",
+              "description": "접근성 점수(0~100). 통과 조건상 80 이상이어야 한다.",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        },
+        "average": {
+          "type": "number",
+          "description": "7개 영역 평균 점수(0~100). 통과 조건상 85 이상이어야 한다.",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pass": {
+          "type": "object",
+          "description": "통과 판정 결과. 통과 조건: 평균≥85, 모든 항목≥75, accessibility≥80, 치명 오류 0, AI 안티패턴 치명 0.",
+          "additionalProperties": false,
+          "required": ["passed", "failedAreas", "reasons"],
+          "properties": {
+            "passed": {
+              "type": "boolean",
+              "description": "전체 통과 여부."
+            },
+            "failedAreas": {
+              "type": "array",
+              "description": "통과 기준에 미달한 영역 이름 목록(scores 의 키).",
+              "items": {
+                "type": "string",
+                "description": "미달 영역 이름 한 개.",
+                "enum": [
+                  "product_fit",
+                  "information_architecture",
+                  "visual_consistency",
+                  "usability",
+                  "distinctiveness",
+                  "responsive",
+                  "accessibility"
+                ]
+              }
+            },
+            "reasons": {
+              "type": "array",
+              "description": "통과/실패 판정의 구체적 이유.",
+              "items": {
+                "type": "string",
+                "description": "판정 이유 한 줄."
+              }
+            }
+          }
+        }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "title": "감사 이슈 목록 (issues.json)",
+      "description": "발견된 감사 이슈(Audit Issue) 배열.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "screen",
+          "severity",
+          "category",
+          "description",
+          "evidence",
+          "recommendation",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "이슈 식별자. 예: AUDIT-001.",
+            "pattern": "^AUDIT-[0-9]{3,}$"
+          },
+          "screen": {
+            "type": "string",
+            "description": "이슈가 발생한 화면 이름. 예: customer-list."
+          },
+          "severity": {
+            "type": "string",
+            "description": "심각도.",
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "category": {
+            "type": "string",
+            "description": "이슈 분류.",
+            "enum": [
+              "information-hierarchy",
+              "visual-consistency",
+              "usability",
+              "distinctiveness",
+              "responsive",
+              "accessibility",
+              "product-fit",
+              "anti-pattern"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "description": "이슈 설명."
+          },
+          "evidence": {
+            "type": "string",
+            "description": "근거. 스크린샷 경로 또는 좌표 등."
+          },
+          "recommendation": {
+            "type": "string",
+            "description": "수정 권고."
+          },
+          "status": {
+            "type": "string",
+            "description": "이슈 처리 상태.",
+            "enum": ["open", "fixed", "wontfix"]
+          }
+        }
+      }
+    }
+  }
+}

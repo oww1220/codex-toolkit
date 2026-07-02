@@ -1,0 +1,23 @@
+{
+  "name": "design-compare-ui",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AI Design Director — 동일 콘텐츠·다른 디자인 후보 비교 앱 (스캐폴드). 모든 후보는 public/data/content.json 의 같은 콘텐츠를 쓰고 candidates.json 의 토큰만 다르다.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

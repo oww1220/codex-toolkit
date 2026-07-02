@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/selection.schema.json",
+  "title": "사용자 선택 결과 (selection.json)",
+  "description": "/design-compare 에서 사용자가 한 요소 단위 좋아요/싫어요·단일/조합 선택 결과. design/compare/selection.json(작업본) 및 design/selection.json(확정 승격본)에 저장된다. selectedCandidate(단일) 또는 combinedSelection(조합) 중 의도에 맞게 채운다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "selectedCandidate",
+    "combinedSelection",
+    "likes",
+    "dislikes",
+    "notes",
+    "approvedAt"
+  ],
+  "$defs": {
+    "candidateId": {
+      "type": "string",
+      "description": "선택된 후보 식별자. references.json 의 candidate id 와 일치.",
+      "enum": [
+        "candidate-a",
+        "candidate-b",
+        "candidate-c",
+        "candidate-d",
+        "candidate-e",
+        "candidate-f",
+        "candidate-g"
+      ]
+    },
+    "element": {
+      "type": "string",
+      "description": "요소 단위 선택 항목(15종 고정).",
+      "enum": [
+        "color",
+        "typography",
+        "navigation",
+        "density",
+        "buttons",
+        "forms",
+        "cards",
+        "tables",
+        "modals",
+        "icons",
+        "spacing",
+        "radius",
+        "shadow",
+        "images",
+        "motion"
+      ]
+    },
+    "feedbackEntry": {
+      "type": "object",
+      "description": "특정 후보의 특정 요소에 대한 좋아요/싫어요 항목.",
+      "additionalProperties": false,
+      "required": ["candidate", "element", "note"],
+      "properties": {
+        "candidate": { "$ref": "#/$defs/candidateId" },
+        "element": { "$ref": "#/$defs/element" },
+        "note": {
+          "type": "string",
+          "description": "왜 좋은지/싫은지에 대한 사용자 메모."
+        }
+      }
+    }
+  },
+  "properties": {
+    "selectedCandidate": {
+      "description": "단일 후보를 통째로 선택한 경우 그 후보 id. 조합 선택이면 null.",
+      "oneOf": [
+        { "$ref": "#/$defs/candidateId" },
+        { "type": "null", "description": "단일 선택이 아닐 때 null." }
+      ]
+    },
+    "combinedSelection": {
+      "type": "object",
+      "description": "요소 단위 조합 선택. 각 요소(15종)를 어느 후보에서 가져올지 매핑한다. 일부 요소만 채울 수 있다.",
+      "additionalProperties": false,
+      "properties": {
+        "color": { "$ref": "#/$defs/candidateId", "description": "색상을 가져올 후보." },
+        "typography": { "$ref": "#/$defs/candidateId", "description": "타이포그래피를 가져올 후보." },
+        "navigation": { "$ref": "#/$defs/candidateId", "description": "내비게이션을 가져올 후보." },
+        "density": { "$ref": "#/$defs/candidateId", "description": "정보 밀도를 가져올 후보." },
+        "buttons": { "$ref": "#/$defs/candidateId", "description": "버튼 스타일을 가져올 후보." },
+        "forms": { "$ref": "#/$defs/candidateId", "description": "폼 스타일을 가져올 후보." },
+        "cards": { "$ref": "#/$defs/candidateId", "description": "카드 스타일을 가져올 후보." },
+        "tables": { "$ref": "#/$defs/candidateId", "description": "테이블 스타일을 가져올 후보." },
+        "modals": { "$ref": "#/$defs/candidateId", "description": "모달 스타일을 가져올 후보." },
+        "icons": { "$ref": "#/$defs/candidateId", "description": "아이콘 스타일을 가져올 후보." },
+        "spacing": { "$ref": "#/$defs/candidateId", "description": "간격 체계를 가져올 후보." },
+        "radius": { "$ref": "#/$defs/candidateId", "description": "모서리 둥글기를 가져올 후보." },
+        "shadow": { "$ref": "#/$defs/candidateId", "description": "그림자를 가져올 후보." },
+        "images": { "$ref": "#/$defs/candidateId", "description": "이미지 스타일을 가져올 후보." },
+        "motion": { "$ref": "#/$defs/candidateId", "description": "모션을 가져올 후보." }
+      }
+    },
+    "likes": {
+      "type": "array",
+      "description": "사용자가 좋아한 (후보, 요소) 항목과 메모 목록.",
+      "items": { "$ref": "#/$defs/feedbackEntry" }
+    },
+    "dislikes": {
+      "type": "array",
+      "description": "사용자가 싫어한 (후보, 요소) 항목과 메모 목록.",
+      "items": { "$ref": "#/$defs/feedbackEntry" }
+    },
+    "notes": {
+      "type": "string",
+      "description": "선택 전반에 대한 자유 메모."
+    },
+    "approvedAt": {
+      "description": "확정 승인 시각(ISO 8601 date-time). 아직 미승인이면 빈 문자열.",
+      "oneOf": [
+        { "type": "string", "format": "date-time", "description": "승인 시각." },
+        { "type": "string", "maxLength": 0, "description": "미승인 상태(빈 문자열)." }
+      ]
+    }
+  }
+}

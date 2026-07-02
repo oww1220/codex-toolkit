@@ -1,0 +1,70 @@
+{
+  "project": "개인사업자 CRM",
+  "generatedAt": "2026-06-20T11:00:00+09:00",
+  "visual_tone": ["restrained", "warm-neutral", "editorial", "low-decoration", "high-legibility"],
+  "brand_impression": [
+    { "trait": "차분함", "priority": 1 },
+    { "trait": "전문성", "priority": 2 },
+    { "trait": "인간적", "priority": 3 }
+  ],
+  "information_density": {
+    "level": "medium-high",
+    "notes": [
+      "거래 입력·고객 목록은 조밀하게(테이블/리스트 우선)",
+      "대시보드 진입 화면은 여유 — 화면별로 밀도 분리(차분↔밀도 충돌 조정)",
+      "그룹핑·구분선·미세 배경톤으로 정보를 단순하게 보이게(카드 남발 회피)"
+    ]
+  },
+  "typography": {
+    "direction": ["humanist-sans", "serif-display"],
+    "hierarchy": "strong",
+    "body_readability": "high"
+  },
+  "color": {
+    "direction": ["warm-neutral", "low-saturation", "ink-on-paper"],
+    "avoid": ["tech-blue", "neon", "pure-black", "pure-white", "generic-saas-gradient"]
+  },
+  "layout": {
+    "navigation": "persistent-left-sidebar",
+    "content_width": "adaptive",
+    "alignment": "left-aligned-grid",
+    "spacing": "comfortable"
+  },
+  "surface": "flat-with-border",
+  "radius": "small",
+  "shadow": "subtle",
+  "motion_level": "minimal",
+  "accessibility": [
+    "상태는 색에만 의존하지 않음(아이콘·라벨·텍스트 병행 — 미수금/연체 표시)",
+    "본문·라벨 대비 WCAG AA 이상",
+    "키보드 포커스 가시화 + 폼 입력 레이블 명시",
+    "prefers-reduced-motion 시 전환 모션 제거"
+  ],
+  "avoid": [
+    "decorative-gradients",
+    "generic-saas-gradient",
+    "oversized-rounded-cards",
+    "every-content-as-card",
+    "too-many-accent-colors",
+    "glassmorphism",
+    "oversized-hero",
+    "icon-on-every-button"
+  ],
+  "weighting": { "product": 0.6, "taste": 0.4, "brand": 0 },
+  "confirmed": [
+    "차분함이 1순위 인상(눈 피로 최소화) — 사용자 명시",
+    "거래 입력이 가장 잦은 핵심 작업 — 조밀 입력 필요",
+    "딱딱한 회계 SW와 귀여운 스타트업 앱 둘 다 거부",
+    "신규 프로젝트(브랜드 자산 없음) → 가중치 60/40"
+  ],
+  "assumed": [
+    "persistent-left-sidebar 내비(근거: 매일 여러 화면 오가는 업무 도구) — compare 에서 확인",
+    "모바일은 보조, 데스크톱 1차(근거: '오래 보는 화면' 발언)",
+    "serif 디스플레이 약간 허용(근거: '인간적 따뜻함') — compare 후보 A 로 확인"
+  ],
+  "sources": [
+    "design/DESIGN-BRIEF.md §4 핵심 업무 / §5 인상 / §7 거부 / §9 확정·추정",
+    "references/design-vocabulary.md (차분한·전문적인·인간적인 → 토큰 매핑)",
+    "PRD §21 시나리오"
+  ]
+}

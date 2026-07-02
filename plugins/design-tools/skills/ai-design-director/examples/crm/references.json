@@ -1,0 +1,94 @@
+{
+  "project": "개인사업자 CRM",
+  "generatedAt": "2026-06-20T11:30:00+09:00",
+  "candidates": [
+    {
+      "id": "candidate-a",
+      "name": "Warm Editorial",
+      "source": { "name": "에디토리얼 업무 도구 (시각 스타일 축)", "url": "https://example.com/ref/warm-editorial" },
+      "category": "visual-style",
+      "keywords": ["warm-neutral", "humanist-sans", "serif-display", "editorial-hierarchy", "ink-on-paper"],
+      "recommendedFor": ["오래 봐도 안 피곤한 톤", "읽기 편한 타이포", "인간적 따뜻함"],
+      "strengths": [
+        "humanist sans 본문 + serif 디스플레이 짝 — 위계가 강하면서 눈이 편함",
+        "종이 같은 off-white 배경 + 잉크 톤 텍스트로 고대비·저피로",
+        "장식 없이 타이포 위계만으로 정보를 정돈"
+      ],
+      "risks": [
+        "serif 를 과하게 쓰면 업무 도구보다 매거진처럼 보일 위험",
+        "에디토리얼 여백을 그대로 가져오면 밀도 요구와 충돌"
+      ],
+      "apply": ["타이포 방향(본문 humanist + 디스플레이 serif)", "warm off-white 배경 톤", "타이포 기반 위계"],
+      "doNotApply": ["넓은 에디토리얼 여백", "큰 히어로 카피", "매거진식 이미지 비중"],
+      "expectedImpression": "따뜻하고 읽기 편한, 일하는 도구다운 차분함",
+      "screenshots": ["research/screenshots/warm-editorial-list.png", "research/screenshots/warm-editorial-detail.png"],
+      "scores": { "productFit": 82, "brandFit": 90, "uxFit": 70, "distinctiveness": 86, "implementation": 84 }
+    },
+    {
+      "id": "candidate-b",
+      "name": "Compact Productivity",
+      "source": { "name": "고밀도 업무 SaaS (UX 패턴 축)", "url": "https://example.com/ref/compact-productivity" },
+      "category": "ux-pattern",
+      "keywords": ["persistent-left-sidebar", "dense-table", "inline-edit", "filter-bar", "keyboard-first"],
+      "recommendedFor": ["많은 정보를 한 화면에", "반복 입력·검색·필터", "매일 여러 화면 이동"],
+      "strengths": [
+        "좌측 고정 사이드바 + 상단 필터바로 매일 쓰는 화면 이동이 빠름",
+        "조밀한 테이블·리스트로 정보 밀도를 확보하되 구분선으로 정돈",
+        "인라인 편집·단축키로 반복 입력의 클릭 수 최소화"
+      ],
+      "risks": [
+        "기본 톤이 차갑고 회색 일색 — '딱딱한 회계 SW' 거부와 직접 충돌",
+        "밀도만 가져오고 색을 안 따뜻하게 하면 피로감 증가"
+      ],
+      "apply": ["좌측 사이드바 내비", "조밀 테이블·리스트 정보구조", "상단 검색·필터바", "인라인 편집/단축 입력"],
+      "doNotApply": ["차가운 회색 팔레트", "기본 시각 톤(색은 C 에서)"],
+      "expectedImpression": "정보가 많아도 답답하지 않은, 효율적인 업무 구조",
+      "screenshots": ["research/screenshots/compact-productivity-list.png", "research/screenshots/compact-productivity-form.png"],
+      "scores": { "productFit": 92, "brandFit": 62, "uxFit": 94, "distinctiveness": 70, "implementation": 88 }
+    },
+    {
+      "id": "candidate-c",
+      "name": "Calm Professional",
+      "source": { "name": "저채도 전문 서비스 (시각 스타일 축)", "url": "https://example.com/ref/calm-professional" },
+      "category": "visual-style",
+      "keywords": ["warm-neutral-palette", "low-saturation", "single-accent", "semantic-fixed", "subtle-border"],
+      "recommendedFor": ["딱 적당한 따뜻함", "절제된 강조색", "상태=색 의미 고정"],
+      "strengths": [
+        "warm-neutral 저채도 팔레트 — 따뜻하되 알록달록하지 않은 정확한 중간 톤",
+        "accent 1색 원칙 + semantic(성공/경고/위험/정보) 색 의미 고정으로 색 남발 방지",
+        "구분은 그림자 대신 미세 border — flat-with-border 표면"
+      ],
+      "risks": [
+        "팔레트가 너무 절제되면 차이가 안 느껴져 밋밋해질 수 있음 — accent 대비로 보완",
+        "C 단독으로는 정보구조가 약함(구조는 B 에서)"
+      ],
+      "apply": ["warm-neutral 저채도 색상 시스템", "accent 1색 + semantic 고정", "border 기반 표면 구분"],
+      "doNotApply": ["정보구조는 이 후보로 결정하지 않음(구조는 candidate-b)", "장식적 색 변주"],
+      "expectedImpression": "따뜻하지만 차분하고 신뢰감 있는 전문 톤",
+      "screenshots": ["research/screenshots/calm-professional-dashboard.png", "research/screenshots/calm-professional-palette.png"],
+      "scores": { "productFit": 84, "brandFit": 91, "uxFit": 74, "distinctiveness": 78, "implementation": 86 }
+    },
+    {
+      "id": "candidate-d",
+      "name": "Minimal Monochrome",
+      "source": { "name": "미니멀 단색 도구 (시각 스타일 축)", "url": "https://example.com/ref/minimal-monochrome" },
+      "category": "visual-style",
+      "keywords": ["thin-line-icons", "monochrome", "low-decoration", "sharp-radius", "high-contrast-text"],
+      "recommendedFor": ["일관된 얇은 라인 아이콘", "장식 절제", "아이콘 세트 통일"],
+      "strengths": [
+        "1.5px 굵기로 통일된 얇은 라인 아이콘 세트 — 업무 도구다운 절제",
+        "아이콘이 색을 거의 안 쓰고 stroke 만으로 의미 전달 → 색 남발 방지에 기여",
+        "전체 미니멀리즘이 장식 회피 정신과 일치"
+      ],
+      "risks": [
+        "전체 모노크롬은 사용자가 거부한 '차가운 회계 SW' 와 가까움 — 아이콘만 차용",
+        "0 radius·완전 무채색을 통째 가져오면 인간적 따뜻함과 충돌"
+      ],
+      "apply": ["얇은 라인 아이콘 세트(1.5px stroke, 통일)", "아이콘 색 절제 원칙"],
+      "doNotApply": ["전체 모노크롬 팔레트", "완전 무채색", "차가운 톤 전반"],
+      "expectedImpression": "절제되고 통일된, 군더더기 없는 아이콘 언어",
+      "screenshots": ["research/screenshots/minimal-monochrome-icons.png"],
+      "scores": { "productFit": 68, "brandFit": 64, "uxFit": 72, "distinctiveness": 80, "implementation": 90 }
+    }
+  ]
+}

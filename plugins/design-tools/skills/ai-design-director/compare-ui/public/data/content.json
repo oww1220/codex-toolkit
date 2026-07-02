@@ -1,0 +1,105 @@
+{
+  "app": {
+    "productName": "결자장부",
+    "nav": [
+      { "key": "dashboard", "label": "대시보드" },
+      { "key": "list", "label": "고객" },
+      { "key": "detail", "label": "거래 상세" },
+      { "key": "form", "label": "고객 등록" },
+      { "key": "settings", "label": "설정" }
+    ],
+    "userName": "박정후",
+    "searchPlaceholder": "고객·거래 검색"
+  },
+  "dashboard": {
+    "title": "이번 달 요약",
+    "subtitle": "2026년 6월 · 결제·미수금·신규 고객 현황",
+    "metrics": [
+      { "label": "이번 달 매출", "value": "₩12,480,000", "delta": "지난달 대비 +8건 결제", "trend": "up" },
+      { "label": "미수금", "value": "₩2,140,000", "delta": "연체 3건 포함", "trend": "down" },
+      { "label": "신규 고객", "value": "7명", "delta": "이번 주 2명", "trend": "up" },
+      { "label": "처리 대기", "value": "5건", "delta": "견적 3 · 청구 2", "trend": "flat" }
+    ],
+    "activityTitle": "최근 활동",
+    "activity": [
+      { "time": "오늘 14:20", "text": "한빛공방 6월 정기 청구서 발송" },
+      { "time": "오늘 11:05", "text": "이로움디자인 입금 확인 ₩880,000" },
+      { "time": "어제 17:42", "text": "신규 고객 ‘봄날상회’ 등록" },
+      { "time": "어제 09:30", "text": "정음스튜디오 견적서 v2 수정" },
+      { "time": "6월 17일", "text": "달소금베이커리 연체 안내 메일 발송" }
+    ]
+  },
+  "list": {
+    "title": "고객",
+    "subtitle": "거래 중인 고객 24명",
+    "columns": ["고객명", "분류", "누적 거래액", "최근 거래", "상태"],
+    "searchPlaceholder": "고객명·사업자번호 검색",
+    "filters": ["전체", "진행중", "대기", "연체", "보관"],
+    "rows": [
+      { "id": "c-1041", "name": "한빛공방", "category": "정기 거래", "amount": "₩4,820,000", "date": "2026-06-18", "status": "active" },
+      { "id": "c-1037", "name": "이로움디자인", "category": "프로젝트", "amount": "₩3,150,000", "date": "2026-06-18", "status": "active" },
+      { "id": "c-1033", "name": "달소금베이커리", "category": "정기 거래", "amount": "₩1,260,000", "date": "2026-06-10", "status": "overdue" },
+      { "id": "c-1029", "name": "정음스튜디오", "category": "프로젝트", "amount": "₩2,540,000", "date": "2026-06-16", "status": "pending" },
+      { "id": "c-1024", "name": "봄날상회", "category": "신규", "amount": "₩320,000", "date": "2026-06-17", "status": "active" },
+      { "id": "c-1018", "name": "마루공업", "category": "정기 거래", "amount": "₩7,910,000", "date": "2026-05-29", "status": "archived" },
+      { "id": "c-1015", "name": "조은물산", "category": "프로젝트", "amount": "₩980,000", "date": "2026-06-09", "status": "pending" },
+      { "id": "c-1009", "name": "다온헬스케어", "category": "정기 거래", "amount": "₩5,470,000", "date": "2026-06-14", "status": "active" }
+    ]
+  },
+  "detail": {
+    "title": "한빛공방",
+    "statusLabel": "진행중",
+    "status": "active",
+    "fields": [
+      { "label": "분류", "value": "정기 거래" },
+      { "label": "담당자", "value": "윤소민 실장" },
+      { "label": "연락처", "value": "010-2480-1041" },
+      { "label": "사업자번호", "value": "214-81-04190" },
+      { "label": "누적 거래액", "value": "₩4,820,000" },
+      { "label": "결제 조건", "value": "월말 정산 · 계좌이체" }
+    ],
+    "bodyTitle": "메모",
+    "body": "매월 셋째 주에 정기 청구. 견적은 부가세 별도로 안내하며, 변경 시 윤소민 실장에게 사전 공유. 작년 12월부터 거래 시작했고 입금이 안정적인 편.",
+    "timelineTitle": "거래 내역",
+    "timeline": [
+      { "time": "2026-06-18", "text": "6월 정기 청구서 발송", "amount": "₩880,000" },
+      { "time": "2026-05-30", "text": "5월 정산 입금 확인", "amount": "₩880,000" },
+      { "time": "2026-05-02", "text": "추가 작업 견적 승인", "amount": "₩1,200,000" },
+      { "time": "2026-04-28", "text": "4월 정산 입금 확인", "amount": "₩880,000" }
+    ],
+    "primaryAction": "청구서 발송",
+    "secondaryAction": "거래 내역 내보내기"
+  },
+  "form": {
+    "title": "고객 등록",
+    "subtitle": "거래를 시작할 고객 정보를 입력하세요. 사업자번호는 나중에 채워도 됩니다.",
+    "submitLabel": "고객 등록",
+    "cancelLabel": "취소",
+    "sections": [
+      {
+        "heading": "기본 정보",
+        "fields": [
+          { "name": "name", "label": "고객명", "type": "text", "placeholder": "예: 한빛공방", "required": true },
+          { "name": "contactPerson", "label": "담당자", "type": "text", "placeholder": "예: 윤소민 실장" },
+          { "name": "email", "label": "이메일", "type": "email", "placeholder": "billing@example.com", "hint": "청구서가 이 주소로 발송됩니다." },
+          { "name": "phone", "label": "연락처", "type": "text", "placeholder": "010-0000-0000" }
+        ]
+      },
+      {
+        "heading": "거래 조건",
+        "fields": [
+          { "name": "category", "label": "분류", "type": "select", "options": ["정기 거래", "프로젝트", "신규", "일회성"], "required": true },
+          { "name": "terms", "label": "결제 조건", "type": "select", "options": ["월말 정산", "건별 선결제", "납품 후 15일", "협의"] },
+          { "name": "bizNumber", "label": "사업자번호", "type": "text", "placeholder": "000-00-00000", "hint": "선택 입력 — 세금계산서 발행 시 필요합니다." },
+          { "name": "startDate", "label": "거래 시작일", "type": "date" }
+        ]
+      },
+      {
+        "heading": "메모",
+        "fields": [
+          { "name": "memo", "label": "내부 메모", "type": "textarea", "placeholder": "청구 주기, 주의사항 등 거래에 도움이 되는 메모", "hint": "고객에게는 보이지 않습니다." }
+        ]
+      }
+    ]
+  }
+}

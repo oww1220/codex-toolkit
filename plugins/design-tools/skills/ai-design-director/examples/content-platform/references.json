@@ -1,0 +1,81 @@
+{
+  "project": "content-platform",
+  "generatedAt": "2026-06-20T11:10:00Z",
+  "candidates": [
+    {
+      "id": "candidate-a",
+      "name": "Warm Editorial",
+      "source": { "name": "장문 에세이 매거진 류(시각 스타일 참조)", "url": "https://example.com/editorial-magazine" },
+      "category": "visual-style",
+      "keywords": ["serif-display", "reading-column", "warm-paper", "ample-leading", "ink-accent"],
+      "recommendedFor": ["긴 글 읽기", "잡지 톤", "본문 가독성 우선"],
+      "strengths": ["눈에 띄는 위계 있는 serif 제목", "넉넉한 행간으로 장문 피로 적음", "장식 없이 글이 주인공"],
+      "risks": ["목록 밀도가 낮아 탐색 효율 저하 가능", "serif 남용 시 올드해 보일 위험"],
+      "apply": ["serif display 제목", "단일 읽기 컬럼 폭 고정", "warm off-white 배경", "본문 행간 1.7대"],
+      "doNotApply": ["신문식 다단 컬럼", "장식 드롭캡 남발"],
+      "expectedImpression": "차분하고 고급스러운 잡지를 펼친 느낌",
+      "screenshots": ["research/screenshots/candidate-a-home.png", "research/screenshots/candidate-a-article.png"],
+      "scores": { "productFit": 92, "brandFit": 90, "uxFit": 74, "distinctiveness": 86, "implementation": 84 }
+    },
+    {
+      "id": "candidate-b",
+      "name": "Quiet Index",
+      "source": { "name": "분류·아카이브 중심 사이트(UX 패턴 참조)", "url": "https://example.com/quiet-index" },
+      "category": "ux-pattern",
+      "keywords": ["left-category-nav", "top-search", "list-over-grid", "breadcrumb", "progress"],
+      "recommendedFor": ["분류 탐색", "검색", "길 잃지 않는 내비게이션"],
+      "strengths": ["좌측 영구 분류로 위치 항상 명확", "무한 카드 그리드 대신 읽기 쉬운 목록", "검색이 상시 노출"],
+      "risks": ["좌측 영역이 모바일에서 공간 차지 → 접힘 처리 필요"],
+      "apply": ["좌측 영구 분류 내비게이션", "상단 검색 바", "목록형(그리드 아님) 글 리스트", "현재 분류 breadcrumb"],
+      "doNotApply": ["좌측 내비에 아이콘 가득 채우기", "다단계 드롭다운 메뉴"],
+      "expectedImpression": "도서관 색인처럼 조용히 길을 안내",
+      "screenshots": ["research/screenshots/candidate-b-list.png", "research/screenshots/candidate-b-search.png"],
+      "scores": { "productFit": 84, "brandFit": 78, "uxFit": 91, "distinctiveness": 80, "implementation": 88 }
+    },
+    {
+      "id": "candidate-c",
+      "name": "Minimal Monochrome",
+      "source": { "name": "흑백 미니멀 퍼블리케이션(시각 스타일 참조)", "url": "https://example.com/mono-pub" },
+      "category": "visual-style",
+      "keywords": ["monochrome", "hairline-rules", "sans-only", "tight-control", "no-color"],
+      "recommendedFor": ["극단적 절제", "텍스트 순수성"],
+      "strengths": ["완전한 무채색으로 글에 100% 집중", "얇은 구분선 위계"],
+      "risks": ["분류/상태 구분에 색을 못 써 접근성 부담", "잡지 '따뜻함' 요구와 충돌(차가움)"],
+      "apply": ["얇은 hairline 구분선", "강조색 절제 원칙"],
+      "doNotApply": ["완전 무채색(따뜻함 상실)", "sans-only 제목(위계 약함)"],
+      "expectedImpression": "차갑고 건조한 갤러리 도록",
+      "screenshots": ["research/screenshots/candidate-c-home.png"],
+      "scores": { "productFit": 70, "brandFit": 62, "uxFit": 76, "distinctiveness": 84, "implementation": 86 }
+    },
+    {
+      "id": "candidate-d",
+      "name": "Photo-Forward",
+      "source": { "name": "사진 비중 큰 롱폼 사이트(이미지 패턴 참조)", "url": "https://example.com/photo-forward" },
+      "category": "hybrid",
+      "keywords": ["wide-lead-image", "caption", "full-bleed", "single-photo", "no-tile-grid"],
+      "recommendedFor": ["사진 있는 글", "상세 진입 임팩트"],
+      "strengths": ["상세 진입 시 가로 와이드 1장이 분위기 형성", "캡션으로 맥락 제공"],
+      "risks": ["사진 없는 글에서는 빈 영역 처리 필요", "전체 적용 시 무거움"],
+      "apply": ["상세 상단 가로 와이드 1장 + 캡션", "목록 썸네일은 글당 1장 절제"],
+      "doNotApply": ["균등 썸네일 타일 그리드", "모든 카드 같은 비율 강제"],
+      "expectedImpression": "글 한 편이 작은 화보처럼 열림",
+      "screenshots": ["research/screenshots/candidate-d-article.png"],
+      "scores": { "productFit": 80, "brandFit": 82, "uxFit": 73, "distinctiveness": 81, "implementation": 79 }
+    },
+    {
+      "id": "candidate-e",
+      "name": "Bright Consumer",
+      "source": { "name": "대중향 밝은 콘텐츠 앱(대비용 후보)", "url": "https://example.com/bright-consumer" },
+      "category": "visual-style",
+      "keywords": ["high-saturation", "rounded-cards", "playful", "tile-grid", "bold-accent"],
+      "recommendedFor": ["가볍고 빠른 소비형 콘텐츠"],
+      "strengths": ["밝고 친근, 신규 사용자 진입 부담 적음"],
+      "risks": ["잡지 톤·장문 읽기와 정면 충돌", "채도 높은 강조색이 본문 집중 방해", "둥근 카드 = 사용자가 명시 거부한 패턴"],
+      "apply": [],
+      "doNotApply": ["채도 높은 강조색", "둥근 카드 그리드", "밝은 그라데이션 헤더"],
+      "expectedImpression": "활기차지만 산만 — 이 제품엔 부적합",
+      "screenshots": ["research/screenshots/candidate-e-home.png"],
+      "scores": { "productFit": 48, "brandFit": 40, "uxFit": 66, "distinctiveness": 70, "implementation": 85 }
+    }
+  ]
+}

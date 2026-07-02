@@ -1,0 +1,81 @@
+{
+  "project": "admin-dashboard",
+  "generatedAt": "2026-06-20T11:10:00Z",
+  "candidates": [
+    {
+      "id": "candidate-a",
+      "name": "Dense Operations",
+      "source": { "name": "운영 콘솔/내부 툴 류(UX 패턴 참조)", "url": "https://example.com/dense-ops" },
+      "category": "ux-pattern",
+      "keywords": ["compact-rows", "sticky-header", "inline-edit", "bulk-actions", "column-sort"],
+      "recommendedFor": ["대량 데이터 운영", "반복 처리", "키보드 작업"],
+      "strengths": ["조밀한 행으로 한 화면 정보량 최대", "고정 헤더로 긴 표 스크롤 안정", "인라인 편집으로 화면 전환 절약"],
+      "risks": ["밀도가 너무 높으면 초보 운영자 피로", "행 높이 작아 터치 환경 부적합 → 모바일 별도 처리"],
+      "apply": ["compact 행 높이", "고정 테이블 헤더", "체크박스 일괄 선택 + 액션 바", "컬럼 정렬·인라인 편집"],
+      "doNotApply": ["행마다 큰 썸네일", "행 사이 과도한 여백"],
+      "expectedImpression": "잘 만든 운영 콘솔 — 빠르고 빽빽하다",
+      "screenshots": ["research/screenshots/candidate-a-list.png", "research/screenshots/candidate-a-bulk.png"],
+      "scores": { "productFit": 93, "brandFit": 80, "uxFit": 92, "distinctiveness": 78, "implementation": 85 }
+    },
+    {
+      "id": "candidate-b",
+      "name": "Command-First",
+      "source": { "name": "명령형 검색 중심 도구(UX 패턴 참조)", "url": "https://example.com/command-first" },
+      "category": "ux-pattern",
+      "keywords": ["command-palette", "keyboard-shortcuts", "top-search", "quick-filter", "focus-flow"],
+      "recommendedFor": ["키보드 우선", "빠른 검색", "전환 최소"],
+      "strengths": ["상단 명령형 검색으로 어디서나 진입", "단축키 노출로 숙련 운영자 가속", "필터를 빠르게 토글"],
+      "risks": ["단축키 학습 곡선", "검색 UI가 과하면 초보 혼란"],
+      "apply": ["상단 명령형 검색 바", "단축키 힌트 노출", "빠른 필터 칩"],
+      "doNotApply": ["검색을 모달 뒤에 숨기기", "단축키 없는 마우스 전용 흐름"],
+      "expectedImpression": "키보드만으로 일이 끝나는 도구",
+      "screenshots": ["research/screenshots/candidate-b-search.png"],
+      "scores": { "productFit": 86, "brandFit": 76, "uxFit": 90, "distinctiveness": 82, "implementation": 80 }
+    },
+    {
+      "id": "candidate-c",
+      "name": "Neutral Slate",
+      "source": { "name": "차분한 무채색 시스템 UI(시각 스타일 참조)", "url": "https://example.com/neutral-slate" },
+      "category": "visual-style",
+      "keywords": ["cool-gray", "single-accent", "hairline-borders", "subtle-elevation", "tabular-mono"],
+      "recommendedFor": ["장시간 응시", "강조색 절제", "표 가독성"],
+      "strengths": ["차가운 회색 표면이 눈에 부담 적고 데이터를 돋보이게", "강조색 1색(teal)으로 액션만 강조", "수치 mono 로 정렬·비교 쉬움"],
+      "risks": ["너무 무채색이면 단조 → 상태 semantic 으로 보완 필요"],
+      "apply": ["cool slate 배경/표면", "강조색 teal 1색", "hairline 테이블 보더", "tabular mono 숫자"],
+      "doNotApply": ["멀티 강조색", "채도 높은 배경"],
+      "expectedImpression": "조용하고 정확한 계기판",
+      "screenshots": ["research/screenshots/candidate-c-list.png"],
+      "scores": { "productFit": 88, "brandFit": 86, "uxFit": 83, "distinctiveness": 80, "implementation": 88 }
+    },
+    {
+      "id": "candidate-d",
+      "name": "Marketing SaaS",
+      "source": { "name": "밝은 SaaS 대시보드(대비용 후보)", "url": "https://example.com/marketing-saas" },
+      "category": "visual-style",
+      "keywords": ["card-grid", "stat-widgets", "rounded", "multi-accent", "gradient-header"],
+      "recommendedFor": ["고객용 마케팅 대시보드"],
+      "strengths": ["첫인상 화려, 데모/세일즈에 유리"],
+      "risks": ["카드 그리드 = 운영자가 명시 거부한 패턴", "멀티 강조색이 상태 구분 방해", "거대 통계 위젯이 밀도/속도와 정면 충돌"],
+      "apply": [],
+      "doNotApply": ["카드 그리드 대시보드", "거대 KPI 위젯", "그라데이션 헤더", "멀티 강조색"],
+      "expectedImpression": "예쁘지만 느린 — 이 도구엔 부적합",
+      "screenshots": ["research/screenshots/candidate-d-home.png"],
+      "scores": { "productFit": 44, "brandFit": 42, "uxFit": 58, "distinctiveness": 68, "implementation": 84 }
+    },
+    {
+      "id": "candidate-e",
+      "name": "Terminal Mono",
+      "source": { "name": "터미널풍 모노스페이스 UI(대비용 후보)", "url": "https://example.com/terminal-mono" },
+      "category": "visual-style",
+      "keywords": ["all-mono", "dark-only", "green-on-black", "minimal-chrome"],
+      "recommendedFor": ["엔지니어 전용 콘솔"],
+      "strengths": ["밀도 극대화, 해커 톤"],
+      "risks": ["전체 mono 는 본문 가독성 저하", "다크 전용은 일반 운영자 환경과 불일치", "초록-검정 강조는 상태색과 충돌"],
+      "apply": ["수치에만 mono 적용(전체 아님)"],
+      "doNotApply": ["전체 mono 본문", "다크 전용 강제", "green-on-black 강조"],
+      "expectedImpression": "멋있지만 일반 운영팀엔 과함",
+      "screenshots": ["research/screenshots/candidate-e-list.png"],
+      "scores": { "productFit": 60, "brandFit": 52, "uxFit": 64, "distinctiveness": 86, "implementation": 82 }
+    }
+  ]
+}

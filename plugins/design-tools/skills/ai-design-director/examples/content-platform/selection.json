@@ -1,0 +1,35 @@
+{
+  "selectedCandidate": null,
+  "combinedSelection": {
+    "color": "candidate-a",
+    "typography": "candidate-a",
+    "navigation": "candidate-b",
+    "density": "candidate-b",
+    "buttons": "candidate-a",
+    "forms": "candidate-b",
+    "cards": "candidate-a",
+    "tables": "candidate-b",
+    "modals": "candidate-a",
+    "icons": "candidate-b",
+    "spacing": "candidate-a",
+    "radius": "candidate-a",
+    "shadow": "candidate-c",
+    "images": "candidate-d",
+    "motion": "candidate-a"
+  },
+  "likes": [
+    { "candidate": "candidate-a", "element": "typography", "note": "serif 제목 + 넉넉한 본문 행간 — '잡지' 요구에 정확히 부합" },
+    { "candidate": "candidate-a", "element": "color", "note": "warm paper 배경 + ink 본문 — 눈부심 없고 오래 읽기 편함" },
+    { "candidate": "candidate-b", "element": "navigation", "note": "좌측 영구 분류 + 상단 검색 — '길 잃지 않게' 요구 해결" },
+    { "candidate": "candidate-b", "element": "tables", "note": "그리드 대신 목록형 글 리스트 — 카드 거부 요구와 맞음" },
+    { "candidate": "candidate-d", "element": "images", "note": "상세 상단 가로 와이드 1장 + 캡션 — 화보처럼 진입" },
+    { "candidate": "candidate-c", "element": "shadow", "note": "그림자 거의 없음(hairline 위계) — 떠다니는 카드 느낌 제거" }
+  ],
+  "dislikes": [
+    { "candidate": "candidate-e", "element": "color", "note": "채도 높은 강조색이 본문 집중을 방해 — 거부" },
+    { "candidate": "candidate-e", "element": "cards", "note": "둥근 카드 그리드는 사용자가 명시적으로 싫다고 한 패턴" },
+    { "candidate": "candidate-c", "element": "color", "note": "완전 무채색은 '따뜻함' 요구와 충돌 — 색은 a에서 가져옴" }
+  ],
+  "notes": "단일 후보 채택 대신 조합. 읽기 경험(타이포/색/여백)은 a, 탐색 구조(분류/검색/목록)는 b, 상세 이미지는 d. e는 대비용으로만 두고 전면 거부. 강조색은 terracotta 1색으로 절제.",
+  "approvedAt": "2026-06-20T11:30:00Z"
+}

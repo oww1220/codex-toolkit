@@ -1,0 +1,206 @@
+{
+  "project": "결자장부 (sample)",
+  "generatedAt": "2026-06-20T00:00:00.000Z",
+  "candidates": [
+    {
+      "id": "candidate-a",
+      "name": "Warm Editorial",
+      "keywords": ["따뜻한 중성", "에디토리얼", "절제된 장식", "높은 가독성"],
+      "recommendReason": "오래 들여다봐도 피로하지 않은 따뜻한 종이 톤. 본문 가독성과 차분한 위계가 중요할 때.",
+      "description": "웜 뉴트럴 배경에 잉크빛 텍스트, 절제된 테라코타 강조. 세리프 디스플레이 + 휴머니스트 본문으로 신문·잡지의 읽는 인상.",
+      "recommendedFor": ["콘텐츠 비중이 큰 업무 도구", "장시간 사용", "신뢰·전문성 인상"],
+      "risks": ["강조가 약해 액션 유도가 묻힐 수 있음", "세리프가 일부 데이터 화면에서 빽빽해 보일 수 있음"],
+      "color": {
+        "light": {
+          "bgBase": "#F7F3EC", "bgSubtle": "#F1EBE0", "bgMuted": "#E8E0D2",
+          "surfaceDefault": "#FCFAF5", "surfaceRaised": "#FFFFFB", "surfaceSunken": "#F1EADE",
+          "textPrimary": "#2A241C", "textSecondary": "#5A5044", "textMuted": "#8A7E6E", "textInverse": "#FBF7EF",
+          "borderDefault": "#DAD0BE", "borderStrong": "#C3B6A0", "borderSubtle": "#EAE2D3",
+          "accentDefault": "#B4532A", "accentHover": "#9A4422", "accentSubtle": "#F3E2D6", "accentContrast": "#FBF4ED",
+          "success": "#4F6B3E", "successSurface": "#E6EDDC", "warning": "#9A6B19", "warningSurface": "#F4E8CF",
+          "danger": "#A83A2E", "dangerSurface": "#F3DDD7", "info": "#3D6173", "infoSurface": "#DDEAEF"
+        },
+        "dark": {
+          "bgBase": "#211C16", "bgSubtle": "#28221B", "bgMuted": "#332C23",
+          "surfaceDefault": "#2A2419", "surfaceRaised": "#342D20", "surfaceSunken": "#1E1913",
+          "textPrimary": "#F0E7D6", "textSecondary": "#C9BCA4", "textMuted": "#998C75", "textInverse": "#211C16",
+          "borderDefault": "#473D2E", "borderStrong": "#5E5139", "borderSubtle": "#372F23",
+          "accentDefault": "#D98A5C", "accentHover": "#E89E70", "accentSubtle": "#3D2C1F", "accentContrast": "#241B12",
+          "success": "#9BBE7E", "successSurface": "#2C3322", "warning": "#D7A94F", "warningSurface": "#352B16",
+          "danger": "#E08272", "dangerSurface": "#3A241F", "info": "#7FA9BC", "infoSurface": "#1E2C33"
+        }
+      },
+      "typography": {
+        "fontDisplay": "'Iowan Old Style', 'Apple Garamond', Georgia, 'Noto Serif KR', serif",
+        "fontBody": "'Inter', -apple-system, 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontMono": "'IBM Plex Mono', 'SFMono-Regular', monospace",
+        "baseSize": 15, "scale": 1.28, "displayWeight": 800, "bodyWeight": 440,
+        "headingTracking": -0.012, "bodyLineHeight": 1.62
+      },
+      "shape": { "radius": 6, "radiusLarge": 10, "borderWidth": 1, "shadow": "subtle" },
+      "spacing": { "density": "comfortable", "unit": 6 },
+      "layout": { "navigation": "persistent-left-sidebar", "contentWidth": "fixed", "listStyle": "table" },
+      "motion": { "level": "minimal", "durationMs": 180 }
+    },
+    {
+      "id": "candidate-b",
+      "name": "Compact Productivity",
+      "keywords": ["조밀", "테이블 우선", "빠른 스캔", "키보드 친화"],
+      "recommendReason": "한 화면에 더 많은 정보를 빠르게 스캔·처리해야 하는 헤비 유저 업무 도구에 맞음.",
+      "description": "조밀한 간격, 각진 표면, 차분한 청록 강조. 아이콘 레일 + 테이블 중심으로 데이터 밀도를 최대화.",
+      "recommendedFor": ["반복 업무가 많은 운영 도구", "데이터 밀집 화면", "숙련 사용자"],
+      "risks": ["초보 사용자에게 빽빽하게 느껴질 수 있음", "여백이 적어 인상이 차가울 수 있음"],
+      "color": {
+        "light": {
+          "bgBase": "#F4F6F6", "bgSubtle": "#ECEFEF", "bgMuted": "#E0E5E5",
+          "surfaceDefault": "#FCFDFD", "surfaceRaised": "#FDFEFE", "surfaceSunken": "#EEF1F1",
+          "textPrimary": "#19211F", "textSecondary": "#48524F", "textMuted": "#79827F", "textInverse": "#F6FAF9",
+          "borderDefault": "#D2D9D8", "borderStrong": "#B4BFBD", "borderSubtle": "#E4E9E8",
+          "accentDefault": "#0E7C77", "accentHover": "#0A6661", "accentSubtle": "#D6ECEA", "accentContrast": "#F2FBFA",
+          "success": "#1E7A4D", "successSurface": "#DBEFE3", "warning": "#9A6A10", "warningSurface": "#F2E6C9",
+          "danger": "#B23A36", "dangerSurface": "#F4DCDA", "info": "#1F6585", "infoSurface": "#D7E7EE"
+        },
+        "dark": {
+          "bgBase": "#161B1A", "bgSubtle": "#1C2221", "bgMuted": "#26302E",
+          "surfaceDefault": "#1E2524", "surfaceRaised": "#27302E", "surfaceSunken": "#141918",
+          "textPrimary": "#E7EDEB", "textSecondary": "#A9B4B1", "textMuted": "#71807C", "textInverse": "#161B1A",
+          "borderDefault": "#323D3B", "borderStrong": "#46534F", "borderSubtle": "#28312F",
+          "accentDefault": "#2BB7AE", "accentHover": "#43C9C0", "accentSubtle": "#16312E", "accentContrast": "#10201E",
+          "success": "#4FC183", "successSurface": "#16291F", "warning": "#D6A647", "warningSurface": "#322811",
+          "danger": "#E27C77", "dangerSurface": "#37201F", "info": "#5FA7C5", "infoSurface": "#172A33"
+        }
+      },
+      "typography": {
+        "fontDisplay": "'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontBody": "'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontMono": "'JetBrains Mono', 'SFMono-Regular', monospace",
+        "baseSize": 13, "scale": 1.18, "displayWeight": 800, "bodyWeight": 460,
+        "headingTracking": -0.006, "bodyLineHeight": 1.45
+      },
+      "shape": { "radius": 3, "radiusLarge": 5, "borderWidth": 1, "shadow": "subtle" },
+      "spacing": { "density": "compact", "unit": 4 },
+      "layout": { "navigation": "compact-icon-rail", "contentWidth": "fluid", "listStyle": "table" },
+      "motion": { "level": "minimal", "durationMs": 120 }
+    },
+    {
+      "id": "candidate-c",
+      "name": "Minimal Monochrome",
+      "keywords": ["흑백 절제", "강한 위계", "넉넉한 여백", "단색 강조"],
+      "recommendReason": "장식을 걷어내고 타이포 위계와 여백만으로 정돈된 인상을 줄 때. 강조색 1색 원칙.",
+      "description": "거의 무채색 팔레트에 단 하나의 절제된 강조. 강한 디스플레이 위계와 넉넉한 여백으로 고요한 집중.",
+      "recommendedFor": ["전문가용 도구", "고급스러운 인상", "콘텐츠가 주인공인 화면"],
+      "risks": ["상태/의미 구분이 단조로워 보일 수 있음", "여백이 과하면 정보 밀도가 낮아짐"],
+      "color": {
+        "light": {
+          "bgBase": "#F6F6F5", "bgSubtle": "#EFEFEE", "bgMuted": "#E4E4E2",
+          "surfaceDefault": "#FCFCFB", "surfaceRaised": "#FEFEFD", "surfaceSunken": "#F0F0EE",
+          "textPrimary": "#17171A", "textSecondary": "#46464B", "textMuted": "#7C7C82", "textInverse": "#F8F8F7",
+          "borderDefault": "#D8D8D4", "borderStrong": "#B8B8B2", "borderSubtle": "#E8E8E5",
+          "accentDefault": "#1C1C20", "accentHover": "#000208", "accentSubtle": "#E5E5E2", "accentContrast": "#F8F8F7",
+          "success": "#3F7050", "successSurface": "#E3ECE5", "warning": "#8A6A22", "warningSurface": "#EEE7D2",
+          "danger": "#9E3B36", "dangerSurface": "#EFDEDC", "info": "#3C5566", "infoSurface": "#E0E7EB"
+        },
+        "dark": {
+          "bgBase": "#161618", "bgSubtle": "#1D1D20", "bgMuted": "#28282C",
+          "surfaceDefault": "#1F1F22", "surfaceRaised": "#28282C", "surfaceSunken": "#141416",
+          "textPrimary": "#EDEDEC", "textSecondary": "#B0B0B2", "textMuted": "#76767A", "textInverse": "#161618",
+          "borderDefault": "#34343A", "borderStrong": "#4A4A52", "borderSubtle": "#28282E",
+          "accentDefault": "#F0F0EE", "accentHover": "#FFFFFD", "accentSubtle": "#2E2E34", "accentContrast": "#161618",
+          "success": "#7FB792", "successSurface": "#1C2922", "warning": "#CBA257", "warningSurface": "#2E2614",
+          "danger": "#D9817C", "dangerSurface": "#33211F", "info": "#7F9DB3", "infoSurface": "#1C2A33"
+        }
+      },
+      "typography": {
+        "fontDisplay": "'Inter Tight', 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontBody": "'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontMono": "'IBM Plex Mono', 'SFMono-Regular', monospace",
+        "baseSize": 15, "scale": 1.34, "displayWeight": 820, "bodyWeight": 420,
+        "headingTracking": -0.02, "bodyLineHeight": 1.58
+      },
+      "shape": { "radius": 0, "radiusLarge": 2, "borderWidth": 1, "shadow": "none" },
+      "spacing": { "density": "spacious", "unit": 8 },
+      "layout": { "navigation": "top-bar", "contentWidth": "fixed", "listStyle": "rows" },
+      "motion": { "level": "minimal", "durationMs": 200 }
+    },
+    {
+      "id": "candidate-d",
+      "name": "Friendly Consumer",
+      "keywords": ["부드러운", "둥근 모서리", "친근한 색", "접근 쉬움"],
+      "recommendReason": "처음 쓰는 사용자도 편안하게 느끼도록 둥글고 따뜻한 인상이 필요할 때. 카드 중심.",
+      "description": "부드러운 라운드, 산호빛 강조, 가벼운 그림자. 카드 위주 배치로 친근하고 접근하기 쉬운 인상.",
+      "recommendedFor": ["일반 소비자 대상", "온보딩이 중요한 제품", "라이트 유저"],
+      "risks": ["과하면 업무용에 장난스러워 보일 수 있음", "카드 남발 시 정보 밀도 저하"],
+      "color": {
+        "light": {
+          "bgBase": "#FAF6F4", "bgSubtle": "#F4EDEA", "bgMuted": "#EDE2DD",
+          "surfaceDefault": "#FFFDFC", "surfaceRaised": "#FFFEFD", "surfaceSunken": "#F5ECE8",
+          "textPrimary": "#2C2320", "textSecondary": "#5E4F49", "textMuted": "#917F77", "textInverse": "#FFF8F5",
+          "borderDefault": "#E7D8D1", "borderStrong": "#D4BEB4", "borderSubtle": "#F0E5E0",
+          "accentDefault": "#E0613F", "accentHover": "#C94E2E", "accentSubtle": "#FBE2D9", "accentContrast": "#FFF6F2",
+          "success": "#2E8B66", "successSurface": "#DCF0E7", "warning": "#C98A1F", "warningSurface": "#F7EAD0",
+          "danger": "#CF4A4A", "dangerSurface": "#FAE0DF", "info": "#3E7FA6", "infoSurface": "#DCEAF1"
+        },
+        "dark": {
+          "bgBase": "#231B19", "bgSubtle": "#2B211E", "bgMuted": "#382B27",
+          "surfaceDefault": "#2C211E", "surfaceRaised": "#372A26", "surfaceSunken": "#1F1714",
+          "textPrimary": "#F3E7E1", "textSecondary": "#CBB4AB", "textMuted": "#9A8379", "textInverse": "#231B19",
+          "borderDefault": "#4A3A33", "borderStrong": "#634E45", "borderSubtle": "#392C27",
+          "accentDefault": "#F58062", "accentHover": "#FF9779", "accentSubtle": "#3D2620", "accentContrast": "#251713",
+          "success": "#5BC397", "successSurface": "#16291F", "warning": "#DEAC54", "warningSurface": "#322811",
+          "danger": "#E78180", "dangerSurface": "#3A2120", "info": "#6BA6CC", "infoSurface": "#172933"
+        }
+      },
+      "typography": {
+        "fontDisplay": "'Quicksand', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontBody": "'Nunito Sans', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontMono": "'Roboto Mono', 'SFMono-Regular', monospace",
+        "baseSize": 15, "scale": 1.24, "displayWeight": 800, "bodyWeight": 480,
+        "headingTracking": -0.004, "bodyLineHeight": 1.6
+      },
+      "shape": { "radius": 14, "radiusLarge": 22, "borderWidth": 1, "shadow": "medium" },
+      "spacing": { "density": "comfortable", "unit": 6 },
+      "layout": { "navigation": "top-bar-with-subnav", "contentWidth": "adaptive", "listStyle": "cards" },
+      "motion": { "level": "moderate", "durationMs": 240 }
+    },
+    {
+      "id": "candidate-e",
+      "name": "Technical Industrial",
+      "keywords": ["기술적", "고대비", "모노 수치", "엔지니어링"],
+      "recommendReason": "정밀함·신뢰·기술적 통제감을 주고 싶을 때. 수치는 모노폰트, 고대비 경계.",
+      "description": "차가운 슬레이트 배경에 선명한 앰버 강조, 모노 수치. 또렷한 경계와 고대비로 계기판 같은 통제감.",
+      "recommendedFor": ["데이터·모니터링 도구", "개발자/엔지니어 대상", "정밀 통제 화면"],
+      "risks": ["일반 사용자에게 차갑고 어렵게 느껴질 수 있음", "고대비가 장시간엔 눈에 부담"],
+      "color": {
+        "light": {
+          "bgBase": "#EEF1F4", "bgSubtle": "#E5E9EE", "bgMuted": "#D7DDE5",
+          "surfaceDefault": "#F9FBFC", "surfaceRaised": "#FDFEFE", "surfaceSunken": "#E8ECF1",
+          "textPrimary": "#161B22", "textSecondary": "#3F4A57", "textMuted": "#6E7986", "textInverse": "#F6F9FB",
+          "borderDefault": "#C7D0DA", "borderStrong": "#9FAAB8", "borderSubtle": "#DCE2EA",
+          "accentDefault": "#B26A06", "accentHover": "#925706", "accentSubtle": "#F4E6CC", "accentContrast": "#FCF6EC",
+          "success": "#1C7350", "successSurface": "#D7ECE2", "warning": "#9C6B12", "warningSurface": "#F1E6CB",
+          "danger": "#B3362F", "dangerSurface": "#F1DAD8", "info": "#1E5E80", "infoSurface": "#D5E5ED"
+        },
+        "dark": {
+          "bgBase": "#0F141B", "bgSubtle": "#151C25", "bgMuted": "#1F2A36",
+          "surfaceDefault": "#161E27", "surfaceRaised": "#1E2832", "surfaceSunken": "#0C1117",
+          "textPrimary": "#E3EAF2", "textSecondary": "#A2AEBD", "textMuted": "#697686", "textInverse": "#0F141B",
+          "borderDefault": "#2A3744", "borderStrong": "#3E4E5E", "borderSubtle": "#202A35",
+          "accentDefault": "#E0962A", "accentHover": "#F2A93D", "accentSubtle": "#33260F", "accentContrast": "#19120A",
+          "success": "#3EBE85", "successSurface": "#13291F", "warning": "#D8A33F", "warningSurface": "#302711",
+          "danger": "#E07069", "dangerSurface": "#341B1A", "info": "#4F9FC4", "infoSurface": "#142A35"
+        }
+      },
+      "typography": {
+        "fontDisplay": "'Söhne', 'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontBody": "'Inter', 'Pretendard', 'Noto Sans KR', sans-serif",
+        "fontMono": "'JetBrains Mono', 'SFMono-Regular', monospace",
+        "baseSize": 14, "scale": 1.2, "displayWeight": 760, "bodyWeight": 440,
+        "headingTracking": -0.008, "bodyLineHeight": 1.5
+      },
+      "shape": { "radius": 2, "radiusLarge": 4, "borderWidth": 1, "shadow": "none" },
+      "spacing": { "density": "compact", "unit": 4 },
+      "layout": { "navigation": "persistent-left-sidebar", "contentWidth": "fluid", "listStyle": "table" },
+      "motion": { "level": "minimal", "durationMs": 140 }
+    }
+  ]
+}

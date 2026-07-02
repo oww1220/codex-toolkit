@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/design-profile.schema.json",
+  "title": "디자인 프로필 (design-profile.json)",
+  "description": "/design-translate 단계 산출물. 사용자의 추상 언어를 구현 가능한 디자인 기준으로 번역한 프로젝트 디자인 프로필. design/design-profile.json 에 저장된다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "project",
+    "generatedAt",
+    "visual_tone",
+    "brand_impression",
+    "information_density",
+    "typography",
+    "color",
+    "layout",
+    "surface",
+    "radius",
+    "shadow",
+    "motion_level",
+    "weighting"
+  ],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "프로젝트 이름(식별자). DESIGN-BRIEF.md 와 동일한 명칭을 사용한다."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "이 프로필이 생성된 시각(ISO 8601 date-time)."
+    },
+    "visual_tone": {
+      "type": "array",
+      "description": "전체 시각 톤을 나타내는 키워드 배열. 예: restrained, editorial, warm-neutral, low-decoration, high-legibility.",
+      "items": {
+        "type": "string",
+        "description": "시각 톤 키워드 한 개."
+      },
+      "minItems": 1
+    },
+    "brand_impression": {
+      "type": "array",
+      "description": "전달하려는 브랜드 인상을 우선순위 순으로 정렬한 배열.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["trait", "priority"],
+        "properties": {
+          "trait": {
+            "type": "string",
+            "description": "브랜드 인상 특성. 예: 신뢰, 전문성, 속도, 친근함, 차분함, 실험성, 고급스러움, 인간적, 기술적."
+          },
+          "priority": {
+            "type": "integer",
+            "description": "우선순위(작을수록 높음). 1이 가장 중요한 인상.",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "information_density": {
+      "type": "object",
+      "description": "화면 정보 밀도 수준과 부연 설명.",
+      "additionalProperties": false,
+      "required": ["level"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "description": "정보 밀도 수준.",
+          "enum": ["low", "medium", "medium-high", "high"]
+        },
+        "notes": {
+          "type": "array",
+          "description": "밀도 결정의 근거·세부 지침. 예: compact controls, clear grouping, limited card usage.",
+          "items": {
+            "type": "string",
+            "description": "밀도 관련 메모 한 줄."
+          }
+        }
+      }
+    },
+    "typography": {
+      "type": "object",
+      "description": "타이포그래피 방향과 위계·가독성 기준.",
+      "additionalProperties": false,
+      "required": ["direction", "hierarchy", "body_readability"],
+      "properties": {
+        "direction": {
+          "type": "array",
+          "description": "타이포 방향 키워드 배열. 예: humanist-sans, serif-display.",
+          "items": {
+            "type": "string",
+            "description": "타이포 방향 키워드 한 개."
+          },
+          "minItems": 1
+        },
+        "hierarchy": {
+          "type": "string",
+          "description": "타이포 위계의 강도.",
+          "enum": ["weak", "medium", "strong"]
+        },
+        "body_readability": {
+          "type": "string",
+          "description": "본문 가독성 우선도.",
+          "enum": ["low", "medium", "high"]
+        }
+      }
+    },
+    "color": {
+      "type": "object",
+      "description": "색상 방향과 회피할 색상 처리.",
+      "additionalProperties": false,
+      "required": ["direction", "avoid"],
+      "properties": {
+        "direction": {
+          "type": "array",
+          "description": "색상 방향 키워드 배열. 예: low-saturation, warm-neutral, single-accent.",
+          "items": {
+            "type": "string",
+            "description": "색상 방향 키워드 한 개."
+          }
+        },
+        "avoid": {
+          "type": "array",
+          "description": "회피할 색상 처리. 예: tailwind-default-blue, decorative-gradients, neon-saturation.",
+          "items": {
+            "type": "string",
+            "description": "회피 색상 처리 한 개."
+          }
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "description": "레이아웃 구조: 내비게이션, 콘텐츠 폭, 정렬, 간격.",
+      "additionalProperties": false,
+      "required": ["navigation", "content_width", "alignment", "spacing"],
+      "properties": {
+        "navigation": {
+          "type": "string",
+          "description": "주 내비게이션 패턴. 예: persistent-left-sidebar, top-bar, command-search."
+        },
+        "content_width": {
+          "type": "string",
+          "description": "콘텐츠 폭 정책.",
+          "enum": ["fixed", "adaptive", "fluid"]
+        },
+        "alignment": {
+          "type": "string",
+          "description": "기본 정렬 방향. 예: left-aligned, centered-content, asymmetric."
+        },
+        "spacing": {
+          "type": "string",
+          "description": "전반적 간격 밀도.",
+          "enum": ["compact", "comfortable", "spacious"]
+        }
+      }
+    },
+    "surface": {
+      "type": "string",
+      "description": "표면(면) 처리 방식.",
+      "enum": ["flat", "flat-with-border", "subtle-elevation", "elevated"]
+    },
+    "radius": {
+      "type": "string",
+      "description": "모서리 둥글기 기본 방향.",
+      "enum": ["none", "small", "medium", "large"]
+    },
+    "shadow": {
+      "type": "string",
+      "description": "그림자(고도) 기본 방향.",
+      "enum": ["none", "subtle", "medium", "strong"]
+    },
+    "motion_level": {
+      "type": "string",
+      "description": "모션·전환 수준.",
+      "enum": ["none", "minimal", "moderate", "expressive"]
+    },
+    "accessibility": {
+      "type": "array",
+      "description": "접근성 요구·고려사항. 예: WCAG-AA-contrast, keyboard-navigable, reduced-motion-aware.",
+      "items": {
+        "type": "string",
+        "description": "접근성 항목 한 개."
+      }
+    },
+    "avoid": {
+      "type": "array",
+      "description": "프로젝트 차원에서 금지할 디자인 요소. 예: decorative-gradients, glassmorphism, oversized-hero.",
+      "items": {
+        "type": "string",
+        "description": "금지 요소 한 개."
+      }
+    },
+    "weighting": {
+      "type": "object",
+      "description": "결정 가중치(합=1.0). 제품 특성·사용자 취향·기존 브랜드의 상대 비중.",
+      "additionalProperties": false,
+      "required": ["product", "taste", "brand"],
+      "properties": {
+        "product": {
+          "type": "number",
+          "description": "제품 특성 가중치(0~1).",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "taste": {
+          "type": "number",
+          "description": "사용자 취향 가중치(0~1).",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "brand": {
+          "type": "number",
+          "description": "기존 브랜드 가중치(0~1). 브랜드가 없으면 0.",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "confirmed": {
+      "type": "array",
+      "description": "사용자와 확정한 항목 목록. 추정(assumed)과 반드시 분리한다.",
+      "items": {
+        "type": "string",
+        "description": "확정 항목 한 개."
+      }
+    },
+    "assumed": {
+      "type": "array",
+      "description": "근거에서 추정한 항목 목록. 사용자 확정 전이며 confirmed 와 분리한다.",
+      "items": {
+        "type": "string",
+        "description": "추정 항목 한 개."
+      }
+    },
+    "sources": {
+      "type": "array",
+      "description": "프로필 근거 출처. 예: DESIGN-BRIEF.md, PRD, 소스코드, 사용자 발언.",
+      "items": {
+        "type": "string",
+        "description": "근거 출처 한 개."
+      }
+    }
+  }
+}

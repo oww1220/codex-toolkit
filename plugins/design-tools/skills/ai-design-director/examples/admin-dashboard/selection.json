@@ -1,0 +1,36 @@
+{
+  "selectedCandidate": null,
+  "combinedSelection": {
+    "color": "candidate-c",
+    "typography": "candidate-c",
+    "navigation": "candidate-b",
+    "density": "candidate-a",
+    "buttons": "candidate-c",
+    "forms": "candidate-a",
+    "cards": "candidate-a",
+    "tables": "candidate-a",
+    "modals": "candidate-a",
+    "icons": "candidate-c",
+    "spacing": "candidate-a",
+    "radius": "candidate-c",
+    "shadow": "candidate-c",
+    "images": "candidate-c",
+    "motion": "candidate-c"
+  },
+  "likes": [
+    { "candidate": "candidate-a", "element": "tables", "note": "compact 행 + 고정 헤더 + 인라인 편집 — '엑셀처럼 표 중심' 요구에 정확" },
+    { "candidate": "candidate-a", "element": "density", "note": "한 화면 정보량 최대 — '정보가 많이 보였으면' 요구 해결" },
+    { "candidate": "candidate-c", "element": "color", "note": "cool slate + teal 1색 — '강조색 많으면 헷갈림' 요구와 맞음" },
+    { "candidate": "candidate-c", "element": "typography", "note": "UI sans + 수치 mono — 숫자 정렬·비교 쉬움" },
+    { "candidate": "candidate-b", "element": "navigation", "note": "상단 명령형 검색 + 단축키 — 키보드 우선 빠른 처리" },
+    { "candidate": "candidate-c", "element": "radius", "note": "각진~약한 모서리 — 표 가독성, 둥근 카드 회피" }
+  ],
+  "dislikes": [
+    { "candidate": "candidate-d", "element": "cards", "note": "카드 그리드 대시보드는 사용자가 명시 거부 — 속도/밀도와 충돌" },
+    { "candidate": "candidate-d", "element": "color", "note": "멀티 강조색 + 그라데이션 헤더가 상태 구분을 방해" },
+    { "candidate": "candidate-e", "element": "typography", "note": "전체 mono 본문은 가독성 저하 — mono 는 숫자에만" },
+    { "candidate": "candidate-e", "element": "color", "note": "다크 전용 green-on-black 은 일반 운영팀 환경과 불일치" }
+  ],
+  "notes": "단일 후보 대신 조합. 밀도·테이블·일괄(a) + 색·표면·타이포(c) + 검색·키보드(b). d는 거부 패턴 대비용, e는 mono 적용 범위(숫자 한정) 교훈만. 강조색은 teal 1색으로 절제, 상태는 semantic 소수.",
+  "approvedAt": "2026-06-20T11:30:00Z"
+}

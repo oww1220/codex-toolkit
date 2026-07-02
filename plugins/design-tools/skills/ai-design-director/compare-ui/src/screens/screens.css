@@ -1,0 +1,589 @@
+/*
+ * screens.css — 후보 미리보기(화면 컴포넌트) 스타일. 오직 --dd-* 변수만 사용한다.
+ * (이 변수들은 theme.ts 가 ViewportFrame root 에 주입한다.) 셸 색(--sh-*)은 절대 쓰지 않는다.
+ *
+ * 모든 후보는 같은 마크업·같은 콘텐츠를 쓰고, 여기 변수 값만 달라져 서로 다른 디자인이 된다.
+ */
+
+.dd {
+  font-family: var(--dd-font-body);
+  font-size: var(--dd-size-base);
+  font-weight: var(--dd-weight-body);
+  line-height: var(--dd-leading-body);
+  color: var(--dd-text);
+  background: var(--dd-bg-base);
+  min-height: 100%;
+}
+
+.dd * {
+  box-sizing: border-box;
+}
+
+/* ── 앱 셸(목업 내부) ──────────────────────────────────────── */
+
+.dd-app {
+  display: grid;
+  min-height: 100%;
+}
+.dd-app--sidebar {
+  grid-template-columns: 232px 1fr;
+}
+.dd-app--rail {
+  grid-template-columns: 60px 1fr;
+}
+.dd-app--top {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.dd-side {
+  background: var(--dd-bg-subtle);
+  border-right: var(--dd-border-width) solid var(--dd-border-subtle);
+  padding: var(--dd-space-4) var(--dd-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--dd-space-2);
+}
+.dd-side--rail {
+  align-items: center;
+  padding: var(--dd-space-4) 0;
+}
+.dd-brand {
+  font-family: var(--dd-font-display);
+  font-weight: var(--dd-weight-display);
+  font-size: var(--dd-size-lg);
+  letter-spacing: var(--dd-tracking-heading);
+  color: var(--dd-text);
+  margin-bottom: var(--dd-space-2);
+  padding: 0 var(--dd-space-2);
+}
+.dd-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dd-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--dd-space-2);
+  padding: var(--dd-space-2) var(--dd-space-2);
+  border-radius: var(--dd-radius);
+  color: var(--dd-text-secondary);
+  font-size: var(--dd-size-sm);
+  text-decoration: none;
+}
+.dd-nav__item .dd-ico {
+  flex: none;
+}
+.dd-nav__item.is-active {
+  background: var(--dd-accent-subtle);
+  color: var(--dd-accent);
+  font-weight: 600;
+}
+.dd-side--rail .dd-nav {
+  align-items: center;
+}
+.dd-side--rail .dd-nav__item {
+  padding: var(--dd-space-2);
+  justify-content: center;
+}
+.dd-side--rail .dd-nav__label {
+  display: none;
+}
+
+.dd-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--dd-space-3);
+  padding: var(--dd-space-3) var(--dd-space-4);
+  background: var(--dd-bg-subtle);
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+}
+.dd-topbar .dd-brand {
+  margin: 0;
+  padding: 0;
+}
+.dd-topbar__nav {
+  display: flex;
+  gap: var(--dd-space-1);
+}
+
+.dd-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.dd-header {
+  display: flex;
+  align-items: center;
+  gap: var(--dd-space-3);
+  padding: var(--dd-space-3) var(--dd-space-4);
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  background: var(--dd-surface);
+}
+.dd-search {
+  flex: 1;
+  max-width: 360px;
+  height: var(--dd-control-h);
+  padding: 0 var(--dd-space-3);
+  border: var(--dd-border-width) solid var(--dd-border);
+  border-radius: var(--dd-radius);
+  background: var(--dd-bg-base);
+  color: var(--dd-text);
+  font-size: var(--dd-size-sm);
+}
+.dd-search::placeholder {
+  color: var(--dd-text-muted);
+}
+.dd-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--dd-radius);
+  background: var(--dd-accent-subtle);
+  color: var(--dd-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--dd-size-sm);
+  font-weight: 700;
+  border: var(--dd-border-width) solid var(--dd-border-subtle);
+}
+.dd-content {
+  padding: var(--dd-space-6) var(--dd-space-6);
+  flex: 1;
+}
+.dd-content--fluid {
+  padding: var(--dd-space-4) var(--dd-space-4);
+}
+
+/* ── 페이지 헤더 ───────────────────────────────────────────── */
+
+.dd-page-head {
+  margin-bottom: var(--dd-space-4);
+}
+.dd-h1 {
+  font-family: var(--dd-font-display);
+  font-weight: var(--dd-weight-display);
+  font-size: var(--dd-size-2xl);
+  letter-spacing: var(--dd-tracking-heading);
+  line-height: 1.12;
+  margin: 0;
+  color: var(--dd-text);
+}
+.dd-sub {
+  margin: var(--dd-space-1) 0 0;
+  color: var(--dd-text-secondary);
+  font-size: var(--dd-size-sm);
+}
+
+/* ── 지표 / 카드 ───────────────────────────────────────────── */
+
+.dd-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--dd-space-3);
+  margin-bottom: var(--dd-space-6);
+}
+.dd-metric {
+  background: var(--dd-surface);
+  border: var(--dd-border-width) solid var(--dd-border-subtle);
+  border-radius: var(--dd-radius-lg);
+  padding: var(--dd-space-3) var(--dd-space-4);
+  box-shadow: var(--dd-shadow-sm);
+}
+/* 첫 지표를 dominant 로 — 균등 그리드 회피 */
+.dd-metric:first-child {
+  grid-column: span 1;
+  border-left: 3px solid var(--dd-accent);
+}
+.dd-metric__label {
+  font-size: var(--dd-size-xs);
+  color: var(--dd-text-muted);
+  letter-spacing: 0.01em;
+}
+.dd-metric__value {
+  font-family: var(--dd-font-display);
+  font-weight: var(--dd-weight-display);
+  font-size: var(--dd-size-xl);
+  letter-spacing: var(--dd-tracking-heading);
+  margin: 2px 0;
+  color: var(--dd-text);
+  font-variant-numeric: tabular-nums;
+}
+.dd-metric__value--mono {
+  font-family: var(--dd-font-mono);
+  font-weight: 600;
+}
+.dd-metric__delta {
+  font-size: var(--dd-size-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.dd-trend-up {
+  color: var(--dd-success);
+}
+.dd-trend-down {
+  color: var(--dd-danger);
+}
+.dd-trend-flat {
+  color: var(--dd-text-muted);
+}
+
+.dd-grid-2 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--dd-space-4);
+}
+@media (max-width: 720px) {
+  .dd-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dd-panel {
+  background: var(--dd-surface);
+  border: var(--dd-border-width) solid var(--dd-border-subtle);
+  border-radius: var(--dd-radius-lg);
+  box-shadow: var(--dd-shadow-sm);
+  overflow: hidden;
+}
+.dd-panel__head {
+  padding: var(--dd-space-3) var(--dd-space-4);
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  font-family: var(--dd-font-display);
+  font-weight: var(--dd-weight-display);
+  font-size: var(--dd-size-base);
+  letter-spacing: var(--dd-tracking-heading);
+}
+.dd-panel__body {
+  padding: var(--dd-space-3) var(--dd-space-4);
+}
+
+/* ── 활동 리스트 ───────────────────────────────────────────── */
+
+.dd-activity {
+  display: flex;
+  flex-direction: column;
+}
+.dd-activity__item {
+  display: flex;
+  gap: var(--dd-space-3);
+  padding: var(--dd-space-2) 0;
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  font-size: var(--dd-size-sm);
+}
+.dd-activity__item:last-child {
+  border-bottom: none;
+}
+.dd-activity__time {
+  flex: none;
+  width: 78px;
+  color: var(--dd-text-muted);
+  font-family: var(--dd-font-mono);
+  font-size: var(--dd-size-xs);
+}
+
+/* ── 필터 / 검색 바 ───────────────────────────────────────── */
+
+.dd-toolrow {
+  display: flex;
+  align-items: center;
+  gap: var(--dd-space-2);
+  margin-bottom: var(--dd-space-3);
+  flex-wrap: wrap;
+}
+.dd-chip {
+  height: calc(var(--dd-control-h) - 6px);
+  padding: 0 var(--dd-space-3);
+  border: var(--dd-border-width) solid var(--dd-border);
+  border-radius: var(--dd-radius);
+  background: var(--dd-surface);
+  color: var(--dd-text-secondary);
+  font-size: var(--dd-size-sm);
+  display: inline-flex;
+  align-items: center;
+}
+.dd-chip.is-active {
+  background: var(--dd-accent);
+  border-color: var(--dd-accent);
+  color: var(--dd-accent-contrast);
+  font-weight: 600;
+}
+.dd-toolrow__search {
+  margin-left: auto;
+}
+
+/* ── 테이블 ───────────────────────────────────────────────── */
+
+.dd-table-wrap {
+  border: var(--dd-border-width) solid var(--dd-border-subtle);
+  border-radius: var(--dd-radius-lg);
+  overflow: hidden;
+  background: var(--dd-surface);
+  box-shadow: var(--dd-shadow-sm);
+}
+.dd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--dd-size-sm);
+}
+.dd-table th {
+  text-align: left;
+  padding: var(--dd-row-pad-y) var(--dd-row-pad-x);
+  background: var(--dd-bg-subtle);
+  color: var(--dd-text-muted);
+  font-weight: 600;
+  font-size: var(--dd-size-xs);
+  letter-spacing: 0.02em;
+  border-bottom: var(--dd-border-width) solid var(--dd-border);
+}
+.dd-table td {
+  padding: var(--dd-row-pad-y) var(--dd-row-pad-x);
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  color: var(--dd-text);
+}
+.dd-table tr:last-child td {
+  border-bottom: none;
+}
+.dd-table__name {
+  font-weight: 600;
+}
+.dd-table__num {
+  font-family: var(--dd-font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* 카드/행 목록 변형 */
+.dd-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--dd-space-3);
+}
+.dd-card-row {
+  background: var(--dd-surface);
+  border: var(--dd-border-width) solid var(--dd-border-subtle);
+  border-radius: var(--dd-radius-lg);
+  padding: var(--dd-space-3) var(--dd-space-4);
+  box-shadow: var(--dd-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dd-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--dd-border-width) solid var(--dd-border-subtle);
+}
+.dd-row {
+  display: flex;
+  align-items: center;
+  gap: var(--dd-space-3);
+  padding: var(--dd-row-pad-y) 0;
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  font-size: var(--dd-size-sm);
+}
+.dd-row__name {
+  font-weight: 600;
+  flex: 1;
+}
+.dd-row__num {
+  font-family: var(--dd-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 상태 배지(색+텍스트 함께 — 색에만 의존 금지) ──────────── */
+
+.dd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: var(--dd-size-xs);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.dd-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* ── 버튼 ─────────────────────────────────────────────────── */
+
+.dd-btn {
+  height: var(--dd-control-h);
+  padding: 0 var(--dd-space-4);
+  border-radius: var(--dd-radius);
+  border: var(--dd-border-width) solid var(--dd-border);
+  background: var(--dd-surface);
+  color: var(--dd-text);
+  font-size: var(--dd-size-sm);
+  font-weight: 600;
+  font-family: var(--dd-font-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background var(--dd-duration) ease;
+}
+.dd-btn--primary {
+  background: var(--dd-accent);
+  border-color: var(--dd-accent);
+  color: var(--dd-accent-contrast);
+}
+.dd-btn--primary:hover {
+  background: var(--dd-accent-hover);
+  border-color: var(--dd-accent-hover);
+}
+
+/* ── 상세 ─────────────────────────────────────────────────── */
+
+.dd-detail-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--dd-space-4);
+}
+@media (max-width: 720px) {
+  .dd-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.dd-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--dd-space-3) var(--dd-space-4);
+}
+.dd-field__label {
+  font-size: var(--dd-size-xs);
+  color: var(--dd-text-muted);
+}
+.dd-field__value {
+  font-size: var(--dd-size-sm);
+  color: var(--dd-text);
+  font-weight: 500;
+}
+.dd-body-text {
+  color: var(--dd-text-secondary);
+  font-size: var(--dd-size-sm);
+}
+.dd-mini-timeline {
+  display: flex;
+  flex-direction: column;
+}
+.dd-mini-timeline__item {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: var(--dd-space-2);
+  padding: var(--dd-space-2) 0;
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+  font-size: var(--dd-size-sm);
+  align-items: baseline;
+}
+.dd-mini-timeline__item:last-child {
+  border-bottom: none;
+}
+.dd-mini-timeline__time {
+  color: var(--dd-text-muted);
+  font-family: var(--dd-font-mono);
+  font-size: var(--dd-size-xs);
+}
+.dd-mini-timeline__num {
+  font-family: var(--dd-font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--dd-text);
+}
+.dd-actions {
+  display: flex;
+  gap: var(--dd-space-2);
+  margin-top: var(--dd-space-4);
+}
+
+/* ── 폼 ───────────────────────────────────────────────────── */
+
+.dd-form {
+  max-width: 640px;
+}
+.dd-form-section {
+  margin-bottom: var(--dd-space-6);
+}
+.dd-form-section__heading {
+  font-family: var(--dd-font-display);
+  font-weight: var(--dd-weight-display);
+  font-size: var(--dd-size-base);
+  letter-spacing: var(--dd-tracking-heading);
+  margin: 0 0 var(--dd-space-3);
+  padding-bottom: var(--dd-space-1);
+  border-bottom: var(--dd-border-width) solid var(--dd-border-subtle);
+}
+.dd-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--dd-space-3) var(--dd-space-4);
+}
+.dd-field-full {
+  grid-column: 1 / -1;
+}
+.dd-label {
+  display: block;
+  font-size: var(--dd-size-sm);
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--dd-text);
+}
+.dd-req {
+  color: var(--dd-danger);
+  margin-left: 3px;
+}
+.dd-input,
+.dd-select,
+.dd-textarea {
+  width: 100%;
+  height: var(--dd-control-h);
+  padding: 0 var(--dd-space-3);
+  border: var(--dd-border-width) solid var(--dd-border);
+  border-radius: var(--dd-radius);
+  background: var(--dd-bg-base);
+  color: var(--dd-text);
+  font-size: var(--dd-size-sm);
+  font-family: var(--dd-font-body);
+}
+.dd-textarea {
+  height: auto;
+  min-height: 88px;
+  padding: var(--dd-space-2) var(--dd-space-3);
+  resize: vertical;
+}
+.dd-input::placeholder,
+.dd-textarea::placeholder {
+  color: var(--dd-text-muted);
+}
+.dd-input:focus-visible,
+.dd-select:focus-visible,
+.dd-textarea:focus-visible,
+.dd-search:focus-visible {
+  outline: 2px solid var(--dd-accent);
+  outline-offset: 1px;
+  border-color: var(--dd-accent);
+}
+.dd-hint {
+  font-size: var(--dd-size-xs);
+  color: var(--dd-text-muted);
+  margin-top: 3px;
+}
+.dd-form-foot {
+  display: flex;
+  gap: var(--dd-space-2);
+  margin-top: var(--dd-space-2);
+}
+
+/* 작은 인라인 아이콘(추상 도형만 — figural 금지) */
+.dd-ico {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  color: currentColor;
+}

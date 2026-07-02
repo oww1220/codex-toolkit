@@ -1,0 +1,34 @@
+{
+  "selectedCandidate": null,
+  "combinedSelection": {
+    "color": "candidate-c",
+    "typography": "candidate-a",
+    "navigation": "candidate-b",
+    "density": "candidate-b",
+    "buttons": "candidate-c",
+    "forms": "candidate-b",
+    "cards": "candidate-a",
+    "tables": "candidate-b",
+    "modals": "candidate-c",
+    "icons": "candidate-d",
+    "spacing": "candidate-b",
+    "radius": "candidate-c",
+    "shadow": "candidate-c",
+    "images": "candidate-a",
+    "motion": "candidate-c"
+  },
+  "likes": [
+    { "candidate": "candidate-a", "element": "typography", "note": "본문 humanist + serif 디스플레이 짝이 위계는 강한데 눈이 안 피곤하다 — '이 글씨가 좋다'" },
+    { "candidate": "candidate-b", "element": "tables", "note": "조밀한 테이블·리스트인데 구분선으로 정돈돼 '정보 많아도 안 답답'" },
+    { "candidate": "candidate-b", "element": "navigation", "note": "좌측 고정 사이드바 + 상단 필터바 — 매일 여러 화면 이동이 빠름" },
+    { "candidate": "candidate-c", "element": "color", "note": "warm-neutral 저채도 — '딱 이 정도 따뜻함', 알록달록하지 않음" },
+    { "candidate": "candidate-d", "element": "icons", "note": "1.5px 통일 얇은 라인 아이콘만 절제돼서 군더더기 없음" }
+  ],
+  "dislikes": [
+    { "candidate": "candidate-b", "element": "color", "note": "기본 회색 일색이 차가워서 '딱딱한 회계 SW' 느낌 — 색은 C 로 대체" },
+    { "candidate": "candidate-d", "element": "color", "note": "전체 모노크롬은 너무 차가움 — 아이콘 세트만 부분 채택" },
+    { "candidate": "candidate-a", "element": "spacing", "note": "에디토리얼 여백이 넓어 밀도 요구와 충돌 — 간격은 B 의 comfortable~compact 로" }
+  ],
+  "notes": "한 후보 통째가 아니라 조합: A 타이포 + B 정보구조(목록·테이블·내비·폼·간격) + C 색상·표면·모서리·모션 + D 아이콘. 시각 스타일(A·C·D)과 UX 구조(B)를 서로 다른 레퍼런스에서 가져왔다. 핵심 충돌(차분↔밀도)은 '대시보드는 여유, 목록·입력은 조밀'로 화면별 밀도 분리하여 해소. B 의 차가운 색은 명시적으로 배제하고 C 의 warm-neutral 로 덮는다.",
+  "approvedAt": "2026-06-20T12:10:00+09:00"
+}

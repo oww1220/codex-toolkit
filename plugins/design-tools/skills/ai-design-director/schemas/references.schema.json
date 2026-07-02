@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibelabs.dev/ai-design-director/schemas/references.schema.json",
+  "title": "레퍼런스 후보 목록 (references.json)",
+  "description": "/design-research 단계 산출물. 탐색·평가한 레퍼런스 후보(Reference Candidate) 배열. design/research/references.json 에 저장된다. 후보는 3~7개(기본 5)이며 서로 시각적으로 충분히 구별돼야 한다.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["project", "generatedAt", "candidates"],
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "프로젝트 이름(식별자). design-profile.json 의 project 와 일치한다."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "후보 목록이 생성된 시각(ISO 8601 date-time)."
+    },
+    "candidates": {
+      "type": "array",
+      "description": "레퍼런스 후보 배열(Reference Candidate[]). 3~7개, 서로 충분히 구별됨.",
+      "minItems": 3,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "source",
+          "category",
+          "keywords",
+          "recommendedFor",
+          "strengths",
+          "risks",
+          "apply",
+          "doNotApply",
+          "expectedImpression",
+          "scores"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "후보 식별자. candidate-a ~ candidate-g 중 하나.",
+            "enum": [
+              "candidate-a",
+              "candidate-b",
+              "candidate-c",
+              "candidate-d",
+              "candidate-e",
+              "candidate-f",
+              "candidate-g"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "후보를 부르는 이름. 예: Warm Editorial, Compact Productivity, Minimal Monochrome."
+          },
+          "source": {
+            "type": "object",
+            "description": "레퍼런스 출처(서비스 이름과 URL).",
+            "additionalProperties": false,
+            "required": ["name", "url"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "출처 서비스/사이트 이름."
+              },
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "description": "출처 URL."
+              }
+            }
+          },
+          "category": {
+            "type": "string",
+            "description": "후보의 레퍼런스 축. 시각 스타일/UX 패턴/혼합.",
+            "enum": ["visual-style", "ux-pattern", "hybrid"]
+          },
+          "keywords": {
+            "type": "array",
+            "description": "후보를 설명하는 키워드 배열.",
+            "items": {
+              "type": "string",
+              "description": "키워드 한 개."
+            }
+          },
+          "recommendedFor": {
+            "type": "array",
+            "description": "이 후보가 어떤 상황·제품 유형에 적합한지.",
+            "items": {
+              "type": "string",
+              "description": "추천 맥락 한 개."
+            }
+          },
+          "strengths": {
+            "type": "array",
+            "description": "후보의 강점.",
+            "items": {
+              "type": "string",
+              "description": "강점 한 개."
+            }
+          },
+          "risks": {
+            "type": "array",
+            "description": "후보 채택 시의 위험·주의점.",
+            "items": {
+              "type": "string",
+              "description": "위험 한 개."
+            }
+          },
+          "apply": {
+            "type": "array",
+            "description": "제품에 실제로 적용할 요소(원칙 단위). 통째 복제가 아니라 가져올 원칙.",
+            "items": {
+              "type": "string",
+              "description": "적용할 요소 한 개."
+            }
+          },
+          "doNotApply": {
+            "type": "array",
+            "description": "이 후보에서 적용하지 않을 요소(복제 방지·맥락 부적합).",
+            "items": {
+              "type": "string",
+              "description": "적용하지 않을 요소 한 개."
+            }
+          },
+          "expectedImpression": {
+            "type": "string",
+            "description": "이 후보를 채택했을 때 사용자가 받을 것으로 기대되는 인상."
+          },
+          "screenshots": {
+            "type": "array",
+            "description": "캡처 스크린샷의 research/screenshots/ 기준 상대경로 목록.",
+            "items": {
+              "type": "string",
+              "description": "스크린샷 상대경로 한 개. 예: screenshots/candidate-a-list.png."
+            }
+          },
+          "scores": {
+            "type": "object",
+            "description": "후보 평가 점수(각 0~100).",
+            "additionalProperties": false,
+            "required": [
+              "productFit",
+              "brandFit",
+              "uxFit",
+              "distinctiveness",
+              "implementation"
+            ],
+            "properties": {
+              "productFit": {
+                "type": "integer",
+                "description": "제품 적합성 점수(0~100).",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "brandFit": {
+                "type": "integer",
+                "description": "브랜드 인상 적합성 점수(0~100).",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "uxFit": {
+                "type": "integer",
+                "description": "UX 구조 적합성 점수(0~100).",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "distinctiveness": {
+                "type": "integer",
+                "description": "기존 후보 대비 차별성 점수(0~100).",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "implementation": {
+                "type": "integer",
+                "description": "구현 가능성 점수(0~100).",
+                "minimum": 0,
+                "maximum": 100
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

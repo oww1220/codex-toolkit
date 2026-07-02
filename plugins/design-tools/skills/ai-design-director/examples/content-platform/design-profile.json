@@ -1,0 +1,40 @@
+{
+  "project": "content-platform",
+  "generatedAt": "2026-06-20T11:00:00Z",
+  "visual_tone": ["editorial", "warm-neutral", "low-decoration", "high-legibility", "calm"],
+  "brand_impression": [
+    { "trait": "차분함", "priority": 1 },
+    { "trait": "신뢰", "priority": 2 },
+    { "trait": "인간적", "priority": 3 },
+    { "trait": "고급스러움", "priority": 4 }
+  ],
+  "information_density": {
+    "level": "low",
+    "notes": ["단일 읽기 컬럼", "본문 우선 넉넉한 행간", "목록은 적은 항목 + 큰 타이포", "장식 요소 최소"]
+  },
+  "typography": {
+    "direction": ["serif-display", "humanist-sans"],
+    "hierarchy": "strong",
+    "body_readability": "high"
+  },
+  "color": {
+    "direction": ["warm amber-cream paper background", "warm-sepia near-black ink text", "single deep petrol-blue masthead accent"],
+    "avoid": ["high-saturation gradients", "tailwind blue/violet defaults", "multiple accent colors", "warm-clay/terracotta accent (충돌: 업무도구 톤)"]
+  },
+  "layout": {
+    "navigation": "persistent-left-category + top-search",
+    "content_width": "fixed",
+    "alignment": "left-aligned reading column",
+    "spacing": "spacious"
+  },
+  "surface": "flat-with-border",
+  "radius": "small",
+  "shadow": "none",
+  "motion_level": "minimal",
+  "accessibility": ["본문 대비 AA 이상", "키보드 포커스 가시", "이미지 대체텍스트", "prefers-reduced-motion 존중"],
+  "avoid": ["floating-card-grid", "oversized-hero", "decorative-gradients", "glassmorphism", "uniform-thumbnail-tiles", "pure-black-on-pure-white"],
+  "weighting": { "product": 0.6, "taste": 0.4, "brand": 0.0 },
+  "confirmed": ["읽기 중심 단일 컬럼", "잡지/editorial 톤", "본문 가독성 최우선", "카드 그리드 거부", "모바일 독서 비중 높음"],
+  "assumed": ["serif display 채택(후보로 검증)", "강조색 1색 절제", "좌측 영구 분류 내비게이션"],
+  "sources": ["DESIGN-BRIEF.md 인터뷰", "사용자 발언(잡지/글이 주인공/눈 피로 없음)", "JTBD 동선(발견→읽기→저장·공유)"]
+}

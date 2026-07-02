@@ -1,0 +1,4 @@
+interface:
+  display_name: "Conventional Git Commit"
+  short_description: "Conventional Commits로 커밋 작성"
+  default_prompt: "Use $git-conventional-commit to stage the relevant changes and create a Conventional Commits formatted git commit."

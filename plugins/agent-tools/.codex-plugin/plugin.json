@@ -1,0 +1,23 @@
+{
+  "name": "agent-tools",
+  "version": "0.1.0",
+  "description": "Subagent orchestration workflow skills for Codex.",
+  "author": {
+    "name": "idong-geol"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["codex", "subagent", "orchestration", "review", "workflow"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Tools",
+    "shortDescription": "Subagent role routing and review workflows.",
+    "longDescription": "Agent Tools packages the subagent-orchestration workflow as an installable Codex plugin.",
+    "developerName": "idong-geol",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "defaultPrompt": [
+      "서브에이전트로 나눠서 검토해줘.",
+      "작업에 맞는 에이전트 역할을 라우팅해줘."
+    ]
+  }
+}

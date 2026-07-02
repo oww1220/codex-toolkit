@@ -1,0 +1,23 @@
+{
+  "name": "skill-tools",
+  "version": "0.1.0",
+  "description": "Skill authoring and validation workflow skills for Codex.",
+  "author": {
+    "name": "idong-geol"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["codex", "skills", "authoring", "validation", "workflow"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Skill Tools",
+    "shortDescription": "Skill creation, audit, and improvement workflows.",
+    "longDescription": "Skill Tools packages the skill-enhancer-codex workflow as an installable Codex plugin.",
+    "developerName": "idong-geol",
+    "category": "Productivity",
+    "capabilities": ["Skills"],
+    "defaultPrompt": [
+      "스킬을 생성하고 검증해줘.",
+      "기존 스킬을 감사하고 개선해줘."
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Subagent Orchestration"
+  short_description: "계획, 분할, 검증을 전역 서브에이전트로 운영"
+  default_prompt: "Use $subagent-orchestration to split the task with explicit spawn_agent calls for planning, specialist review, implementation, and final verification."

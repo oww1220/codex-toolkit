@@ -1,0 +1,21 @@
+{
+  "_comment": "request_user_input 분기 템플릿. 사람의 결정은 전부 이 툴로. 각 옵션 라벨 → 실제 디스패치를 1:1로 매핑하고, 텍스트로만 출력하지 말고 실제로 호출한다.",
+  "questions": [
+    {
+      "question": "무엇을 할까요?",
+      "header": "모드",
+      "multiSelect": false,
+      "options": [
+        { "label": "새 스킬 만들기", "description": "인터뷰 → scaffold.py로 골격 생성 → 작성 안내" },
+        { "label": "기존 스킬 점검", "description": "audit.py + refs_check.py 실행 → 루브릭으로 보고" },
+        { "label": "스킬 개선", "description": "감사 결과로 {section, change, reason} 제안 → 백업 → Edit" }
+      ]
+    }
+  ],
+  "_dispatch_map": {
+    "새 스킬 만들기": "CREATE 모드: python scripts/scaffold.py <config.json> <dir>",
+    "기존 스킬 점검": "AUDIT 모드: python scripts/audit.py <skill-dir>",
+    "스킬 개선": "IMPROVE 모드: skill-improve {section,change,reason} + backup + Edit",
+    "_example_dispatch": "선택지 라벨을 실제 다음 작업으로 매핑한다"
+  }
+}

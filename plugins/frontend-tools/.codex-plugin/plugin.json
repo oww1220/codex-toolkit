@@ -1,21 +1,22 @@
 {
   "name": "frontend-tools",
   "version": "0.1.0",
-  "description": "Frontend audit and reuse scouting skills for Codex.",
+  "description": "Frontend UI publishing, accessibility, Figma audit, and reuse skills for Codex.",
   "author": {
     "name": "idong-geol"
   },
   "license": "UNLICENSED",
-  "keywords": ["codex", "frontend", "accessibility", "figma", "reuse", "skills"],
+  "keywords": ["codex", "frontend", "ui", "publishing", "accessibility", "figma", "reuse", "skills"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Frontend Tools",
-    "shortDescription": "Frontend accessibility, Figma implementation, and reuse audits.",
-    "longDescription": "Frontend Tools packages accessibility focus audits, Figma implementation audits, and frontend reuse scouting as installable Codex skills.",
+    "shortDescription": "Frontend UI publishing, accessibility, Figma, and reuse tools.",
+    "longDescription": "Frontend Tools packages UI publishing, accessibility focus audits, Figma implementation audits, and frontend reuse scouting as installable Codex skills.",
     "developerName": "idong-geol",
     "category": "Productivity",
     "capabilities": ["Skills"],
     "defaultPrompt": [
+      "접근성을 지키며 UI 화면을 퍼블리싱해줘.",
       "접근성 포커스 이동을 확인해줘.",
       "Figma 구현 차이를 점검해줘.",
       "프론트 공통화 후보를 확인해줘."

@@ -41,6 +41,10 @@ FAIL_RULES: tuple[Rule, ...] = (
     ),
     ("analytics", r"\banalytics\.(?:track|identify)\s*\(|\btrackEvent\s*\("),
     ("feature-flag", r"\b(?:isFeatureEnabled|useFeatureFlag)\s*\(|\bfeatureFlags?\s*\."),
+    (
+        "client-html-render",
+        r"\.(?:innerHTML|outerHTML)\s*\+?=|\.insertAdjacentHTML\s*\(|\bdocument\.write\s*\(|\.html\s*\(",
+    ),
 )
 
 WARN_RULES: tuple[Rule, ...] = (
@@ -155,6 +159,10 @@ def self_test() -> None:
         "<form onSubmit={handleSubmit}>",
         "router.push('/checkout')",
         "import { create } from 'zustand'",
+        "element.innerHTML = markup",
+        "element.insertAdjacentHTML('beforeend', markup)",
+        "document.write(markup)",
+        "$('.list').html(markup)",
     ]
     warned: list[str] = ["useEffect(() => dialog.focus(), [])"]
     assert all(not classify(line) for line in allowed)

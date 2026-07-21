@@ -34,6 +34,7 @@ description: >
 | 접근성 | focus trap/restore, 키보드 조작, ARIA 상태 동기화 | 권한이나 업무 조건에 따른 접근 제어 |
 | 이벤트 | click/keydown, event delegation, class 토글 | submit 처리, payload 생성, 업무 이벤트 분기 |
 | 데이터 | 기존 텍스트와 props를 그대로 표시 | 조회, 가공, 정렬, 계산, 저장 |
+| EJS 목데이터 | EJS 변수·반복·조건문으로 선언하고 렌더링 | 클라이언트 JavaScript에서 목데이터 생성·가공·DOM 렌더링 |
 | 네트워크 | 없음 | fetch, axios, WebSocket, query/mutation, retry/polling |
 | 상태 관리 | 표현용 컴포넌트 로컬 상태 | Context, Zustand, Pinia, Redux, 서버 캐시 |
 | 폼 | label 연결, 비밀번호 표시, 기존 `maxlength` 기반 글자 수 표시 | 업무 검증, 정규화, 직렬화, 제출 |
@@ -50,9 +51,16 @@ description: >
 - UI와 도메인 로직이 한 함수에 섞여 있으면 전체 함수를 재작성하지 않는다. UI 부분을 안전하게 분리할 수 있을 때만 최소 수정한다.
 - 도메인 계약이 없으면 mock, 임시 callback, 임의의 TODO 로직으로 빈자리를 메우지 않는다.
 
+## EJS 렌더링 경계
+
+- 반복 콘텐츠와 목데이터는 EJS 변수·반복·조건문으로 렌더링하고 클라이언트 JavaScript로 옮기지 않는다.
+- 초기 `hidden`, `aria-expanded`, 연결 ID와 마크업은 EJS가 렌더링한다. JavaScript는 사용자 조작 후 class, focus, ARIA 상태만 동기화한다.
+- 일반 텍스트와 목데이터는 `<%=`로 escape해 출력한다.
+- `<%-`는 기존 partial include 또는 신뢰된 HTML 계약에만 사용한다.
+
 ## 기술별 제한
 
-- HTML/EJS: native semantic element와 문서 구조를 우선하고 불필요한 wrapper를 만들지 않는다.
+- HTML/EJS: 위 EJS 렌더링 경계를 따르고 native semantic element와 문서 구조를 우선하며 불필요한 wrapper를 만들지 않는다.
 - CSS/SCSS: 기존 token, naming, breakpoint를 재사용하고 단순 표현은 CSS로 해결한다.
 - Vanilla JavaScript/jQuery: DOM 범위 안의 이벤트와 표시 상태만 다루고 전역 업무 상태를 만들지 않는다.
 - React: `useState`는 일시적인 표시 상태에만 사용한다. 데이터 fetching, 업무용 effect, Context/store를 추가하지 않는다.

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pyright: strict
 """refs_check — bidirectional resolvability between SKILL.md and references/.
 
 Catches the most common corpus defect: a references/ file that is bundled but
@@ -12,12 +13,21 @@ Critique-hardened:
   - recurses into subdirs.
 
 Usage:  python refs_check.py <skill-dir>
-Exits 1 if any untriggered file or dangling pointer is found.
+Exits 1 for dangling pointers. Untriggered files are reported without failing.
 """
 import os
 import re
 import sys
 import json
+from collections.abc import Collection
+from typing import TypedDict
+
+
+class CheckResult(TypedDict):
+    untriggered_files: list[str]
+    dangling_pointers: list[str]
+    external_or_optional: list[str]
+    covered: list[str]
 
 GLOB_CHARS = set("<>{}*?")
 INDEX_NAMES = {"_index.md", "index.md", "index"}
@@ -29,7 +39,7 @@ PLACEHOLDER_STEMS = {"xxx", "yyy", "zzz", "foo", "bar", "baz", "example", "sampl
 POINTER_RE = re.compile(r"references/[A-Za-z0-9_./<>{}*?\-]+")
 
 
-def _is_placeholder(tok):
+def _is_placeholder(tok: str) -> bool:
     stem = os.path.splitext(os.path.basename(tok))[0].lower()
     return stem in PLACEHOLDER_STEMS
 
@@ -45,7 +55,9 @@ _OPTIONAL_CUES = ["없으면", "있으면", "선택", "optional", "fallback",
                   "if missing", "if absent", "if present", "if it exists", "if available"]
 
 
-def _external_or_optional(before, after, siblings=()):
+def _external_or_optional(
+    before: str, after: str, siblings: Collection[str] = ()
+) -> bool:
     if before.endswith("/"):                 # qualified path: X/references/… or ../references/…
         return True
     if _POSSESSIVE_RE.search(before):        # "<skill>'s `references/…"
@@ -59,17 +71,21 @@ def _external_or_optional(before, after, siblings=()):
     return any(cue in a for cue in _OPTIONAL_CUES)
 
 
-def _strip_trailing(tok):
+def _strip_trailing(tok: str) -> str:
     # drop trailing punctuation that isn't part of the path
     return tok.rstrip(").,;:`\"'")
 
 
-def check(skill_dir):
+def check(skill_dir: str) -> CheckResult:
     skill_dir = os.path.abspath(skill_dir)
     skill_md = os.path.join(skill_dir, "SKILL.md")
     refs_dir = os.path.join(skill_dir, "references")
-    result = {"untriggered_files": [], "dangling_pointers": [],
-              "external_or_optional": [], "covered": []}
+    result: CheckResult = {
+        "untriggered_files": [],
+        "dangling_pointers": [],
+        "external_or_optional": [],
+        "covered": [],
+    }
 
     if not os.path.isfile(skill_md):
         result["dangling_pointers"].append("SKILL.md: MISSING")
@@ -90,15 +106,17 @@ def check(skill_dir):
     # sibling skill names (the parent skills dir) — used to recognize cross-skill refs
     parent = os.path.dirname(skill_dir)
     try:
-        siblings = {d for d in os.listdir(parent)
-                    if d != os.path.basename(skill_dir)
-                    and os.path.isdir(os.path.join(parent, d))}
+        siblings: set[str] = {
+            d
+            for d in os.listdir(parent)
+            if d != os.path.basename(skill_dir) and os.path.isdir(os.path.join(parent, d))
+        }
     except OSError:
         siblings = set()
 
-    exact_pointers = set()
-    exact_pos = {}   # tok -> first match start, for context classification
-    glob_dirs = []   # directory subtrees covered by a glob/param pointer
+    exact_pointers: set[str] = set()
+    exact_pos: dict[str, int] = {}  # tok -> first match start, for context classification
+    glob_dirs: list[str] = []  # directory subtrees covered by a glob/param pointer
     for m in POINTER_RE.finditer(body):
         tok = _strip_trailing(m.group()).rstrip("/")
         if not tok or _is_placeholder(tok):
@@ -146,7 +164,7 @@ def check(skill_dir):
     return result
 
 
-def main():
+def main() -> None:
     if len(sys.argv) < 2:
         print("usage: refs_check.py <skill-dir>", file=sys.stderr)
         sys.exit(2)

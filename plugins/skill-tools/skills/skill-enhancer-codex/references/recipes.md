@@ -46,4 +46,4 @@ Read only what applies:
 
 ## Output Discipline
 
-Keep scratch reports in the current workspace or `/private/tmp`. Reserve `/Users/idong-geol/.codex/skills/<name>/` for the skill package itself.
+Keep scratch reports in the current workspace or `/private/tmp`. Reserve the selected `<skill-dir>` for the skill package itself.

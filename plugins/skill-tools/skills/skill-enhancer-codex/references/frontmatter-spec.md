@@ -21,5 +21,5 @@ description: What this skill does and when Codex should use it.
 
 ## Install Locations
 
-- Global user skills: `/Users/idong-geol/.codex/skills/<name>/`
+- Global user skills: the active Codex global skills directory
 - Project skills: use the project-local skill location only when the skill should not apply globally.

@@ -67,7 +67,7 @@ def pptx_text_size_and_slides(path: Path) -> tuple[str, tuple[int, int], list[st
 
         slide_names = sorted(
             (name for name in names if re.fullmatch(r"ppt/slides/slide\d+\.xml", name)),
-            key=lambda name: int(re.search(r"\d+", name).group()),
+            key=lambda name: int(name.removeprefix("ppt/slides/slide").removesuffix(".xml")),
         )
         slide_texts: list[str] = []
 
@@ -117,8 +117,8 @@ def check_pptx(path: Path) -> list[str]:
     if forbidden:
         failures.append("forbidden_internal_text: " + ", ".join(forbidden))
 
-    weak_slides = []
-    sparse_slides = []
+    weak_slides: list[str] = []
+    sparse_slides: list[str] = []
     for index, slide_text in enumerate(slide_texts, start=1):
         if len(slide_text.strip()) < MIN_SLIDE_TEXT_CHARS:
             sparse_slides.append(str(index))

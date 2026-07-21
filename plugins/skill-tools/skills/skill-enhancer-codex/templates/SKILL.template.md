@@ -56,6 +56,6 @@ description: {{DESCRIPTION}}{{ALLOWED_TOOLS}}
 
 ## 출력 위치 (필수)
 - ✅ 필수: `output/{slug}/` 등 cwd 상대 + `mkdir -p` 가드
-- ❌ 금지: 채팅 코드 덤프 / `/Users/idong-geol/.codex/skills/...` / 홈 절대경로
+- ❌ 금지: 채팅 코드 덤프 / 스킬 설치 디렉터리 안 임시 산출물 / 홈 절대경로
 
 > **단일 진실원**: 템플릿/토큰/스키마 값은 정의된 소스에서 그대로 바인딩하고, 자리표시자만 채운다 — 구조·CSS·스키마는 변경 금지.

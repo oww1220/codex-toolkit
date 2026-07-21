@@ -7,6 +7,8 @@ description: Codex skills meta-workflow for creating new skills, auditing existi
 
 Use this for Codex skill structure, discovery text, bundled references, scripts, and templates. Keep changes small; prefer `SKILL.md` plus only the resources that are actually used.
 
+Resolve `<skill-root>` to the directory containing this loaded `SKILL.md`. Never assume a global install path.
+
 ## Modes
 
 Choose the first mode that fits:
@@ -26,15 +28,15 @@ If a user decision is required and the tool is available, use `request_user_inpu
 2. Write a small config JSON outside the skill install directory, then run:
 
 ```bash
-python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/scaffold.py <config.json> /Users/idong-geol/.codex/skills/<skill-name>
+python3 <skill-root>/scripts/scaffold.py <config.json> <skill-dir>
 ```
 
 3. Fill any remaining placeholders directly in the generated `SKILL.md`.
 4. Validate with:
 
 ```bash
-python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/audit.py /Users/idong-geol/.codex/skills/<skill-name> --json
-python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/refs_check.py /Users/idong-geol/.codex/skills/<skill-name>
+python3 <skill-root>/scripts/audit.py <skill-dir> --json
+python3 <skill-root>/scripts/refs_check.py <skill-dir>
 ```
 
 ## AUDIT
@@ -42,8 +44,8 @@ python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/refs_check.
 Run both scripts and report HARD/WARN/INFO honestly:
 
 ```bash
-python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/audit.py <skill-dir> --json
-python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/refs_check.py <skill-dir>
+python3 <skill-root>/scripts/audit.py <skill-dir> --json
+python3 <skill-root>/scripts/refs_check.py <skill-dir>
 ```
 
 Use `references/audit-rubric.md` for interpreting checks and `references/anti-patterns.md` for fixes.

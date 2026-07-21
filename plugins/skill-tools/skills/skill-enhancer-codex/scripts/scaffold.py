@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pyright: strict
 """scaffold — render a skill from an interview-derived config.
 
 Stdlib-only. The CREATE interview collects a config; this renderer FILLS the
@@ -28,19 +29,79 @@ Config keys (all optional unless noted):
   references         list[{file, when, summary}]  → routing table + stub files
   has_scripts/has_templates  bool  (deferred, not created empty)
 """
+
+import json
 import os
 import re
 import sys
-import json
+from typing import Literal, NoReturn, Optional, TypedDict, cast
+
+
+class Mode(TypedDict, total=False):
+    label: str
+    start: str
+    when: str
+
+
+class Pipeline(TypedDict, total=False):
+    position: str
+    input: str
+    output: str
+    calls: str
+
+
+class WorkflowStep(TypedDict, total=False):
+    action: str
+    io: str
+
+
+class Gate(TypedDict, total=False):
+    type: Literal["script", "manual"]
+    cmd: str
+    on_fail: str
+    criteria: str
+
+
+class Reference(TypedDict):
+    file: str
+    when: str
+    summary: str
+
+
+class Config(TypedDict, total=False):
+    name: str
+    routed_by: Literal["user", "orchestrator"]
+    purpose: str
+    description: str
+    triggers: list[str]
+    anti_triggers: list[str]
+    thin: bool
+    thin_steps: list[str]
+    one_liner: str
+    must_do: list[str]
+    must_not: list[str]
+    modes: list[Mode]
+    orchestrator: bool
+    pipeline: Pipeline
+    workflow: list[WorkflowStep]
+    gate: Gate
+    output_required: list[str]
+    references: list[Reference]
+    has_scripts: bool
+    has_templates: bool
 
 KEBAB_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
-def die(msg):
+
+
+def die(msg: str) -> NoReturn:
     print(f"scaffold: ERROR: {msg}", file=sys.stderr)
     sys.exit(1)
 
 
-def _wrap(s, width):
-    words, line, out = s.split(), "", []
+def _wrap(s: str, width: int) -> list[str]:
+    words = s.split()
+    line = ""
+    out: list[str] = []
     for w in words:
         if len(line) + len(w) + 1 > width:
             out.append(line)
@@ -52,21 +113,24 @@ def _wrap(s, width):
     return out
 
 
-def build_description(cfg):
-    if cfg.get("description"):
-        return cfg["description"].strip()
+def build_description(cfg: Config) -> str:
+    description = cfg.get("description")
+    if description:
+        return description.strip()
     purpose = (cfg.get("purpose") or "").strip()
     if not purpose:
         die("config needs `description` or `purpose`")
     parts = [purpose]
-    if cfg.get("triggers"):
-        parts.append("트리거 — " + ", ".join(f'"{t}"' for t in cfg["triggers"]) + ".")
-    if cfg.get("anti_triggers"):
-        parts.append("비-트리거: " + "; ".join(cfg["anti_triggers"]) + ".")
+    triggers = cfg.get("triggers")
+    if triggers:
+        parts.append("트리거 — " + ", ".join(f'"{t}"' for t in triggers) + ".")
+    anti_triggers = cfg.get("anti_triggers")
+    if anti_triggers:
+        parts.append("비-트리거: " + "; ".join(anti_triggers) + ".")
     return " ".join(parts)
 
 
-def render_thin(cfg, name):
+def render_thin(cfg: Config, name: str) -> str:
     steps = cfg.get("thin_steps") or [
         "`scripts/[helper].sh [args]` 를 실행해 [무엇]을 얻는다.",
         "[판단/사용자 확인 단계].",
@@ -78,11 +142,15 @@ def render_thin(cfg, name):
     return "\n".join(out) + "\n"
 
 
-def render_body(cfg, name):
+def render_body(cfg: Config, name: str) -> str:
     title = name.replace("-", " ").title()
     S = [f"# {title}", ""]
 
-    S += ["## 무엇을 / 언제 (한 줄)", cfg.get("one_liner") or "[이 스킬이 하는 일 한 문장 — description과 일관되게.]", ""]
+    S += [
+        "## 무엇을 / 언제 (한 줄)",
+        cfg.get("one_liner") or "[이 스킬이 하는 일 한 문장 — description과 일관되게.]",
+        "",
+    ]
 
     must_do = cfg.get("must_do") or ["[반드시 하는 것]"]
     must_not = cfg.get("must_not") or ["[절대 안 하는 것]"]
@@ -95,22 +163,32 @@ def render_body(cfg, name):
     if len(modes) > 1:
         S += ["## Step 0 — 무엇을 만들지 고른다", "| 모드 | 시작점 | 언제 |", "|---|---|---|"]
         for m in modes:
-            S.append(f"| **{m.get('label', '[모드]')}** | {m.get('start', '-')} | {m.get('when', '[조건]')} |")
-        S += ["판단: [한 줄 휴리스틱]. **애매하면 `request_user_input`으로 묻는다 — 임의로 고르지 말 것.**", ""]
+            S.append(
+                f"| **{m.get('label', '[모드]')}** | {m.get('start', '-')} | {m.get('when', '[조건]')} |"
+            )
+        S += [
+            "판단: [한 줄 휴리스틱]. **애매하면 `request_user_input`으로 묻는다 — 임의로 고르지 말 것.**",
+            "",
+        ]
 
     if cfg.get("orchestrator") or cfg.get("routed_by") == "orchestrator":
-        pc = cfg.get("pipeline") or {}
-        S += ["## Pipeline Context", "| 항목 | 내용 |", "|------|------|",
-              f"| **파이프라인 위치** | {pc.get('position', '[위치]')} |",
-              f"| **입력 소스** | {pc.get('input', '[입력]')} |",
-              f"| **출력 대상** | {pc.get('output', '[출력]')} |",
-              f"| **호출 스킬/에이전트** | {pc.get('calls', '[목록]')} |",
-              "- 필요하면 사용 가능한 Codex tool 또는 subagent 도구로 디스패치한다.",
-              "- 서브에이전트엔 핵심 산출물 경로 + 규칙 + 산출 경로 + 금지목록을 매번 명시.", ""]
+        pc: Pipeline = cfg.get("pipeline") or {}
+        S += [
+            "## Pipeline Context",
+            "| 항목 | 내용 |",
+            "|------|------|",
+            f"| **파이프라인 위치** | {pc.get('position', '[위치]')} |",
+            f"| **입력 소스** | {pc.get('input', '[입력]')} |",
+            f"| **출력 대상** | {pc.get('output', '[출력]')} |",
+            f"| **호출 스킬/에이전트** | {pc.get('calls', '[목록]')} |",
+            "- 필요하면 사용 가능한 Codex tool 또는 subagent 도구로 디스패치한다.",
+            "- 서브에이전트엔 핵심 산출물 경로 + 규칙 + 산출 경로 + 금지목록을 매번 명시.",
+            "",
+        ]
 
     S += ["## 핵심 워크플로우"]
     i = 1
-    for step in (cfg.get("workflow") or []):
+    for step in cfg.get("workflow") or []:
         line = f"{i}. {step.get('action', '[단계]')}"
         if step.get("io"):
             line += f" — {step['io']}"
@@ -119,11 +197,13 @@ def render_body(cfg, name):
     if i == 1:
         S += ["1. [입력 파악/판단]", "2. [작업]"]
         i = 3
-    gate = cfg.get("gate") or {}
+    gate: Gate = cfg.get("gate") or {}
     if gate.get("type") == "script":
         cmd = gate.get("cmd", "python scripts/validate.py <dir>")
-        S.append(f"{i}. 검증(게이트): `{cmd}` 실행 — exit 0이어야 다음 단계. "
-                 f"exit 1 → {gate.get('on_fail', '직전 단계 재실행')}. **통과 전 진행 금지.**")
+        S.append(
+            f"{i}. 검증(게이트): `{cmd}` 실행 — exit 0이어야 다음 단계. "
+            f"exit 1 → {gate.get('on_fail', '직전 단계 재실행')}. **통과 전 진행 금지.**"
+        )
     else:
         S.append(f"{i}. 검증: {gate.get('criteria', '[통과 기준]')} 를 확인한다.")
     i += 1
@@ -133,50 +213,61 @@ def render_body(cfg, name):
     if refs:
         S += ["## 참조 자료 (라우팅 테이블)", "| Topic | Reference | Load When |", "|---|---|---|"]
         for r in refs:
-            S.append(f"| {r.get('summary', '[주제]')} | references/{r['file']} | {r.get('when', '[조건]')} |")
-        S += ["> 각 reference 파일은 첫 줄을 `> **로드 시점**: <같은 조건>`으로 시작해 트리거를 메아리친다.", ""]
+            S.append(
+                f"| {r.get('summary', '[주제]')} | references/{r['file']} | {r.get('when', '[조건]')} |"
+            )
+        S += [
+            "> 각 reference 파일은 첫 줄을 `> **로드 시점**: <같은 조건>`으로 시작해 트리거를 메아리친다.",
+            "",
+        ]
 
     S += ["## 출력 위치 (필수)"]
-    for o in (cfg.get("output_required") or ["`output/{slug}/` 등 cwd 상대 + `mkdir -p` 가드"]):
+    for o in cfg.get("output_required") or ["`output/{slug}/` 등 cwd 상대 + `mkdir -p` 가드"]:
         S.append(f"- ✅ {o}")
-    S += ["- ⛔ 채팅 코드 덤프 / `/Users/idong-geol/.codex/skills/`(설치 디렉터리) 안 임시 산출물 / 홈 절대경로"]
+    S += ["- ⛔ 채팅 코드 덤프 / 스킬 설치 디렉터리 안 임시 산출물 / 홈 절대경로"]
     return "\n".join(S).rstrip() + "\n"
 
 
-def _gate_stub(cmd):
-    m = re.search(r"scripts/([A-Za-z0-9_./\-]+)", cmd or "")  # '/' so subdir paths (scripts/sub/x.sh) survive
+def _gate_stub(cmd: str) -> tuple[Optional[str], Optional[str]]:
+    m = re.search(
+        r"scripts/([A-Za-z0-9_./\-]+)", cmd or ""
+    )  # '/' so subdir paths (scripts/sub/x.sh) survive
     if not m:
         return None, None
     fname = m.group(1)
     if fname.endswith(".py"):
-        content = ('#!/usr/bin/env python3\n'
-                   '"""Validation gate — exit non-zero on failure (TODO: implement real checks)."""\n'
-                   'import sys\n\n'
-                   'def main():\n'
-                   '    target = sys.argv[1] if len(sys.argv) > 1 else "."\n'
-                   '    fails = []\n'
-                   '    # TODO: append a message to fails for each check that does not hold.\n'
-                   '    for f in fails:\n'
-                   '        print("FAIL:", f)\n'
-                   '    print(f"checks_failed: {len(fails)}")\n'
-                   '    sys.exit(1 if fails else 0)\n\n'
-                   'if __name__ == "__main__":\n    main()\n')
+        content = (
+            "#!/usr/bin/env python3\n"
+            '"""Validation gate — exit non-zero on failure (TODO: implement real checks)."""\n'
+            "import sys\n\n"
+            "def main():\n"
+            '    target = sys.argv[1] if len(sys.argv) > 1 else "."\n'
+            "    fails = []\n"
+            "    # TODO: append a message to fails for each check that does not hold.\n"
+            "    for f in fails:\n"
+            '        print("FAIL:", f)\n'
+            '    print(f"checks_failed: {len(fails)}")\n'
+            "    sys.exit(1 if fails else 0)\n\n"
+            'if __name__ == "__main__":\n    main()\n'
+        )
     else:
-        content = ('#!/usr/bin/env bash\n'
-                   '# Validation gate — exit non-zero on failure (TODO: implement real checks).\n'
-                   'set -euo pipefail\n'
-                   'TARGET="${1:-.}"\n'
-                   'fails=0\n'
-                   '# TODO: increment fails for each check that does not hold.\n'
-                   'echo "checks_failed: $fails"\n'
-                   'exit $(( fails > 0 ? 1 : 0 ))\n')
+        content = (
+            "#!/usr/bin/env bash\n"
+            "# Validation gate — exit non-zero on failure (TODO: implement real checks).\n"
+            "set -euo pipefail\n"
+            'TARGET="${1:-.}"\n'
+            "fails=0\n"
+            "# TODO: increment fails for each check that does not hold.\n"
+            'echo "checks_failed: $fails"\n'
+            "exit $(( fails > 0 ? 1 : 0 ))\n"
+        )
     return fname, content
 
 
-def main():
+def main() -> None:
     if len(sys.argv) != 3:
         die("usage: scaffold.py <config.json> <skill_dir>")
-    cfg = json.load(open(sys.argv[1], encoding="utf-8"))
+    cfg = cast(Config, json.load(open(sys.argv[1], encoding="utf-8")))
     skill_dir = sys.argv[2].rstrip("/")
 
     name = cfg.get("name", "")
@@ -199,7 +290,10 @@ def main():
 
     basename = os.path.basename(os.path.abspath(skill_dir))
     if basename != name:
-        print(f"scaffold: WARN: dirname '{basename}' != name '{name}' (audit will flag)", file=sys.stderr)
+        print(
+            f"scaffold: WARN: dirname '{basename}' != name '{name}' (audit will flag)",
+            file=sys.stderr,
+        )
 
     os.makedirs(skill_dir, exist_ok=True)
     skill_md = os.path.join(skill_dir, "SKILL.md")
@@ -209,14 +303,16 @@ def main():
     body = render_thin(cfg, name) if thin else render_body(cfg, name)
 
     # frontmatter
-    desc_block = (">\n  " + "\n  ".join(_wrap(description, 92))) if len(description) > 90 else description
+    desc_block = (
+        (">\n  " + "\n  ".join(_wrap(description, 92))) if len(description) > 90 else description
+    )
     fm = [f"name: {name}", f"description: {desc_block}"]
     out = "---\n" + "\n".join(fm) + "\n---\n\n" + body
     open(skill_md, "w", encoding="utf-8").write(out)
     created = ["SKILL.md"]
 
     # reference stub files (each triggered by the routing table → no untriggered, no dangling)
-    for r in (cfg.get("references") or []):
+    for r in cfg.get("references") or []:
         if thin:
             break
         rpath = os.path.join(skill_dir, "references", r["file"])
@@ -224,14 +320,15 @@ def main():
         if not os.path.exists(rpath):
             title = os.path.splitext(os.path.basename(r["file"]))[0].replace("-", " ").title()
             open(rpath, "w", encoding="utf-8").write(
-                f"# {title}\n\n> **로드 시점**: {r.get('when', '[조건]')}\n\n{r.get('summary', '[요약]')}\n\n[상세 내용을 채운다.]\n")
+                f"# {title}\n\n> **로드 시점**: {r.get('when', '[조건]')}\n\n{r.get('summary', '[요약]')}\n\n[상세 내용을 채운다.]\n"
+            )
         created.append("references/" + r["file"])
 
     # gate-script stub (so the body's `scripts/X` pointer resolves → no script-missing)
-    gate = cfg.get("gate") or {}
+    gate: Gate = cfg.get("gate") or {}
     if not thin and gate.get("type") == "script":
         fname, content = _gate_stub(gate.get("cmd", "python scripts/validate.py <dir>"))
-        if fname:
+        if fname and content is not None:
             spath = os.path.join(skill_dir, "scripts", fname)
             os.makedirs(os.path.dirname(spath), exist_ok=True)
             if not os.path.exists(spath):
@@ -241,20 +338,25 @@ def main():
 
     # thin-helper stub: a thin delegator names a real scripts/<helper>.sh in its
     # steps — back it with a stub so the body's pointer resolves (no script-missing).
-    if thin and cfg.get("thin_steps"):
-        m = re.search(r"scripts/([A-Za-z0-9_./\-]+\.(?:sh|py))", "\n".join(cfg["thin_steps"]))
+    thin_steps = cfg.get("thin_steps")
+    if thin and thin_steps:
+        m = re.search(r"scripts/([A-Za-z0-9_./\-]+\.(?:sh|py))", "\n".join(thin_steps))
         if m:
             fname = m.group(1)
             _, content = _gate_stub("scripts/" + fname)
-            spath = os.path.join(skill_dir, "scripts", fname)
-            os.makedirs(os.path.dirname(spath), exist_ok=True)
-            if not os.path.exists(spath):
-                open(spath, "w", encoding="utf-8").write(content)
-                os.chmod(spath, 0o755)
-            created.append("scripts/" + fname)
+            if content is not None:
+                spath = os.path.join(skill_dir, "scripts", fname)
+                os.makedirs(os.path.dirname(spath), exist_ok=True)
+                if not os.path.exists(spath):
+                    open(spath, "w", encoding="utf-8").write(content)
+                    os.chmod(spath, 0o755)
+                created.append("scripts/" + fname)
 
-    deferred = [sub for sub, flag in (("scripts", "has_scripts"), ("templates", "has_templates"))
-                if cfg.get(flag) and not os.path.isdir(os.path.join(skill_dir, sub))]
+    deferred: list[str] = []
+    if cfg.get("has_scripts") and not os.path.isdir(os.path.join(skill_dir, "scripts")):
+        deferred.append("scripts")
+    if cfg.get("has_templates") and not os.path.isdir(os.path.join(skill_dir, "templates")):
+        deferred.append("templates")
 
     print(f"scaffold: created skill '{name}' at {skill_dir}")
     for c in created:
@@ -265,15 +367,18 @@ def main():
         for m in missing:
             print("  -", m)
     if deferred:
-        print(f"\n필요 시 {'/'.join(s + '/' for s in deferred)} 디렉터리는 첫 파일을 넣을 때 만든다 (빈 디렉터리 금지).")
-    print("\n출하 게이트: python3 /Users/idong-geol/.codex/skills/skill-enhancer-codex/scripts/audit.py", skill_dir)
+        print(
+            f"\n필요 시 {'/'.join(s + '/' for s in deferred)} 디렉터리는 첫 파일을 넣을 때 만든다 (빈 디렉터리 금지)."
+        )
+    audit_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audit.py")
+    print("\n출하 게이트: python3", audit_path, skill_dir)
 
 
-def _audit_gaps(cfg, thin):
+def _audit_gaps(cfg: Config, thin: bool) -> list[str]:
     """Body fields still unanswered — surfaced so the interview can keep asking."""
     if thin:
         return [] if cfg.get("thin_steps") else ["thin_steps (위임 절차 단계)"]
-    gaps = []
+    gaps: list[str] = []
     if not cfg.get("one_liner"):
         gaps.append("one_liner (무엇을/언제 한 줄)")
     if not cfg.get("must_not"):

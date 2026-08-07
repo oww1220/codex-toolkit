@@ -1,7 +1,7 @@
 {
   "name": "workflow-tools",
   "version": "0.1.0",
-  "description": "Completion and git workflow skills for Codex.",
+  "description": "Document readability, completion, and git workflow skills for Codex.",
   "author": {
     "name": "idong-geol"
   },
@@ -10,8 +10,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Workflow Tools",
-    "shortDescription": "Completion summaries and Conventional Commit workflows.",
-    "longDescription": "Workflow Tools packages completion-summary and git-conventional-commit as installable Codex skills.",
+    "shortDescription": "Document readability, completion summaries, and commit workflows.",
+    "longDescription": "Workflow Tools packages document readability, completion summary, and Conventional Commit skills.",
     "developerName": "idong-geol",
     "category": "Productivity",
     "capabilities": ["Skills"],

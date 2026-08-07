@@ -1,0 +1,4 @@
+interface:
+  display_name: "Document Visual Readability"
+  short_description: "정보를 보존하며 문서를 생성·편집·검수"
+  default_prompt: "Use $document-visual-readability to create or improve this document without deleting or inventing information."

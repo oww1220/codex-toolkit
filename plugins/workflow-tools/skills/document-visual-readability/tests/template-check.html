@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<title>HTML 템플릿 동작 검사</title>
+<h1>HTML 템플릿 동작 검사</h1>
+<p>이 스킬 폴더에서 <code>python -m http.server 8765 --bind 127.0.0.1</code> 실행 후 이 페이지를 엽니다.</p>
+<pre id="result" role="status">검사 중…</pre>
+<iframe title="템플릿 검사" style="width:390px;height:700px;border:0"></iframe>
+<script>
+  const frame = document.querySelector('iframe');
+  const result = document.querySelector('#result');
+  let checks = 0;
+  function assert(condition, message) {
+    if (!condition) throw new Error(message);
+    checks += 1;
+  }
+  frame.addEventListener('load', () => {
+    try {
+      const doc = frame.contentDocument;
+      const steps = [...doc.querySelectorAll('[data-step]')];
+      assert(steps.length >= 2, '단계 전환을 검사할 템플릿이 없습니다.');
+      const previous = doc.querySelector('[data-previous]');
+      const next = doc.querySelector('[data-next]');
+      const all = doc.querySelector('[data-show-all]');
+      const current = () => steps.findIndex(step => step.getAttribute('aria-current') === 'step');
+      assert(current() === 0 && previous.disabled, '첫 단계 / 이전 경계');
+      next.click();
+      assert(current() === 1 && !previous.disabled, '다음 단계');
+      previous.click();
+      assert(current() === 0, '이전 단계');
+      for (let index = 1; index < steps.length; index += 1) next.click();
+      assert(current() === steps.length - 1 && next.disabled, '마지막 단계 / 다음 경계');
+      all.click();
+      assert(current() === -1 && previous.disabled && next.disabled, '전체 보기');
+      assert(steps.every(step => !step.hidden), '전체 단계 본문 보존');
+      all.click();
+      assert(current() === steps.length - 1, '단계별 보기로 돌아갈 때 위치 보존');
+
+      const tabs = [...doc.querySelectorAll('[role="tab"]')];
+      tabs[1].click();
+      assert(tabs[1].getAttribute('aria-selected') === 'true', '탭 선택');
+      assert(!doc.getElementById(tabs[1].getAttribute('aria-controls')).hidden, '탭 패널 표시');
+      tabs[1].dispatchEvent(new frame.contentWindow.KeyboardEvent('keydown', { key: 'Home', bubbles: true }));
+      assert(tabs[0].tabIndex === 0 && tabs[1].tabIndex === -1, '탭 키보드 Home / 순회 포커스');
+      tabs[0].dispatchEvent(new frame.contentWindow.KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true }));
+      assert(tabs[1].getAttribute('aria-selected') === 'true', '탭 키보드 순환');
+
+      const motion = doc.querySelector('[data-motion-toggle]');
+      if (!motion.disabled) {
+        motion.click();
+        assert(doc.documentElement.dataset.motion === 'paused', '애니메이션 정지');
+        motion.click();
+        assert(doc.documentElement.dataset.motion === 'running', '애니메이션 재개');
+      }
+      const details = doc.querySelector('details');
+      details.querySelector('summary').click();
+      assert(details.open, '근거 펼치기');
+      assert(doc.documentElement.scrollWidth <= frame.clientWidth, '모바일 문서 가로 넘침');
+      const noScriptFrame = document.createElement('iframe');
+      noScriptFrame.title = '스크립트 없는 읽기 검사';
+      noScriptFrame.setAttribute('sandbox', 'allow-same-origin');
+      noScriptFrame.style.cssText = frame.style.cssText;
+      noScriptFrame.addEventListener('load', () => {
+        try {
+          const staticDoc = noScriptFrame.contentDocument;
+          assert([...staticDoc.querySelectorAll('[data-step], [data-panel]')].every(element => element.getClientRects().length > 0), '스크립트 없이 모든 본문 표시');
+          assert([...staticDoc.querySelectorAll('details')].every(element => element.open), '스크립트 없이 상세 근거 표시');
+          assert(staticDoc.querySelector('[data-step-controls]').hidden, '스크립트 없이 동작하지 않는 제어 숨김');
+          assert(staticDoc.querySelector('[data-tab-list]').hidden, '스크립트 없이 탭 제어 숨김');
+          assert(!staticDoc.documentElement.dataset.motion, '스크립트 없이 반복 애니메이션 정지');
+          result.textContent = `PASS: ${checks} checks. 동작 줄이기는 OS 설정으로 별도 확인하세요.`;
+        } catch (error) {
+          result.textContent = `FAIL: ${error.message}`;
+        }
+      }, { once: true });
+      noScriptFrame.src = '../assets/document.html';
+      document.body.append(noScriptFrame);
+    } catch (error) {
+      result.textContent = `FAIL: ${error.message}`;
+    }
+  });
+  frame.src = '../assets/document.html';
+</script>
+</html>

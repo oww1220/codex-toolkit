@@ -1,0 +1,1330 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Question · Daily Challenge 데이터 흐름</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f1218;
+        --panel: #171c25;
+        --panel-2: #202735;
+        --line: #354052;
+        --text: #f5f7fb;
+        --muted: #aeb8c8;
+        --admin: #9a8cff;
+        --api: #63d5b2;
+        --mobile: #ffb86b;
+        --db: #75b9ff;
+        --warn: #ffd166;
+        --danger: #ff8f8f;
+        --shadow: 0 22px 62px rgb(0 0 0 / 28%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 12% 0%, rgb(117 185 255 / 14%), transparent 30rem),
+          radial-gradient(circle at 88% 8%, rgb(154 140 255 / 14%), transparent 32rem), var(--bg);
+        color: var(--text);
+        font-family:
+          Pretendard,
+          'Noto Sans KR',
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        line-height: 1.65;
+      }
+
+      code,
+      pre {
+        font-family: 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+      }
+
+      code {
+        color: #c9f7e7;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 64px 0 96px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 920px;
+        margin-bottom: 18px;
+        font-size: clamp(2.35rem, 5vw, 4.8rem);
+        line-height: 1.04;
+        letter-spacing: -0.052em;
+      }
+
+      h2 {
+        margin-bottom: 8px;
+        font-size: clamp(1.5rem, 3vw, 2.15rem);
+        letter-spacing: -0.03em;
+      }
+
+      h3 {
+        margin-bottom: 7px;
+        font-size: 1rem;
+      }
+
+      section {
+        margin-top: 76px;
+        scroll-margin-top: 20px;
+      }
+
+      .eyebrow {
+        margin-bottom: 9px;
+        color: var(--api);
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+
+      .lead,
+      .section-intro,
+      .muted,
+      .card p,
+      .source-list {
+        color: var(--muted);
+      }
+
+      .lead {
+        max-width: 860px;
+        font-size: 1.08rem;
+      }
+
+      .scope-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 26px 0 32px;
+      }
+
+      .scope-nav a,
+      .chip,
+      .method,
+      .layer {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        font-size: 0.76rem;
+        font-weight: 800;
+      }
+
+      .scope-nav a {
+        min-height: 38px;
+        padding: 7px 12px;
+        border: 1px solid var(--line);
+        background: rgb(23 28 37 / 86%);
+        text-decoration: none;
+      }
+
+      .scope-nav a:hover,
+      .scope-nav a:focus-visible {
+        border-color: var(--api);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card,
+      .summary-card,
+      .callout,
+      .diagram,
+      .dto-card,
+      .table-wrap,
+      .source-list {
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        background: rgb(23 28 37 / 90%);
+      }
+
+      .summary-card {
+        min-width: 0;
+        padding: 18px;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text);
+        font-size: 1.2rem;
+      }
+
+      .summary-card span {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .summary-card.admin {
+        border-top: 3px solid var(--admin);
+      }
+
+      .summary-card.db {
+        border-top: 3px solid var(--db);
+      }
+
+      .summary-card.api {
+        border-top: 3px solid var(--api);
+      }
+
+      .summary-card.mobile {
+        border-top: 3px solid var(--mobile);
+      }
+
+      .diagram {
+        margin: 24px 0 0;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .end-to-end {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .node {
+        position: relative;
+        min-width: 0;
+        padding: 15px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--panel-2);
+      }
+
+      .node:not(:last-child)::after {
+        position: absolute;
+        z-index: 2;
+        top: 50%;
+        right: -17px;
+        color: var(--api);
+        content: '→';
+        font-size: 1.15rem;
+        font-weight: 900;
+        transform: translateY(-50%);
+      }
+
+      .node strong,
+      .node code {
+        display: block;
+      }
+
+      .node strong {
+        margin-bottom: 6px;
+      }
+
+      .node code {
+        color: var(--muted);
+        font-size: 0.72rem;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .node.admin {
+        border-color: rgb(154 140 255 / 70%);
+      }
+
+      .node.api {
+        border-color: rgb(99 213 178 / 70%);
+      }
+
+      .node.mobile {
+        border-color: rgb(255 184 107 / 70%);
+      }
+
+      .node.db {
+        border-color: rgb(117 185 255 / 70%);
+      }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .legend span::before {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 6px;
+        border-radius: 50%;
+        background: var(--tone);
+        content: '';
+      }
+
+      .callout {
+        margin-top: 18px;
+        padding: 17px 19px;
+        border-left: 4px solid var(--warn);
+      }
+
+      .callout strong {
+        color: var(--warn);
+      }
+
+      .callout.danger {
+        border-left-color: var(--danger);
+      }
+
+      .callout.danger strong {
+        color: var(--danger);
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin-top: 22px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+      }
+
+      th,
+      td {
+        padding: 13px 15px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background: #11161e;
+        color: var(--muted);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td {
+        font-size: 0.88rem;
+      }
+
+      .method {
+        min-width: 58px;
+        padding: 4px 8px;
+        background: rgb(99 213 178 / 15%);
+        color: var(--api);
+      }
+
+      .method.write {
+        background: rgb(154 140 255 / 15%);
+        color: var(--admin);
+      }
+
+      .flow-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 13px;
+        margin-top: 22px;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+      .card-number {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 14px;
+        place-items: center;
+        border-radius: 10px;
+        background: rgb(99 213 178 / 15%);
+        color: var(--api);
+        font-weight: 900;
+      }
+
+      .card p:last-child {
+        margin-bottom: 0;
+      }
+
+      .schema {
+        display: grid;
+        grid-template-columns: 1fr 72px 1fr;
+        gap: 14px;
+        align-items: center;
+        margin-top: 22px;
+      }
+
+      .schema-arrow {
+        color: var(--api);
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .schema-box {
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: var(--panel-2);
+      }
+
+      .schema-list {
+        display: grid;
+        gap: 9px;
+        margin: 15px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .schema-list li {
+        padding: 9px 11px;
+        border: 1px solid #3c475a;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .dto-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 22px 0 14px;
+      }
+
+      button {
+        min-height: 42px;
+        padding: 8px 13px;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        background: var(--panel-2);
+        color: var(--text);
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      button:hover,
+      button:focus-visible,
+      button[aria-selected='true'] {
+        border-color: var(--api);
+      }
+
+      button[aria-selected='true'] {
+        background: rgb(99 213 178 / 13%);
+        color: var(--api);
+      }
+
+      .dto-card {
+        display: none;
+        overflow: hidden;
+      }
+
+      .dto-card.is-active {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+      }
+
+      .dto-copy,
+      .dto-code {
+        min-width: 0;
+        padding: 21px;
+      }
+
+      .dto-code {
+        border-left: 1px solid var(--line);
+        background: #0c1016;
+      }
+
+      pre {
+        overflow-x: auto;
+        margin: 0;
+        color: #dce7f7;
+        font-size: 0.8rem;
+        line-height: 1.58;
+      }
+
+      .chip {
+        margin-bottom: 10px;
+        padding: 4px 8px;
+        border: 1px solid currentColor;
+        color: var(--api);
+      }
+
+      .chip.admin {
+        color: var(--admin);
+      }
+
+      .chip.mobile {
+        color: var(--mobile);
+      }
+
+      .branch-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .branch {
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: var(--panel);
+      }
+
+      .branch strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .branch p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .branch.server {
+        border-top: 3px solid var(--api);
+      }
+
+      .branch.general {
+        border-top: 3px solid var(--db);
+      }
+
+      .branch.local {
+        border-top: 3px solid var(--mobile);
+      }
+
+      details {
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+        padding-top: 11px;
+      }
+
+      summary {
+        width: fit-content;
+        color: var(--api);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .source-list {
+        margin: 20px 0 0;
+        padding: 20px 20px 20px 42px;
+      }
+
+      .source-list li + li {
+        margin-top: 7px;
+      }
+
+      .source-list code {
+        overflow-wrap: anywhere;
+      }
+
+      .footer-note {
+        margin-top: 48px;
+        color: var(--muted);
+        font-size: 0.84rem;
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .end-to-end {
+          grid-template-columns: 1fr;
+        }
+
+        .node:not(:last-child)::after {
+          top: auto;
+          right: 50%;
+          bottom: -20px;
+          transform: translateX(50%) rotate(90deg);
+        }
+
+        .flow-grid,
+        .branch-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .page {
+          width: min(100% - 22px, 620px);
+          padding-top: 38px;
+        }
+
+        .summary-grid,
+        .flow-grid,
+        .branch-grid,
+        .dto-card.is-active {
+          grid-template-columns: 1fr;
+        }
+
+        .dto-code {
+          border-top: 1px solid var(--line);
+          border-left: 0;
+        }
+
+        .schema {
+          grid-template-columns: 1fr;
+        }
+
+        .schema-arrow {
+          transform: rotate(90deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <p class="eyebrow">Malondo · Current implementation</p>
+        <h1>질문과 데일리 챌린지는 어디서 만들어져 모바일까지 오는가?</h1>
+        <p class="lead">
+          관리자가 질문을 만들고 챌린지에 순서를 붙여 연결하면, NestJS가 Prisma 관계를 공개 DTO로 다시 조립합니다.
+          모바일은 그 응답을 Zod로 검증하고 React Query에 보관한 뒤 플레이 세션과 답안 기록까지 서버에 연결합니다.
+        </p>
+        <nav class="scope-nav" aria-label="문서 바로가기">
+          <a href="#overview">전체 흐름</a>
+          <a href="#admin">관리자 저장</a>
+          <a href="#public">공개 조회</a>
+          <a href="#mobile">모바일 플레이</a>
+          <a href="#dto">응답 DTO</a>
+          <a href="#caveats">주의사항</a>
+          <a href="#service-methods">서비스 읽는 순서</a>
+        </nav>
+
+        <div class="summary-grid" aria-label="Executive Summary">
+          <article class="summary-card admin">
+            <strong>Admin이 작성</strong><span>질문 CRUD와 챌린지 CRUD는 별도 화면·API로 운영됩니다.</span>
+          </article>
+          <article class="summary-card db">
+            <strong>Join이 연결</strong
+            ><span><code>DailyChallengeQuestion</code>이 질문 ID와 챌린지 안의 순서를 저장합니다.</span>
+          </article>
+          <article class="summary-card api">
+            <strong>API가 축소</strong
+            ><span>공개 응답은 게시 상태·감사 시각·관리용 순서를 제거해 모바일 형태로 바꿉니다.</span>
+          </article>
+          <article class="summary-card mobile">
+            <strong>Mobile이 검증</strong><span>생성된 Zod 계약을 통과한 데이터만 화면·플레이 상태로 들어갑니다.</span>
+          </article>
+        </div>
+      </header>
+
+      <section id="overview" aria-labelledby="overview-heading">
+        <p class="eyebrow">Executive flow</p>
+        <h2 id="overview-heading">전체 데이터 흐름</h2>
+        <p class="section-intro">한 방향으로 보면 “작성 → 저장 → 공개 변환 → 캐시 → 플레이 기록”입니다.</p>
+
+        <figure class="diagram">
+          <div class="end-to-end" aria-label="관리자에서 모바일 플레이까지의 데이터 흐름">
+            <div class="node admin"><strong>Admin Form</strong><code>Question / Daily Challenge 입력</code></div>
+            <div class="node admin"><strong>Next Proxy</strong><code>/api/admin/* + 비밀 API key</code></div>
+            <div class="node api"><strong>Nest Admin API</strong><code>DTO validation + 도메인 검증</code></div>
+            <div class="node db">
+              <strong>Prisma</strong><code>Question ↔ DailyChallengeQuestion ↔ DailyChallenge</code>
+            </div>
+            <div class="node api">
+              <strong>Public API</strong><code>/v1/questions · /v1/daily-challenge/today</code>
+            </div>
+            <div class="node mobile"><strong>Mobile Query</strong><code>envelope 해제 + Zod + React Query</code></div>
+            <div class="node mobile"><strong>Play Session</strong><code>질문 snapshot + attempts + 결과</code></div>
+          </div>
+          <figcaption class="legend">
+            <span style="--tone: var(--admin)">Admin</span>
+            <span style="--tone: var(--api)">NestJS API</span>
+            <span style="--tone: var(--db)">Prisma DB</span>
+            <span style="--tone: var(--mobile)">Mobile</span>
+          </figcaption>
+        </figure>
+
+        <aside class="callout">
+          <strong>핵심 경계:</strong> Admin 브라우저는 NestJS 관리자 API를 직접 호출하지 않습니다. 같은 origin의 Next.js
+          Route Handler를 거치며, 서버 전용 <code>ADMIN_API_KEY</code>가 이 프록시에서만 <code>x-admin-api-key</code>로
+          주입됩니다.
+        </aside>
+      </section>
+
+      <section id="admin" aria-labelledby="admin-heading">
+        <p class="eyebrow">Write path</p>
+        <h2 id="admin-heading">관리자가 질문과 챌린지를 저장하는 흐름</h2>
+        <p class="section-intro">
+          질문을 먼저 공개 가능한 상태로 만든 뒤, 비공개 챌린지에 연결하고 마지막에 챌린지를 공개하는 순서입니다.
+        </p>
+
+        <div class="flow-grid">
+          <article class="card">
+            <span class="card-number">1</span>
+            <h3>질문 생성·수정</h3>
+            <p>
+              폼 → React Query mutation → <code>/api/admin/questions</code> → NestJS <code>/v1/admin/questions</code>.
+            </p>
+            <p>게시 질문은 선택지가 하나 이상이고, 그중 <code>isBest: true</code>가 하나 이상이어야 합니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">2</span>
+            <h3>챌린지 초안 생성</h3>
+            <p>
+              게시일·제목·설명을 저장합니다. 최초 생성은 질문이 없으므로 <code>isPublished: true</code>를 허용하지
+              않습니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">3</span>
+            <h3>공개 질문 검색</h3>
+            <p>챌린지 화면은 질문 API를 <code>isPublished=true</code>로 조회해 연결 후보만 보여 줍니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">4</span>
+            <h3>질문 연결</h3>
+            <p>
+              <code>{ questionId, displayOrder }</code>를 보내 조인 row를 만듭니다. 비공개·중복 질문과 중복 순서는
+              거부됩니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">5</span>
+            <h3>순서 저장</h3>
+            <p>
+              전체 연결 목록을 PATCH합니다. API는 unique 충돌을 피하려 임시 음수 순서와 최종 순서를 한 transaction에서
+              적용합니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">6</span>
+            <h3>챌린지 공개</h3>
+            <p>질문이 하나 이상이고, 모든 연결 질문이 공개 상태이며, 질문 ID·순서가 중복되지 않을 때만 공개됩니다.</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Admin 기능</th>
+                <th>브라우저 경로</th>
+                <th>NestJS v1 경로</th>
+                <th>응답 data</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="method">GET</span> 질문 목록·상세</td>
+                <td><code>/api/admin/questions[/:id]</code></td>
+                <td><code>/v1/admin/questions[/:id]</code></td>
+                <td><code>AdminQuestionResponseDto[] | AdminQuestionResponseDto</code></td>
+              </tr>
+              <tr>
+                <td><span class="method write">POST/PATCH</span> 질문 저장</td>
+                <td><code>/api/admin/questions[/:id]</code></td>
+                <td><code>/v1/admin/questions[/:id]</code></td>
+                <td>완성된 <code>AdminQuestionResponseDto</code></td>
+              </tr>
+              <tr>
+                <td><span class="method">GET</span> 챌린지 목록·상세</td>
+                <td><code>/api/admin/daily-challenges[/:id]</code></td>
+                <td><code>/v1/admin/daily-challenges[/:id]</code></td>
+                <td><code>AdminDailyChallengeResponseDto[] | AdminDailyChallengeResponseDto</code></td>
+              </tr>
+              <tr>
+                <td><span class="method write">POST/PATCH</span> 챌린지 저장</td>
+                <td><code>/api/admin/daily-challenges[/:id]</code></td>
+                <td><code>/v1/admin/daily-challenges[/:id]</code></td>
+                <td>완성된 <code>AdminDailyChallengeResponseDto</code></td>
+              </tr>
+              <tr>
+                <td><span class="method write">POST</span> 질문 연결</td>
+                <td><code>/api/admin/daily-challenges/:id/questions</code></td>
+                <td><code>/v1/admin/daily-challenges/:id/questions</code></td>
+                <td>연결 후 챌린지 전체</td>
+              </tr>
+              <tr>
+                <td><span class="method write">PATCH</span> 질문 순서</td>
+                <td><code>/api/admin/daily-challenges/:id/questions</code></td>
+                <td><code>/v1/admin/daily-challenges/:id/questions</code></td>
+                <td>재정렬 후 챌린지 전체</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section aria-labelledby="relation-heading">
+        <p class="eyebrow">Persistence model</p>
+        <h2 id="relation-heading">DB에서는 세 모델이 역할을 나눕니다</h2>
+        <div class="schema">
+          <article class="schema-box">
+            <h3>Question</h3>
+            <ul class="schema-list">
+              <li>질문 본문·모드·카테고리·추천 문구</li>
+              <li><code>displayOrder</code>: 일반 공개 질문 목록 순서</li>
+              <li><code>isPublished</code>: 공개 API 노출 조건</li>
+              <li><code>choices[]</code>: 선택지·온도·정답 여부</li>
+            </ul>
+          </article>
+          <div class="schema-arrow" aria-hidden="true">↔</div>
+          <article class="schema-box">
+            <h3>DailyChallengeQuestion → DailyChallenge</h3>
+            <ul class="schema-list">
+              <li><code>questionId</code>: 연결할 Question</li>
+              <li><code>dailyChallengeId</code>: 소속 챌린지</li>
+              <li><code>displayOrder</code>: 해당 챌린지 안의 순서</li>
+              <li>게시일·제목·설명·공개 상태는 DailyChallenge가 소유</li>
+            </ul>
+          </article>
+        </div>
+        <aside class="callout">
+          질문 자체의 <code>displayOrder</code>와 챌린지 연결의 <code>displayOrder</code>는 다른 값입니다. 일반
+          <code>GET /questions</code>는 전자를, <code>GET /daily-challenge/today</code>는 후자를 사용합니다.
+        </aside>
+      </section>
+
+      <section id="public" aria-labelledby="public-heading">
+        <p class="eyebrow">Read path</p>
+        <h2 id="public-heading">NestJS가 모바일용 공개 응답을 만드는 흐름</h2>
+        <p class="section-intro">관리자 DTO를 그대로 보내지 않고 공개 mapper가 필요한 필드만 다시 선택합니다.</p>
+
+        <div class="flow-grid">
+          <article class="card">
+            <span class="card-number">1</span>
+            <h3>공개 챌린지 조회</h3>
+            <p><code>isPublished: true</code>인 챌린지를 <code>publishDate desc</code>로 하나 조회합니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">2</span>
+            <h3>관계 include</h3>
+            <p>
+              연결 질문 중 공개 질문만 포함하고, 연결 <code>displayOrder</code>와 선택지 <code>displayOrder</code>로
+              정렬합니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">3</span>
+            <h3>공개 DTO 매핑</h3>
+            <p>챌린지에는 메타데이터와 질문 배열만, 질문에는 플레이 필드와 선택지만 남깁니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">4</span>
+            <h3>성공 envelope</h3>
+            <p>전역 interceptor가 controller 결과를 <code>{ success: true, data }</code>로 감쌉니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">5</span>
+            <h3>모바일 envelope 해제</h3>
+            <p><code>requestJson</code>이 <code>data</code>를 꺼낸 뒤 기능별 Zod schema에 전달합니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">6</span>
+            <h3>React Query 캐시</h3>
+            <p>홈과 데일리 화면은 <code>['dailyChallenge', 'today']</code> 키를 공유해 같은 결과를 재사용합니다.</p>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>공개 endpoint</th>
+                <th>선택 기준</th>
+                <th>정렬</th>
+                <th>모바일 사용처</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /v1/questions?mode=&amp;category=</code></td>
+                <td>공개 질문 + 선택 필터</td>
+                <td>Question 순서 → Choice 순서</td>
+                <td>일반 모드 PlayScreen</td>
+              </tr>
+              <tr>
+                <td><code>GET /v1/daily-challenge/questions</code></td>
+                <td><code>/questions</code>와 같은 호환 alias</td>
+                <td>Question 순서 → Choice 순서</td>
+                <td>현재 모바일 직접 호출 없음</td>
+              </tr>
+              <tr>
+                <td><code>GET /v1/daily-challenge/today</code></td>
+                <td>최신 공개 챌린지 1개</td>
+                <td>연결 순서 → Choice 순서</td>
+                <td>Home 카드, Daily 화면, Daily Play</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="mobile" aria-labelledby="mobile-heading">
+        <p class="eyebrow">Mobile runtime</p>
+        <h2 id="mobile-heading">모바일에서 질문을 고르고 플레이하는 분기</h2>
+        <p class="section-intro">서버 데이터가 있으면 서버 세션까지 연결하고, 실패하면 화면 진행 자체는 유지합니다.</p>
+
+        <div class="branch-grid">
+          <article class="branch server">
+            <strong>1. Daily Challenge 전달됨</strong>
+            <p>
+              <code>dailyChallenge.questions</code>가 비어 있지 않으면 이 배열을 사용합니다. 별도 일반 질문 조회는
+              비활성화됩니다.
+            </p>
+          </article>
+          <article class="branch general">
+            <strong>2. 일반 플레이 또는 챌린지 조회 실패</strong>
+            <p><code>GET /questions?mode=...</code> 응답이 있으면 해당 공개 질문을 사용합니다.</p>
+          </article>
+          <article class="branch local">
+            <strong>3. 서버 질문도 없음</strong>
+            <p><code>apps/mobile/src/data/questions.ts</code>의 같은 mode 로컬 질문으로 진행합니다.</p>
+          </article>
+        </div>
+
+        <div class="flow-grid">
+          <article class="card">
+            <span class="card-number">1</span>
+            <h3>최대 5문항 선택</h3>
+            <p>선택된 출처 배열을 복사해 섞고 최대 5개를 현재 플레이 질문으로 고정합니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">2</span>
+            <h3>세션 시작·복원</h3>
+            <p>
+              서버 질문이면 <code>POST /question-play-sessions</code>에 guest, mode, challenge ID, question ID
+              snapshot을 보냅니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">3</span>
+            <h3>진행 중 세션 재사용</h3>
+            <p>API는 사용자·챌린지·모드·질문 집합이 같은 <code>PLAYING</code> 세션을 찾아 재사용합니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">4</span>
+            <h3>답안 제출</h3>
+            <p>
+              <code>POST /question-play-sessions/:id/attempts</code>로 질문 ID와 선택지 또는 온도 추측을 전송합니다.
+            </p>
+          </article>
+          <article class="card">
+            <span class="card-number">5</span>
+            <h3>로컬 UI 즉시 진행</h3>
+            <p>로컬 Zustand 채점·XP·피드백은 즉시 반영하고, 서버 attempt 실패는 화면 진행을 막지 않습니다.</p>
+          </article>
+          <article class="card">
+            <span class="card-number">6</span>
+            <h3>결과 조회</h3>
+            <p>
+              완료 요약에 질문 세션 ID가 있으면 결과 화면이 <code>GET /question-play-sessions/:id/result</code>를
+              조회합니다.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="dto" aria-labelledby="dto-heading">
+        <p class="eyebrow">Response contracts</p>
+        <h2 id="dto-heading">실제 응답 DTO 예시</h2>
+        <p class="section-intro">
+          아래 값은 구조를 보여 주는 예시입니다. 실제 HTTP 성공 응답은 모두 바깥의 <code>success</code>와
+          <code>data</code> envelope를 포함합니다.
+        </p>
+
+        <div class="dto-tabs" role="tablist" aria-label="응답 DTO 선택">
+          <button id="tab-public-question" role="tab" aria-selected="true" aria-controls="dto-public-question">
+            공개 질문
+          </button>
+          <button id="tab-public-daily" role="tab" aria-selected="false" aria-controls="dto-public-daily">
+            공개 챌린지
+          </button>
+          <button id="tab-admin-question" role="tab" aria-selected="false" aria-controls="dto-admin-question">
+            관리자 질문
+          </button>
+          <button id="tab-admin-daily" role="tab" aria-selected="false" aria-controls="dto-admin-daily">
+            관리자 챌린지
+          </button>
+          <button id="tab-play-session" role="tab" aria-selected="false" aria-controls="dto-play-session">
+            플레이 세션
+          </button>
+        </div>
+
+        <article
+          class="dto-card is-active"
+          id="dto-public-question"
+          role="tabpanel"
+          aria-labelledby="tab-public-question"
+        >
+          <div class="dto-copy">
+            <span class="chip mobile">Mobile public</span>
+            <h3>QuestionResponseDto</h3>
+            <p class="muted">관리용 순서·게시 여부·감사 시각은 빠지고 플레이에 필요한 선택지가 포함됩니다.</p>
+          </div>
+          <div class="dto-code">
+            <pre><code>{
+  "success": true,
+  "data": [{
+    "id": "question-1",
+    "mode": "quiz",
+    "category": "친구",
+    "situation": "친구가 약속에 늦은 상황",
+    "sentence": "왜 이렇게 늦었어?",
+    "answerTemperature": null,
+    "recommendedPhrase": "무슨 일 있었어? 기다리면서 걱정했어.",
+    "explanation": "상대의 사정을 먼저 묻는 표현입니다.",
+    "choices": [{
+      "id": "choice-1",
+      "text": "무슨 일 있었어?",
+      "temperature": 84,
+      "isBest": true
+    }]
+  }]
+}</code></pre>
+          </div>
+        </article>
+
+        <article class="dto-card" id="dto-public-daily" role="tabpanel" aria-labelledby="tab-public-daily" hidden>
+          <div class="dto-copy">
+            <span class="chip mobile">Mobile public</span>
+            <h3>PublicDailyChallengeResponseDto</h3>
+            <p class="muted">챌린지 메타데이터 아래에 공개 질문 DTO가 연결 순서대로 중첩됩니다.</p>
+          </div>
+          <div class="dto-code">
+            <pre><code>{
+  "success": true,
+  "data": {
+    "id": "daily-challenge-1",
+    "title": "오늘의 따뜻한 표현",
+    "description": "세 문장을 더 따뜻하게 바꿔 보세요.",
+    "publishDate": "2026-08-26T00:00:00.000Z",
+    "questions": [
+      { "id": "question-1", "mode": "quiz", "category": "친구",
+        "situation": "친구가 약속에 늦은 상황", "sentence": "왜 이렇게 늦었어?",
+        "answerTemperature": null, "recommendedPhrase": "무슨 일 있었어?",
+        "explanation": "상대의 사정을 먼저 묻는 표현입니다.", "choices": [] }
+    ]
+  }
+}</code></pre>
+          </div>
+        </article>
+
+        <article class="dto-card" id="dto-admin-question" role="tabpanel" aria-labelledby="tab-admin-question" hidden>
+          <div class="dto-copy">
+            <span class="chip admin">Admin</span>
+            <h3>AdminQuestionResponseDto</h3>
+            <p class="muted">공개 질문 필드에 관리용 순서·게시 상태·감사 시각과 선택지 순서가 추가됩니다.</p>
+          </div>
+          <div class="dto-code">
+            <pre><code>{
+  "success": true,
+  "data": {
+    "id": "question-1", "mode": "quiz", "category": "친구",
+    "situation": "친구가 약속에 늦은 상황", "sentence": "왜 이렇게 늦었어?",
+    "answerTemperature": null, "recommendedPhrase": "무슨 일 있었어?",
+    "explanation": "상대의 사정을 먼저 묻는 표현입니다.",
+    "displayOrder": 1, "isPublished": true,
+    "createdAt": "2026-08-26T01:00:00.000Z",
+    "updatedAt": "2026-08-26T01:30:00.000Z",
+    "choices": [{
+      "id": "choice-1", "displayOrder": 1, "text": "무슨 일 있었어?",
+      "temperature": 84, "isBest": true,
+      "createdAt": "2026-08-26T01:00:00.000Z",
+      "updatedAt": "2026-08-26T01:00:00.000Z"
+    }]
+  }
+}</code></pre>
+          </div>
+        </article>
+
+        <article class="dto-card" id="dto-admin-daily" role="tabpanel" aria-labelledby="tab-admin-daily" hidden>
+          <div class="dto-copy">
+            <span class="chip admin">Admin</span>
+            <h3>AdminDailyChallengeResponseDto</h3>
+            <p class="muted">조인 row의 ID·질문 ID·챌린지 내 순서와 관리자 질문 전체가 함께 반환됩니다.</p>
+          </div>
+          <div class="dto-code">
+            <pre><code>{
+  "success": true,
+  "data": {
+    "id": "daily-challenge-1",
+    "publishDate": "2026-08-26T00:00:00.000Z",
+    "title": "오늘의 따뜻한 표현",
+    "description": "세 문장을 더 따뜻하게 바꿔 보세요.",
+    "isPublished": true,
+    "questionCount": 1,
+    "createdAt": "2026-08-26T01:00:00.000Z",
+    "updatedAt": "2026-08-26T01:30:00.000Z",
+    "questions": [{
+      "id": "daily-challenge-question-1",
+      "questionId": "question-1",
+      "displayOrder": 1,
+      "question": { "id": "question-1", "mode": "quiz", "category": "친구",
+        "situation": "친구가 약속에 늦은 상황", "sentence": null,
+        "answerTemperature": null, "recommendedPhrase": "무슨 일 있었어?",
+        "explanation": "상대의 사정을 먼저 묻는 표현입니다.",
+        "displayOrder": 10, "isPublished": true,
+        "createdAt": "2026-08-26T01:00:00.000Z",
+        "updatedAt": "2026-08-26T01:00:00.000Z", "choices": [] }
+    }]
+  }
+}</code></pre>
+          </div>
+        </article>
+
+        <article class="dto-card" id="dto-play-session" role="tabpanel" aria-labelledby="tab-play-session" hidden>
+          <div class="dto-copy">
+            <span class="chip">Server session</span>
+            <h3>QuestionPlaySessionResponseDto</h3>
+            <p class="muted">시작 당시 질문 ID 순서와 누적 집계, 제출 attempt를 함께 보존합니다.</p>
+          </div>
+          <div class="dto-code">
+            <pre><code>{
+  "success": true,
+  "data": {
+    "id": "session-1", "guestId": "guest-1",
+    "dailyChallengeId": "daily-challenge-1", "mode": "quiz",
+    "status": "PLAYING", "questionIds": ["question-1"],
+    "totalQuestionCount": 1, "attemptCount": 0,
+    "correctCount": 0, "score": 0, "completedAt": null,
+    "createdAt": "2026-08-26T02:00:00.000Z",
+    "updatedAt": "2026-08-26T02:00:00.000Z",
+    "attempts": []
+  }
+}</code></pre>
+          </div>
+        </article>
+      </section>
+
+      <section id="caveats" aria-labelledby="caveats-heading">
+        <p class="eyebrow">Current-code caveats</p>
+        <h2 id="caveats-heading">현재 구현에서 알아둘 점</h2>
+
+        <aside class="callout danger">
+          <strong><code>today</code>는 실제 오늘 날짜를 비교하지 않습니다.</strong>
+          <code>getDailyChallengeToday()</code>는 <code>isPublished: true</code> 중 <code>publishDate desc</code> 첫
+          항목을 반환합니다. 미래 게시일의 챌린지를 미리 공개하면 모바일에 먼저 노출될 수 있습니다.
+        </aside>
+        <aside class="callout danger">
+          <strong>공개 선택지 DTO에 정답 여부가 포함됩니다.</strong> <code>QuestionChoiceResponseDto.isBest</code>가
+          모바일 응답에 그대로 들어가므로 네트워크 응답만 보면 정답을 알 수 있습니다. 현재 모바일 즉시 피드백에는 이
+          값이 사용됩니다.
+        </aside>
+        <aside class="callout">
+          <strong>챌린지 조회 실패 시 시작 버튼의 실제 경로:</strong> Daily 화면은 챌린지 없이
+          <code>openPlay('quiz')</code>를 호출합니다. Play controller는 먼저 일반 공개 질문 API를 조회하고, 그마저
+          실패하거나 비어 있을 때 로컬 질문으로 내려갑니다.
+        </aside>
+        <aside class="callout">
+          <strong>서버 기록은 비차단:</strong> 질문 세션 시작이 실패하면 로컬 세션으로 계속하고, attempt 저장 실패도
+          화면의 채점·피드백을 되돌리지 않습니다. 따라서 오프라인 진행과 서버 기록이 다를 수 있습니다.
+        </aside>
+      </section>
+
+      <section id="service-methods" aria-labelledby="service-methods-heading" data-private-methods>
+        <p class="eyebrow">Service reading order</p>
+        <h2 id="service-methods-heading">부모에서 순서를 읽고, 바로 아래에서 구현을 확인한다</h2>
+        <p>
+          2026-08-27 서비스 정리는 API·DB 동작을 바꾸지 않고 복잡한 7개 서비스의 내부 처리에 이름을 붙인 변경입니다.
+          부모에는 중요한 분기와 트랜잭션 경계를 남기고 전용 private 메소드는 다음 부모 전에 둡니다. 단순한 나머지 8개
+          서비스는 유지합니다.
+        </p>
+        <p>
+          <strong>private 메소드 호출 자체가 트랜잭션을 만들지는 않습니다.</strong> 부모가 연 트랜잭션 안에서는 같은
+          tx를 전달합니다. 아래 파일 링크는 실제 소스이며, 각 부모의 JSDoc에서 하위 이름·역할·범위를 확인할 수 있습니다.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <caption>
+              서비스별 부모 처리와 하위 연결
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">서비스·부모</th>
+                <th scope="col">읽는 순서</th>
+                <th scope="col">트랜잭션·보존 조건</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/question-play-sessions/services/question-play-sessions.service.ts"
+                    >QuestionPlaySessionsService</a
+                  ><br /><code>startSession</code>
+                </th>
+                <td>
+                  입력·Daily 분기 → loadDailyChallengeQuestionIds → assertPublishedQuestions → upsertGuestForSession →
+                  loadActiveSessions → 재사용 또는 createSession
+                </td>
+                <td>시작은 트랜잭션 밖. 기존 submitAttempt의 세션 잠금 → 유저 잠금·보상 → 집계 순서는 유지.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/game/services/game-session.service.ts">GameSessionService</a><br /><code
+                    >startSession · submitAttempt</code
+                  >
+                </th>
+                <td>
+                  시작: findTargetDailyWord → upsertGuest → findExistingSession → 재사용 또는 createSession. 제출:
+                  loadSessionForAttempt → 종료 분기 → gradeAttempt → saveAttempt → updateSessionProgress
+                </td>
+                <td>채점까지 밖. 답안 저장과 진행 갱신은 부모의 같은 tx.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/questions/services/admin-questions.service.ts">AdminQuestionsService</a
+                  ><br /><code>createAdminQuestion · updateAdminQuestion</code>
+                </th>
+                <td>
+                  생성 입력 준비 → 순서 확정 → 중첩 저장. 선택지 수정: prepareQuestionChoiceSync →
+                  relocateQuestionChoiceOrders → applyQuestionChoiceChanges → 변경 여부에 따른 갱신·재조회
+                </td>
+                <td>
+                  선택지 포함 수정만 부모에서 tx 시작. 임시 순서 이동·삭제·생성·수정과 최종 읽기까지 같은 tx. 변경
+                  없으면 쓰기 없음.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/questions/services/question-query.service.ts">QuestionQueryService</a
+                  ><br /><code>getDailyChallengeToday</code>
+                </th>
+                <td>loadPublishedDailyChallenge → 공개 질문 필터 → guestId가 있으면 loadGuestProgress → 응답</td>
+                <td>모두 트랜잭션 밖. 완료 세션 우선·완료 세션 중 최대 지급 XP 표시를 유지.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/daily-challenge/services/admin-daily-challenge-questions.service.ts"
+                    >AdminDailyChallengeQuestionsService</a
+                  ><br /><code>attachAdminDailyChallengeQuestion · reorderAdminDailyChallengeQuestions</code>
+                </th>
+                <td>
+                  연결: 소속·중복 검사 → assertPublishedQuestionExists → 저장. 재정렬: 검증 →
+                  relocateDailyChallengeQuestionOrders → applyDailyChallengeQuestionOrders → 재조회·게시 검증
+                </td>
+                <td>임시 음수 순서와 최종 순서만 같은 tx. 기존처럼 재조회·게시 검증은 tx 종료 후.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/me/services/me-summary.service.ts">MeSummaryService</a><br /><code
+                    >getSummary</code
+                  >
+                </th>
+                <td>
+                  사용자 확정 → 프로필·loadPlayHistory·loadSavedPhrases 병렬 조회 → 기존 calculator로 통계·배지 계산
+                </td>
+                <td>트랜잭션 밖. Promise.all 병렬 호출을 유지.</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="../../apps/api/src/me/services/user-level-profile.service.ts">UserLevelProfileService</a
+                  ><br /><code>syncLevelProfile</code>
+                </th>
+                <td>normalizeXp → resolveGuestUser → syncProfileXp → mapLevelProfile</td>
+                <td>트랜잭션 밖. 기존 단일 upsert SQL의 GREATEST와 반환 행 확인을 유지.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <a href="question-play-sessions-method-db-flow.html#start"
+            >Question 세션 시작: 하위 메소드별 현재 원본 코드</a
+          >
+          · <a href="question-play-sessions-method-db-flow.html#submit">답안 제출: 잠금·보상 흐름과 원본 코드</a>
+        </p>
+      </section>
+      <section aria-labelledby="source-heading">
+        <p class="eyebrow">Source map</p>
+        <h2 id="source-heading">코드 근거</h2>
+        <ul class="source-list">
+          <li>
+            <code>packages/db/prisma/schema.prisma</code> — Question, QuestionChoice, DailyChallenge, 조인, 플레이 세션
+            관계
+          </li>
+          <li><code>apps/admin/lib/server/admin-api-proxy.ts</code> — Next.js 프록시와 관리자 API key 주입</li>
+          <li><code>apps/admin/features/question-management/**</code> — 질문 API, React Query, 폼 흐름</li>
+          <li>
+            <code>apps/admin/features/daily-challenge-management/**</code> — 챌린지 CRUD·질문 검색·연결·재정렬 흐름
+          </li>
+          <li><code>apps/api/src/questions/**</code> — 공개·관리자 질문 controller, service, mapper, DTO</li>
+          <li>
+            <code>apps/api/src/daily-challenge/**</code> — 관리자 챌린지 controller, service, validator, mapper, DTO
+          </li>
+          <li><code>apps/api/src/question-play-sessions/**</code> — 질문 세션 시작·복원·답안·결과 계약</li>
+          <li><code>apps/api/src/common/http-response.interceptor.ts</code> — 성공 envelope</li>
+          <li><code>apps/mobile/src/shared/api/request-json.ts</code> — v1 요청, envelope 해제, Zod 검증, 오류 변환</li>
+          <li><code>apps/mobile/src/features/daily-challenge/**</code> — 오늘 챌린지 query와 서버 우선 선택</li>
+          <li>
+            <code>apps/mobile/src/features/play/hooks/use-play-controller.ts</code> — 질문 선택, fallback, 세션 복원,
+            제출
+          </li>
+          <li><code>packages/api-contracts/src/generated/zod.gen.ts</code> — OpenAPI에서 생성된 런타임 응답 계약</li>
+        </ul>
+      </section>
+
+      <p class="footer-note">문서 기준일: 2026-08-26 · 저장소 현재 코드 기준 · 예시 JSON의 값은 구조 설명용</p>
+    </main>
+
+    <script>
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+
+      function selectTab(selectedTab) {
+        tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab === selectedTab)));
+        panels.forEach((panel) => {
+          const isActive = panel.id === selectedTab.getAttribute('aria-controls');
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => selectTab(tab));
+        tab.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+          event.preventDefault();
+          const offset = event.key === 'ArrowRight' ? 1 : -1;
+          const nextTab = tabs[(index + offset + tabs.length) % tabs.length];
+          selectTab(nextTab);
+          nextTab.focus();
+        });
+      });
+    </script>
+  </body>
+</html>

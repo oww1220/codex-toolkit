@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{TITLE}}</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1218;
+      --panel: #171c25;
+      --line: #354052;
+      --text: #f5f7fb;
+      --muted: #aeb8c8;
+      --accent: #80e1c1;
+      --purple: #b0a4ff;
+      --blue: #75b9ff;
+      --orange: #ffb86b;
+      --warn: #ffd166;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at top left, #1d293b 0, transparent 45rem), var(--bg);
+      color: var(--text);
+      font: 1rem/1.7 system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    .page { width: min(1160px, calc(100% - 40px)); margin: auto; padding: 64px 0 96px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 960px; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.12; letter-spacing: -.045em; }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.15rem); line-height: 1.3; letter-spacing: -.025em; }
+    h3 { font-size: 1.1rem; }
+    section { margin-top: 64px; scroll-margin-top: 24px; }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--accent); text-underline-offset: .2em; }
+    button, summary { cursor: pointer; }
+    button { min-height: 44px; padding: 8px 15px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font: inherit; }
+    button:hover:not(:disabled), button[aria-selected="true"] { border-color: var(--accent); }
+    button:disabled { opacity: .55; cursor: default; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .eyebrow { color: var(--accent); font-size: .8rem; font-weight: 750; letter-spacing: .12em; }
+    .lead, .muted, figcaption { color: var(--muted); }
+    .lead { max-width: 850px; font-size: 1.1rem; }
+    .nav, .controls, .tab-buttons { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .nav { margin: 28px 0; }
+    .nav a { padding: 7px 14px; border: 1px solid var(--line); border-radius: 30px; text-decoration: none; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
+    .card, .diagram, .step, .tab-panel, .table-wrap { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); overflow-wrap: anywhere; }
+    .card { border-top: 3px solid var(--tone, var(--accent)); }
+    .card strong { display: block; margin-bottom: 7px; font-size: 1.1rem; }
+    .card p { color: var(--muted); }
+    .tone-purple { --tone: var(--purple); }
+    .tone-blue { --tone: var(--blue); }
+    .tone-orange { --tone: var(--orange); }
+    .badge { display: inline-block; margin-bottom: 10px; color: var(--tone, var(--accent)); font-size: .8rem; font-weight: 700; }
+    .diagram { margin: 24px 0; }
+    .pipeline { display: flex; gap: 42px; padding: 0; margin: 0 0 20px; list-style: none; }
+    .node { position: relative; flex: 1; min-width: 0; padding: 16px; border: 1px solid var(--tone, var(--accent)); border-radius: 12px; }
+    .node strong { display: block; }
+    .connector { position: absolute; left: 100%; top: 50%; width: 42px; height: 2px; background: var(--line); }
+    .connector::after { content: ''; position: absolute; right: 0; top: -4px; border-left: 7px solid var(--accent); border-block: 5px solid transparent; }
+    .packet { position: absolute; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    html[data-motion="running"] .packet { animation: travel 2.2s ease-in-out infinite; }
+    html[data-motion="paused"] .packet { animation: travel 2.2s ease-in-out infinite paused; }
+    @keyframes travel { from { transform: translateX(0); } to { transform: translateX(32px); } }
+    .callout { padding: 18px 22px; margin-top: 24px; border-left: 4px solid var(--warn); background: var(--panel); overflow-wrap: anywhere; }
+    .callout strong { color: var(--warn); }
+    .controls { margin-bottom: 18px; }
+    .progress { flex: 1 1 210px; color: var(--accent); }
+    .steps { padding-left: 0; list-style: none; counter-reset: steps; }
+    .step { position: relative; margin-bottom: 14px; padding-left: 72px; counter-increment: steps; transition: border-color 180ms ease, background 180ms ease; }
+    .step::before { content: counter(steps); position: absolute; top: 20px; left: 20px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: #253142; color: var(--accent); font-weight: 750; }
+    .step[aria-current="step"] { border-color: var(--accent); background: #19302e; }
+    details { margin-top: 18px; }
+    summary { min-height: 44px; color: var(--accent); padding: 8px 0; }
+    code, pre { font-family: 'Cascadia Code', Consolas, monospace; }
+    pre { white-space: pre; max-width: 100%; overflow-x: auto; padding: 16px; background: #0e131c; border-radius: 10px; }
+    .tab-buttons { margin-bottom: 16px; }
+    .tab-panel { margin-top: 16px; }
+    .table-wrap { overflow-x: auto; padding: 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 14px 18px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+    th { color: var(--accent); }
+    @media (max-width: 700px) {
+      .page { width: calc(100% - 32px); padding-top: 36px; }
+      section { margin-top: 44px; }
+      .pipeline { flex-direction: column; }
+      .connector { left: 50%; top: 100%; width: 2px; height: 42px; }
+      .connector::after { right: -4px; top: auto; bottom: 0; border: 0; border-top: 7px solid var(--accent); border-inline: 5px solid transparent; }
+      .packet { left: -3px; top: 0; }
+      @keyframes travel { from { transform: translateY(0); } to { transform: translateY(32px); } }
+      .step { padding: 18px 18px 18px 62px; }
+      .step::before { left: 14px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow">{{DOCUMENT_LABEL}}</p>
+      <h1>{{TITLE}}</h1>
+      <p class="lead">{{SUMMARY}}</p>
+      <nav class="nav" aria-label="문서 바로가기">
+        <a href="#overview">전체 흐름</a><a href="#walkthrough">단계별 설명</a><a href="#evidence">상세 근거</a>
+      </nav>
+      <div class="cards" aria-label="핵심 요약">
+        <article class="card"><strong>{{KEY_POINT_1}}</strong><p>{{KEY_DETAIL_1}}</p></article>
+        <article class="card tone-purple"><strong>{{KEY_POINT_2}}</strong><p>{{KEY_DETAIL_2}}</p></article>
+      </div>
+    </header>
+
+    <!-- 흐름이 없는 자료에서는 이 섹션과 단계 제어를 제거하고 비교표·주제별 섹션으로 교체한다. -->
+    <section id="overview" aria-labelledby="overview-title">
+      <p class="eyebrow">전체 흐름</p>
+      <h2 id="overview-title">{{FLOW_TITLE}}</h2>
+      <p class="muted">{{FLOW_INTRO}}</p>
+      <figure class="diagram">
+        <ol class="pipeline" aria-label="전달 순서">
+          <li class="node">
+            <span class="badge">{{ROLE_1}}</span>
+            <strong>{{STAGE_1}}</strong><span>{{TRANSFER_1}}</span>
+            <span class="connector" aria-hidden="true"><span class="packet"></span></span>
+          </li>
+          <li class="node tone-purple">
+            <span class="badge">{{ROLE_2}}</span>
+            <strong>{{STAGE_2}}</strong><span>{{TRANSFER_2}}</span>
+            <span class="connector" aria-hidden="true"><span class="packet"></span></span>
+          </li>
+          <li class="node tone-blue">
+            <span class="badge">{{ROLE_3}}</span>
+            <strong>{{STAGE_3}}</strong><span>{{TRANSFER_3}}</span>
+          </li>
+        </ol>
+        <figcaption>{{FLOW_CAPTION}}</figcaption>
+      </figure>
+      <button type="button" data-motion-toggle hidden>애니메이션 정지</button>
+      <aside class="callout"><strong>{{CAUTION_TITLE}}</strong><p>{{CAUTION}}</p></aside>
+    </section>
+
+    <section id="walkthrough" data-walkthrough aria-labelledby="walkthrough-title">
+      <p class="eyebrow">단계별 설명</p>
+      <h2 id="walkthrough-title">{{WALKTHROUGH_TITLE}}</h2>
+      <div class="controls" data-step-controls hidden>
+        <span class="progress" data-progress role="status" aria-live="polite"></span>
+        <button type="button" data-previous>이전</button>
+        <button type="button" data-next>다음</button>
+        <button type="button" data-show-all aria-pressed="false">전체 보기</button>
+      </div>
+      <ol class="steps">
+        <li class="step" data-step>
+          <span class="badge">{{ROLE_1}}</span>
+          <h3>{{STAGE_1}}</h3><p>{{STEP_DETAIL_1}}</p>
+          <details open><summary>근거 펼치기</summary><pre><code>{{EVIDENCE_1}}</code></pre></details>
+        </li>
+        <li class="step" data-step>
+          <span class="badge tone-purple">{{ROLE_2}}</span>
+          <h3>{{STAGE_2}}</h3><p>{{STEP_DETAIL_2}}</p>
+          <details open><summary>근거 펼치기</summary><pre><code>{{EVIDENCE_2}}</code></pre></details>
+        </li>
+        <li class="step" data-step>
+          <span class="badge tone-blue">{{ROLE_3}}</span>
+          <h3>{{STAGE_3}}</h3><p>{{STEP_DETAIL_3}}</p>
+          <details open><summary>근거 펼치기</summary><pre><code>{{EVIDENCE_3}}</code></pre></details>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 비교할 상세 자료가 있을 때만 탭을 유지한다. 핵심 조건·경고는 이곳에 넣지 않는다. -->
+    <section id="evidence" data-tabs aria-labelledby="evidence-title">
+      <p class="eyebrow">상세 근거</p>
+      <h2 id="evidence-title">{{EVIDENCE_TITLE}}</h2>
+      <div class="tab-buttons" data-tab-list aria-label="상세 자료 선택" hidden>
+        <button type="button" id="tab-a" data-tab aria-controls="panel-a">{{TAB_A}}</button>
+        <button type="button" id="tab-b" data-tab aria-controls="panel-b">{{TAB_B}}</button>
+      </div>
+      <section class="tab-panel" id="panel-a" data-panel><h3>{{TAB_A}}</h3><p>{{PANEL_A}}</p></section>
+      <section class="tab-panel" id="panel-b" data-panel><h3>{{TAB_B}}</h3><p>{{PANEL_B}}</p></section>
+    </section>
+  </main>
+  <script>
+    // 본문은 정적 HTML에 둔다. 제어 초기화 후에만 보조 자료를 접는다.
+    document.querySelectorAll('[data-walkthrough]').forEach(section => {
+      const steps = [...section.querySelectorAll('[data-step]')];
+      const controls = section.querySelector('[data-step-controls]');
+      if (steps.length < 2 || !controls) return;
+      const previous = controls.querySelector('[data-previous]');
+      const next = controls.querySelector('[data-next]');
+      const all = controls.querySelector('[data-show-all]');
+      const progress = controls.querySelector('[data-progress]');
+      let activeIndex = 0;
+      let showAll = false;
+
+      function renderSteps() {
+        steps.forEach((step, index) => {
+          if (!showAll && index === activeIndex) step.setAttribute('aria-current', 'step');
+          else step.removeAttribute('aria-current');
+        });
+        previous.disabled = showAll || activeIndex === 0;
+        next.disabled = showAll || activeIndex === steps.length - 1;
+        all.textContent = showAll ? '단계별 보기' : '전체 보기';
+        all.setAttribute('aria-pressed', String(showAll));
+        const title = steps[activeIndex].querySelector('h3').textContent;
+        progress.textContent = showAll ? '전체 흐름 표시 중' : `${activeIndex + 1} / ${steps.length} · ${title}`;
+      }
+      previous.addEventListener('click', () => {
+        activeIndex = Math.max(0, activeIndex - 1);
+        renderSteps();
+      });
+      next.addEventListener('click', () => {
+        activeIndex = Math.min(steps.length - 1, activeIndex + 1);
+        renderSteps();
+      });
+      all.addEventListener('click', () => {
+        showAll = !showAll;
+        renderSteps();
+      });
+      renderSteps();
+      controls.hidden = false;
+    });
+
+    document.querySelectorAll('[data-tabs]').forEach(section => {
+      const list = section.querySelector('[data-tab-list]');
+      const tabs = [...section.querySelectorAll('[data-tab]')];
+      if (!list || tabs.length < 2) return;
+      const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+      if (panels.some(panel => !panel)) return;
+      function selectTab(activeIndex) {
+        tabs.forEach((tab, index) => {
+          const selected = index === activeIndex;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          panels[index].hidden = !selected;
+        });
+      }
+      tabs.forEach((tab, index) => {
+        tab.setAttribute('role', 'tab');
+        panels[index].setAttribute('role', 'tabpanel');
+        panels[index].setAttribute('aria-labelledby', tab.id);
+        panels[index].tabIndex = 0;
+        tab.addEventListener('click', () => selectTab(index));
+        tab.addEventListener('keydown', event => {
+          let target;
+          if (event.key === 'Home') target = 0;
+          else if (event.key === 'End') target = tabs.length - 1;
+          else if (event.key === 'ArrowRight') target = (index + 1) % tabs.length;
+          else if (event.key === 'ArrowLeft') target = (index - 1 + tabs.length) % tabs.length;
+          else return;
+          event.preventDefault();
+          selectTab(target);
+          tabs[target].focus();
+        });
+      });
+      list.setAttribute('role', 'tablist');
+      selectTab(0);
+      list.hidden = false;
+    });
+
+    const motionButton = document.querySelector('[data-motion-toggle]');
+    if (motionButton && document.querySelector('.packet')) {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let paused = false;
+      function renderMotion() {
+        motionButton.disabled = reducedMotion.matches;
+        if (reducedMotion.matches) {
+          document.documentElement.dataset.motion = 'reduced';
+          motionButton.textContent = '동작 줄이기 적용 중';
+        } else {
+          document.documentElement.dataset.motion = paused ? 'paused' : 'running';
+          motionButton.textContent = paused ? '애니메이션 재개' : '애니메이션 정지';
+        }
+      }
+      motionButton.addEventListener('click', () => {
+        paused = !paused;
+        renderMotion();
+      });
+      reducedMotion.addEventListener('change', renderMotion);
+      renderMotion();
+      motionButton.hidden = false;
+    }
+    document.querySelectorAll('details').forEach(details => { details.open = false; });
+  </script>
+</body>
+</html>

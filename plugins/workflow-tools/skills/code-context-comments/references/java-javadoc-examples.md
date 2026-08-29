@@ -203,6 +203,44 @@ public interface SocialLoginService {
 - 세션에 보관하는 값과 보관하지 않는 값을 이유와 함께 명시한다.
 - 짧고 자명한 메서드는 한 줄 설명으로 끝내고, 중요한 계약이 있는 메서드만 문단을 늘린다.
 
+## 구현 내부 변수와 분기
+
+```java
+public void linkPending(HttpSession session, String memberId, String registrarId) {
+    // 소셜 로그인에서 회원가입으로 넘어올 때만 남는 일회성 연동 정보다.
+    PendingSocialLink pendingLink =
+            (PendingSocialLink) session.getAttribute(SESSION_KEY_PENDING_LINK);
+
+    if (pendingLink == null) {
+        return;
+    }
+
+    // 제공자 계정 식별값은 회원 판정이 아니라 가입 완료 후 연동 등록에만 사용한다.
+    String externalUserId = pendingLink.getExternalUserId();
+
+    try {
+        socialLinkRepository.save(
+                memberId,
+                pendingLink.getProvider(),
+                externalUserId,
+                registrarId
+        );
+
+        // 저장 성공 후에 제거해야 실패 시 연동 대기 정보를 잃지 않는다.
+        session.removeAttribute(SESSION_KEY_PENDING_LINK);
+    } catch (RuntimeException exception) {
+        // 부가 작업인 소셜 연동 실패가 완료된 회원가입을 되돌리지 않게 격리한다.
+        logger.warn("Failed to register pending social link", exception);
+    }
+}
+```
+
+### 변수 주석이 필요한 이유
+
+- `pendingLink`는 일반 세션 값이 아니라 특정 진입 경로에서만 생기는 일회성 상태다.
+- `externalUserId`는 이름만으로는 회원 식별자인지 제공자 식별자인지, 어디에 쓰이는지 불분명하다.
+- `memberId`, `registrarId`, `exception`처럼 역할이 이름과 문맥에서 분명한 변수에는 설명을 반복하지 않는다.
+
 ## 그대로 복제하지 않을 것
 
 - 프로젝트에 존재하지 않는 클래스, 화면, 테이블, 문서 식별자

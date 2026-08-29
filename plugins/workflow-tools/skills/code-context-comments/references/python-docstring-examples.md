@@ -2,6 +2,16 @@
 
 프로젝트가 사용하는 docstring 형식을 우선한다. 아래 예시는 역할, 입력, 실패 정책을 분리하는 한 가지 방식이며 고정 템플릿이 아니다.
 
+## 필수 적용 범위
+
+- 모듈·클래스·공개 함수·메서드와 생성자 의존성의 역할·책임 경계
+- 모든 인자, 반환값, yield와 실제로 발생·변환·재전파하는 예외 조건
+- 목적이 숨은 속성·지역 변수와 모든 if/elif/else·조기 반환·match/case·반복 경로
+- try/except/else/finally, context manager의 복구·해제·오류 처리 책임
+- 파일·DB·네트워크 호출의 순서, 데이터 변경과 실패 후 보존할 상태
+
+대상 코드에 존재하는 항목은 모두 점검 목록에 넣고 선언 또는 실행 경로 가까이에 설명한다.
+
 ## 서비스 메서드와 내부 흐름
 
 ```python
@@ -9,6 +19,12 @@ class SocialLinkService:
     """가입 흐름에 남은 소셜 계정 연결을 회원에게 등록한다."""
 
     def __init__(self, repository: SocialLinkRepository, logger: Logger) -> None:
+        """연동 저장소와 부가 작업 실패를 기록할 로거를 주입받는다.
+
+        Args:
+            repository: 대기 중인 소셜 계정을 회원에게 연결할 저장소.
+            logger: 가입을 되돌리지 않는 연동 실패를 기록할 로거.
+        """
         self._repository = repository
         self._logger = logger
 
@@ -25,6 +41,9 @@ class SocialLinkService:
         Args:
             session: 연동 대기 정보를 조회하고 제거할 사용자 세션.
             member_id: 소셜 계정을 연결할 가입 완료 회원 ID.
+
+        Returns:
+            없음. 연동 부재와 저장 실패는 가입 완료 흐름 밖으로 전파하지 않는다.
         """
         # 소셜 로그인에서 회원가입으로 넘어올 때만 존재하는 일회성 상태다.
         pending_link = session.get("pending_social_link")
@@ -73,17 +92,18 @@ def load_profile(path: Path) -> Profile:
         ValueError: JSON 구조가 프로필 계약을 만족하지 않는 경우.
         OSError: 파일을 읽을 수 없는 경우.
     """
+    # 파싱 성공·실패와 관계없이 이 함수가 연 파일을 여기서 닫는다.
     with path.open(encoding="utf-8") as profile_file:
         payload = json.load(profile_file)
 
     return Profile.from_mapping(payload)
 ```
 
-`with`의 자원 정리, `json.load`의 동작, `payload`의 타입은 자명하므로 설명하지 않는다. 호출자가 알아야 하는 예외 조건은 docstring에 남긴다.
+context manager에는 항상 해제할 자원과 책임 범위를 적고, 라이브러리 함수의 일반 동작은 반복하지 않는다. 호출자가 알아야 하는 예외 조건은 docstring에 남긴다.
 
 ## 그대로 복제하지 않을 것
 
 - 타입 힌트와 함수명을 반복하는 docstring
-- 모든 지역 변수와 반복문에 붙이는 주석
+- 이름·타입이나 반복 문법만 다시 읽어 주는 주석
 - 라이브러리 함수의 일반적인 동작 설명
 - 실제 구현에서 삼키는 예외를 `Raises`에 적거나 전파되는 예외를 누락하는 문서

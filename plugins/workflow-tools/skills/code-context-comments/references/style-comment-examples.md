@@ -2,6 +2,19 @@
 
 SCSS 주석은 일반적인 시각 결과가 아니라 제거하거나 바꾸면 회귀하는 제약과 재사용 계약을 설명한다.
 
+## 필수 적용 범위
+
+- 브라우저별 workaround와 제거 가능한 조건
+- 외부·inline 스타일 override와 `!important`가 필요한 이유
+- 특수 breakpoint·레이아웃 계산식·stacking context·`z-index` 비교 기준
+- mixin·function·placeholder의 입력·단위·반환 CSS·`@content` 계약
+- 디자인 토큰 fallback이 필요한 실행 환경과 접근성 근거
+- animation·transition 상태 전이와 `prefers-reduced-motion` 대응
+- safe-area·scrollbar·viewport 단위의 실제 기기 제약
+- 복잡한 selector와 의도한 specificity, 제어할 수 없는 DOM 경계
+
+대상 SCSS에 존재하는 항목은 모두 점검 목록에 넣고 선언 가까이에 설명한다.
+
 ## 브라우저 대응
 
 ```scss
@@ -74,9 +87,18 @@ SCSS 주석은 일반적인 시각 결과가 아니라 제거하거나 바꾸면
 @function rem($pixels) {
   @return calc($pixels / 16) * 1rem;
 }
+
+/// 화면에서는 숨기되 보조기기 접근과 키보드 포커스는 유지해야 하는 요소에 확장한다.
+%visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
 ```
 
-재사용 API에는 허용 단위, 입력 범위, 생성되는 CSS와 `@content` 책임을 설명한다.
+재사용 API에는 허용 단위, 입력 범위, 생성되는 CSS, `@content`와 placeholder의 확장 조건을 설명한다.
 
 ## 디자인 토큰과 fallback
 

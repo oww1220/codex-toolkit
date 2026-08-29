@@ -7,35 +7,39 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 ## 핵심 원칙
 
-주석은 코드를 다시 읽지 않고도 역할과 계약을 빠르게 파악하게 한다. 정확한 정보를 읽기 쉬운 구조로 남기며, 자명한 코드를 문장으로 반복하지 않는다.
+주석은 역할과 계약을 빠르게 파악하게 하며 코드를 문장으로 반복하지 않는다.
 
-## 작성 순서
+## 필수 점검 절차
 
-1. 대상 선언의 구현, 호출자, 데이터 흐름, 기존 주석을 확인한다.
-2. 코드만으로 알기 어려운 계약과 이유를 골라 해당 구문 가까이에 설명한다.
-3. Vue·React는 로컬·스토어 상태·파생값·갱신 함수·watch/effect를 빠짐없이 전수 확인한다.
+1. 작업 언어의 레퍼런스를 처음부터 끝까지 읽는다.
+2. 구현·호출자·데이터 흐름을 확인하고 `파일 × 필수 적용 범위` 목록을 만든다.
+3. 레퍼런스에 정의된 구문이 있으면 모든 발생 지점을 확인해 목적·영향·이유를 가까이에 설명한다.
+4. 변경 파일과 목록을 다시 대조해 빠진 필수 항목이 없을 때만 완료한다.
+
+대상 코드의 필수 선언·상태·분기·반복·예외·effect·store·props·템플릿·스타일은 생략하지 않는다. 모든 조건 경로의 의미를 쓰며 인접 경로는 모두 설명될 때만 루트 주석으로 묶는다.
+
+## 사후 독립 검증
+
+주석 작성 후 도구가 있으면 reviewer 요청에 사용자 지정 디렉터리·모듈·파일 경로를 모두 명시한다. `reviewer`가 대상 전체와 레퍼런스를 읽기 전용으로 대조하고, 누락은 `파일:위치 / 누락 항목 / 필요한 설명`으로, 없으면 `누락 0건`으로 보고하며 수정하지 않는다.
+
+메인 에이전트가 보완하고 변경했다면 같은 reviewer가 재검토한다. 누락 0건일 때만 완료한다. 도구가 없으면 메인이 별도 재검토한다.
 
 ## 구문 컨텍스트별 정보 구조
 
 | 구문 컨텍스트 | 담을 내용 |
 |---|---|
-| 모듈·클래스·인터페이스·타입 | 핵심 역할, 사용 경계, 불변조건, 주요 협력 대상·흐름 |
-| 엔티티·필드·상수 | 도메인 의미, 식별·고유성·관계·nullable·삭제 정책, 보관 이유 |
+| 모듈·클래스·인터페이스·타입 | 역할, 경계, 불변조건, 협력 흐름 |
+| 엔티티·필드·상수 | 도메인 의미, 관계, nullable, 보관·삭제 정책 |
 | 메서드·함수 | 역할, 호출 조건, 입력·반환, 상태·부작용·실패 처리 |
-| `@param` | 값의 출처·의미·허용 조건. 구조화된 props/options는 객체와 사용 속성별 계약 |
-| `@return` | 반환값의 의미와 중요한 상태 |
-| `@throws` | 예외가 발생하는 실제 조건 |
-| 지역 변수 | 이름만으로 숨은 값의 출처, 사용 목적, 단위, 수명 |
-| 반응형·스토어 상태·참조 | Vue `ref/reactive/Pinia`, React `useState/useRef/Redux/Zustand`의 state/getter/setter/action/selector/dispatch 전 선언의 목적·UI 영향·갱신 조건·주체 |
-| computed·memo·파생값 | `computed`·`useMemo` 전 선언의 입력 상태, fallback, 재계산 의미 |
-| 조건문·조기 반환 | 조건의 도메인 의미와 이 경로를 종료·건너뛰는 이유 |
-| 반복문 | 반복 대상, 종료 조건, 순서가 중요한 이유 |
-| `catch`/`finally` | catch의 기록·변환·삼킴·재전파와 상위 영향, finally가 항상 복구·해제할 상태·자원 |
-| watch·effect·구독·외부 호출 | `watch`·`watchEffect`·`useEffect` 전 선언의 실행 조건, 변경 대상, cleanup, 호출 순서 |
+| `@param`·`@return`·`@throws` | 값의 출처·의미·허용 조건, 반환 상태, 실제 예외 조건 |
+| 지역 변수 | 숨은 출처, 목적, 단위, 수명 |
+| 반응형·스토어 상태·참조 | 목적, UI 영향, 갱신 조건·주체 |
+| computed·memo·파생값 | 입력 상태, fallback, 재계산 의미 |
+| 조건·반복·예외 경로 | 도메인 의미, 종료·생략·순서, catch 변환·전파와 finally 복구 책임 |
+| watch·effect·구독·외부 호출 | 실행 조건, 변경 대상, cleanup, 순서 |
 
 - 문단마다 한 주제만 짧게 쓰고 프로젝트 용어와 기존 형식을 우선한다.
-- 약어는 처음 한 번만 풀고 외부 식별자는 필요·안정적일 때만 쓴다.
-- 변수는 선언 가까이에 설명하고 이름이 부족하면 고친다.
+- 약어는 처음만 풀고 외부 식별자는 필요·안정적일 때만 쓴다.
 - 상세함과 가독성이 충돌하면 구현 세부사항을 덜고 계약과 이유를 남긴다.
 
 ## 정확성과 안전
@@ -43,26 +47,22 @@ description: Use when writing or changing code whose responsibilities, contracts
 - 계약이나 흐름이 바뀌면 같은 변경에서 주석도 갱신한다. 확인하지 못한 의도는 추측하지 않는다.
 - 비밀키, 토큰, 실제 개인정보, 내부 접속정보를 기록하지 않고 생성·외부·마이그레이션 산출물은 수정하지 않는다.
 
-## 주석을 생략할 곳
+## 생략 범위
 
-- 자명한 객체 getter/setter·DTO, 사용처와 중복되는 로컬 props/options 타입, 단순 위임·내부 함수·익명 콜백
-- 이름과 타입만으로 역할이 분명한 변수
-- 코드 한 줄씩을 한국어로 옮긴 설명
+- 생성 코드·외부 라이브러리·마이그레이션 산출물
+- 해당 언어 레퍼런스의 필수 구문이 대상 코드에 없는 경우
 
-## 흔한 실패
+필수 항목에는 자명하다는 이유로 생략하지 않는다. 코드 번역 대신 그 선언과 경로가 존재하는 목적·영향·이유를 쓴다.
 
-- 모든 줄·변수에 주석을 붙임 → 비자명한 계약, 역할, 이유만 남긴다.
-- 말머리와 긴 배경이 역할을 가림 → 첫 문장에 역할을 쓰고 주제별로 나눈다.
-- 호출자를 보지 않고 추측함 → 실제 호출 경로에서 확인되는 내용만 쓴다.
+## 언어별 필수 점검 기준
 
-## 언어별 예시
+작업 언어의 파일만 읽되 그 안의 `필수 적용 범위`는 모두 적용한다.
+TSX·Vue SFC처럼 여러 언어가 섞인 파일은 관련 레퍼런스를 모두 읽는다.
 
-작업에 필요한 언어 파일만 읽는다.
-
-- Java: [Javadoc 예시](references/java-javadoc-examples.md)
-- JavaScript·TypeScript·NestJS: [JSDoc 예시](references/typescript-jsdoc-examples.md)
-- React·TSX: [React 예시](references/react-comment-examples.md)
-- Vue: [SFC 예시](references/vue-sfc-comment-examples.md)
-- EJS·JSP·Thymeleaf: [템플릿 예시](references/template-comment-examples.md)
-- SCSS: [스타일 예시](references/style-comment-examples.md)
-- Python: [docstring 예시](references/python-docstring-examples.md)
+- Java: [Javadoc 기준](references/java-javadoc-examples.md)
+- JavaScript·TypeScript·NestJS: [JSDoc 기준](references/typescript-jsdoc-examples.md)
+- React·TSX: [React 기준](references/react-comment-examples.md)
+- Vue: [SFC 기준](references/vue-sfc-comment-examples.md)
+- EJS·JSP·Thymeleaf: [템플릿 기준](references/template-comment-examples.md)
+- SCSS: [스타일 기준](references/style-comment-examples.md)
+- Python: [docstring 기준](references/python-docstring-examples.md)

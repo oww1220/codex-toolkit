@@ -2,6 +2,16 @@
 
 아래 코드는 실제 프로젝트 식별자를 제거한 예시다. 클래스명, 세션 키, 저장소 이름, 화면 경로를 복사하지 말고 주석의 정보 구조만 참고한다.
 
+## 필수 적용 범위
+
+- 클래스·인터페이스·enum·엔티티와 공개·보호 생성자/메서드의 역할과 책임 경계
+- 필드·상수의 도메인 의미, 수명, nullable, 보관·삭제·보안 정책
+- 모든 매개변수·반환값·실제 예외 조건과 호출 순서·부작용
+- 목적이 이름에 드러나지 않는 지역 변수와 모든 조건·조기 반환·반복·catch/finally 경로
+- 외부 API 제약, 세션·토큰·개인정보 처리와 실패를 삼키거나 변환하는 이유
+
+대상 코드에 존재하는 항목은 모두 점검 목록에 넣고 선언 또는 실행 경로 가까이에 설명한다.
+
 ## OAuth 제공자 클라이언트
 
 ```java
@@ -87,6 +97,7 @@ public interface OAuthProviderClient {
             String expectedExternalUserId
     ) throws OAuthException;
 
+    /** 새 토큰으로 제공자 연결 해제를 시도한 최종 상태다. */
     enum UnlinkResult {
         /** 계정이 일치해 연결 폐기를 마쳤다. */
         REVOKED,
@@ -188,13 +199,21 @@ public interface SocialLoginService {
      */
     void unlink(RequestContext context) throws ServiceException;
 
-    /** 제공자 인가 화면으로 이동한다. */
+    /**
+     * 제공자 인가 화면으로 이동한다.
+     *
+     * @param context 인가 요청을 만들 로그인 세션과 이동 응답을 가진 요청 컨텍스트
+     * @throws ServiceException state를 저장하거나 인가 화면으로 이동하지 못한 경우
+     */
     void startProviderLogin(RequestContext context) throws ServiceException;
 
     /**
      * 제공자 콜백을 받아 회원을 판정하고 다음 화면으로 이동한다.
      *
      * <p>콜백 URL은 제공자 설정에 등록된 값과 정확히 일치해야 한다.</p>
+     *
+     * @param context 제공자가 돌려준 code·state와 인가 요청 세션을 가진 요청 컨텍스트
+     * @throws ServiceException 콜백 검증·회원 판정 또는 다음 화면 이동에 실패한 경우
      */
     void handleProviderCallback(RequestContext context) throws ServiceException;
 }
@@ -205,16 +224,24 @@ public interface SocialLoginService {
 - 인터페이스 설명에서 조율 책임과 다른 서비스·패키지와의 경계를 먼저 고정한다.
 - 회원 판정 규칙을 세 단계로 분리해 중첩된 조건문을 읽지 않아도 흐름을 알 수 있다.
 - 세션에 보관하는 값과 보관하지 않는 값을 이유와 함께 명시한다.
-- 짧고 자명한 메서드는 한 줄 설명으로 끝내고, 중요한 계약이 있는 메서드만 문단을 늘린다.
+- 모든 공개 메서드의 입력·실패 계약을 적고, 중요한 정책이 있는 메서드만 문단을 늘린다.
 
 ## 구현 내부 변수와 분기
 
 ```java
+/**
+ * 가입 흐름에 남은 일회성 소셜 연동을 회원에게 등록한다.
+ *
+ * @param session 연동 대기 정보가 저장될 수 있는 사용자 세션
+ * @param memberId 가입과 로그인을 마친 회원 식별자
+ * @param registrarId 연동 기록에 남길 등록자 식별자
+ */
 public void linkPending(HttpSession session, String memberId, String registrarId) {
     // 소셜 로그인에서 회원가입으로 넘어올 때만 남는 일회성 연동 정보다.
     PendingSocialLink pendingLink =
             (PendingSocialLink) session.getAttribute(SESSION_KEY_PENDING_LINK);
 
+    // 소셜 로그인을 거치지 않은 가입은 후속 연동 없이 정상 종료한다.
     if (pendingLink == null) {
         return;
     }

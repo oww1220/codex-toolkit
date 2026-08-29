@@ -2,6 +2,16 @@
 
 JavaScript, TypeScript, NestJS에서 참고한다. 타입과 코드를 문장으로 반복하지 말고, 호출 계약과 숨은 상태 변화만 설명한다.
 
+## 필수 적용 범위
+
+- 모듈·공유 interface/type·class·decorator 대상과 공개 함수·메서드의 역할·경계
+- 모든 `@param`, 구조화된 options 속성, 반환값, 실제 throw/reject 조건
+- 목적이 숨은 지역 변수와 모든 조건·조기 반환·삼항식·switch·반복·catch/finally 경로
+- Promise·외부 호출의 순서, 변경 상태, 오류 변환·재전파와 cleanup
+- NestJS Controller·Guard 이후 요청 계약, Service 정책, Entity 필드·관계·nullable·인덱스·삭제 규칙
+
+대상 코드에 존재하는 항목은 모두 점검 목록에 넣고 선언 또는 실행 경로 가까이에 설명한다.
+
 ## 비동기 함수와 내부 흐름
 
 ```ts
@@ -23,6 +33,7 @@ type PendingSocialLink = {
  *
  * @param session 연동 대기 정보를 조회하고 제거할 사용자 세션
  * @param memberId 소셜 계정을 연결할 가입 완료 회원 ID
+ * @returns 연동이 없거나 저장 시도가 끝나면 완료되는 작업. 저장 실패는 외부로 전파하지 않는다.
  */
 export async function completeSocialLink(
   session: Session,
@@ -92,8 +103,12 @@ export interface SocialAuthClient {
 ## NestJS 요청 경계와 서비스 정책
 
 ```ts
+/** 인증된 회원의 소셜 연동 해제 요청을 서비스 정책으로 전달하는 HTTP 경계다. */
 @Controller('social-links')
 export class SocialLinkController {
+  /**
+   * @param socialLinkService 회원 소유권 확인과 연동 삭제를 수행할 애플리케이션 서비스.
+   */
   constructor(private readonly socialLinkService: SocialLinkService) {}
 
   /**
@@ -104,6 +119,7 @@ export class SocialLinkController {
    * @param memberId 인증 Guard가 확인한 현재 회원 ID.
    * @param linkId URL 경로에서 받은 해제 대상 연동 ID.
    * @returns 응답 본문 없이 해제 완료 시점에 끝나는 작업.
+   * @throws NotFoundException 현재 회원이 소유한 연동을 찾지 못한 서비스 실패가 전파된 경우.
    */
   @Delete(':linkId')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -115,8 +131,12 @@ export class SocialLinkController {
   }
 }
 
+/** 회원 소유권을 노출하지 않으면서 소셜 연동 삭제 정책을 수행한다. */
 @Injectable()
 export class SocialLinkService {
+  /**
+   * @param repository 회원과 연동 ID를 함께 제한해 조회·삭제할 저장소.
+   */
   constructor(private readonly repository: SocialLinkRepository) {}
 
   /**
@@ -126,6 +146,7 @@ export class SocialLinkService {
    *
    * @param memberId 연동 소유권을 제한할 현재 회원 ID.
    * @param linkId 삭제할 연동 ID.
+   * @returns 소유권이 확인된 연동 삭제가 끝나면 완료되는 작업.
    * @throws NotFoundException 현재 회원이 소유한 연동을 찾지 못한 경우.
    */
   async remove(memberId: string, linkId: string): Promise<void> {
@@ -143,7 +164,7 @@ export class SocialLinkService {
 
 - Controller에는 요청값의 출처·검증과 HTTP 완료 계약만 남겼다.
 - Service에는 소유권 판정 이유와 실제 예외 조건을 설명했다.
-- decorator, 의존성 주입, 반환 타입처럼 코드로 분명한 내용은 반복하지 않았다.
+- decorator 문법은 반복하지 않고 클래스·주입 의존성의 실제 책임을 설명했다.
 
 ## NestJS 엔티티의 저장 계약
 

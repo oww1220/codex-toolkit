@@ -1,6 +1,16 @@
 # 읽기 쉬운 Vue SFC 주석 예시
 
-Vue 예시는 `<script setup>`의 컴포넌트 계약과 반응형 흐름에 집중한다. template 태그와 style 규칙은 그대로 읽을 수 있으므로 해설하지 않는다.
+Vue 예시는 `<script setup>`의 컴포넌트 계약과 반응형 흐름에 집중한다. 일반 태그는 해설하지 않지만 조건·반복·이벤트 경로는 사용자 영향을 설명한다.
+
+## 필수 적용 범위
+
+- 컴포넌트·composable·Props/Emits의 역할과 모든 props·emit·반환 계약
+- 모든 `ref`·`reactive`·template ref와 Pinia state·getter·action·setter의 목적·UI 영향·갱신 주체
+- 모든 `computed`, handler, `watch`·`watchEffect`·구독·cleanup의 입력과 실행 조건
+- 모든 조건·조기 반환·삼항식·switch·반복·catch/finally 경로
+- template의 `v-if/v-else-if/v-else`, `v-for`, 빈 상태와 이벤트 경로의 사용자 영향
+
+대상 코드에 존재하는 항목은 모두 점검 목록에 넣고 선언 또는 실행 경로 가까이에 설명한다.
 
 ## 연동 동의 컴포넌트
 
@@ -21,6 +31,7 @@ import { computed, nextTick, reactive, ref, watch } from 'vue'
 
 import { useSocialLink } from '@/composables/useSocialLink'
 
+/** 연동 동의 화면이 표시하고 저장 요청에 사용할 readonly 입력 계약이다. */
 type Props = {
   memberId: string
   providerName: string
@@ -35,6 +46,7 @@ const emit = defineEmits<{
   completed: []
 }>()
 
+/** 인증된 회원에게 제공자 계정을 연결하는 composable 작업이다. */
 const { linkAccount } = useSocialLink()
 
 /** 제출 시작부터 완료까지 함께 갱신되는 화면 상태다. */
@@ -61,6 +73,10 @@ watch(
   },
 )
 
+/**
+ * 연속 제출을 차단하며 계정을 연결하고 성공 이벤트 또는 재시도 오류 상태를 만든다.
+ * @returns 연결 요청과 성공·실패 후 화면 상태 갱신이 끝나면 완료되는 작업.
+ */
 async function submitConsent() {
   // 연속 클릭으로 같은 제공자 계정이 중복 저장되는 것을 막는다.
   if (submission.isSubmitting) return
@@ -87,6 +103,7 @@ async function submitConsent() {
   <section aria-labelledby="social-link-title">
     <h2 id="social-link-title">{{ providerName }} 계정 연결</h2>
     <p>{{ accountLabel }}</p>
+    <!-- 저장 실패 후에만 재시도 안내를 노출하고 키보드 포커스를 이 영역으로 옮긴다. -->
     <p
       v-if="submission.errorMessage"
       ref="errorMessageRef"
@@ -95,6 +112,7 @@ async function submitConsent() {
     >
       {{ submission.errorMessage }}
     </p>
+    <!-- 클릭은 중복 제출 가드와 성공·실패 상태 처리를 가진 submitConsent로 모은다. -->
     <button
       type="button"
       :disabled="submission.isSubmitting"
@@ -112,8 +130,42 @@ async function submitConsent() {
 - 모든 공개 props와 반환 화면의 계약을 컴포넌트 JSDoc에 모았다.
 - emit은 단순 이벤트명이 아니라 상위 화면이 이동해도 되는 시점을 설명한다.
 - `reactive` 속성은 UI 영향, `ref`는 DOM 접근 목적, `computed`는 대체 표시 정책을 적었다.
-- `watch`, 조기 반환, 오류 메시지 변환처럼 코드만으로 이유가 숨은 지점만 설명한다.
-- template 구조는 코드로 충분해 주석을 반복하지 않았다.
+- `watch`, 조기 반환, 오류 메시지 변환을 포함한 필수 상태·경로의 목적과 영향을 설명했다.
+- template의 조건 경로는 오류 영역이 생기는 시점과 포커스 영향을 설명했다.
+
+## Pinia 상태·getter·action 계약
+
+```ts
+/** 여러 연동 화면이 공유하는 선택 계정과 저장 가능 여부를 관리한다. */
+export const useSocialLinkStore = defineStore('socialLink', {
+  state: () => ({
+    /** 사용자가 선택한 연동 대상. 선택 전이나 완료 후에는 null이다. */
+    selectedAccountId: null as string | null,
+  }),
+  getters: {
+    /** 선택 계정이 있을 때만 저장 동작을 허용하는 파생 상태다. */
+    canSubmit: (state) => state.selectedAccountId !== null,
+  },
+  actions: {
+    /**
+     * 연동 대상을 바꿔 이 store를 구독하는 확인 화면을 함께 갱신한다.
+     * @param accountId 새로 선택한 제공자 계정 ID.
+     */
+    selectAccount(accountId: string) {
+      this.selectedAccountId = accountId
+    },
+  },
+})
+
+/** 선택 계정과 저장 가능 여부를 읽고 action을 호출할 현재 Pinia store 인스턴스다. */
+const socialLinkStore = useSocialLinkStore()
+
+/** 선택 계정과 저장 가능 여부를 반응성을 유지한 채 화면에서 읽는다. */
+const { selectedAccountId, canSubmit } = storeToRefs(socialLinkStore)
+
+/** 사용자 선택 이벤트를 Pinia action으로 전달한다. */
+const { selectAccount } = socialLinkStore
+```
 
 ## 그대로 복제하지 않을 것
 

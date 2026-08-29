@@ -2,6 +2,16 @@
 
 템플릿 주석은 렌더링 코드에 숨은 입력 계약, scope, 분기 의미, include·fragment 경계와 출력 안전성을 설명한다. 태그나 표현식을 한국어로 다시 읽어주지 않는다.
 
+## 필수 적용 범위
+
+- 페이지 입력·model·request/session scope와 include·partial·fragment의 전달·반환 책임
+- 모든 조건 분기 루트와 if/else·choose/when/otherwise·switch/case의 각 화면 경로
+- 모든 반복 입력의 정렬·필터 계약, 반복 내부 조건, 빈 목록·조회 실패의 구분
+- 폼 model binding·검증 오류·재진입 상태와 사용자 입력의 저장 전 의미
+- escaping을 끄는 EJS `<%-`, JSP `escapeXml="false"`, Thymeleaf `th:utext`의 신뢰 경계
+
+대상 템플릿에 존재하는 항목은 모두 점검 목록에 넣고 구문 가까이에 설명한다.
+
 ## EJS
 
 ### 페이지 입력과 상태 분기

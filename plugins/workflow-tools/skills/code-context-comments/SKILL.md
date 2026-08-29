@@ -13,20 +13,20 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 1. 대상 선언의 구현, 호출자, 데이터 흐름, 기존 주석을 확인한다.
 2. 코드만으로 알기 어려운 계약과 이유를 골라 해당 구문 가까이에 설명한다.
-3. Vue·React는 상태·참조·파생값·watch/effect 선언을 전수 확인하고 전체 주석의 정확성·가독성을 점검한다.
+3. Vue·React는 로컬·스토어 상태·파생값·갱신 함수·watch/effect를 빠짐없이 전수 확인한다.
 
 ## 구문 컨텍스트별 정보 구조
 
 | 구문 컨텍스트 | 담을 내용 |
 |---|---|
-| 모듈·클래스·인터페이스 | 핵심 역할, 책임 경계, 주요 협력 대상, 전체 흐름 |
-| 필드·상수 | 도메인 의미, 저장 범위, 단위, 제약, 보관 이유 |
+| 모듈·클래스·인터페이스·타입 | 핵심 역할, 사용 경계, 불변조건, 주요 협력 대상·흐름 |
+| 엔티티·필드·상수 | 도메인 의미, 식별·고유성·관계·nullable·삭제 정책, 보관 이유 |
 | 메서드·함수 | 역할, 호출 조건, 입력·반환, 상태·부작용·실패 처리 |
 | `@param` | 값의 출처·의미·허용 조건. 구조화된 props/options는 객체와 사용 속성별 계약 |
 | `@return` | 반환값의 의미와 중요한 상태 |
 | `@throws` | 예외가 발생하는 실제 조건 |
 | 지역 변수 | 이름만으로 숨은 값의 출처, 사용 목적, 단위, 수명 |
-| 반응형 상태·참조 | `ref`·`reactive`·`useState`·`useRef` 전 선언의 목적, UI 영향, 갱신 주체, 수명·참조 대상 |
+| 반응형·스토어 상태·참조 | Vue `ref/reactive/Pinia`, React `useState/useRef/Redux/Zustand`의 state/getter/setter/action/selector/dispatch 전 선언의 목적·UI 영향·갱신 조건·주체 |
 | computed·memo·파생값 | `computed`·`useMemo` 전 선언의 입력 상태, fallback, 재계산 의미 |
 | 조건문·조기 반환 | 조건의 도메인 의미와 이 경로를 종료·건너뛰는 이유 |
 | 반복문 | 반복 대상, 종료 조건, 순서가 중요한 이유 |
@@ -45,7 +45,7 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 ## 주석을 생략할 곳
 
-- 자명한 getter/setter, 단순 위임, DTO, 한 줄 내부 함수, 익명 콜백
+- 자명한 객체 getter/setter·DTO, 사용처와 중복되는 로컬 props/options 타입, 단순 위임·내부 함수·익명 콜백
 - 이름과 타입만으로 역할이 분명한 변수
 - 코드 한 줄씩을 한국어로 옮긴 설명
 
@@ -60,6 +60,7 @@ description: Use when writing or changing code whose responsibilities, contracts
 작업 언어 파일 하나만 읽는다. 혼합 작업은 필요한 파일만 함께 읽는다.
 
 - Java: [Javadoc 예시](references/java-javadoc-examples.md)
-- JavaScript·TypeScript·TSX: [JSDoc 예시](references/typescript-jsdoc-examples.md)
+- JavaScript·TypeScript·NestJS: [JSDoc 예시](references/typescript-jsdoc-examples.md)
+- React·TSX: [React 예시](references/react-comment-examples.md)
 - Vue: [SFC 예시](references/vue-sfc-comment-examples.md)
 - Python: [docstring 예시](references/python-docstring-examples.md)

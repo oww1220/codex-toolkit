@@ -25,11 +25,11 @@ description: Use when writing or changing code whose responsibilities, contracts
 | `@param` | 값의 출처, 의미, 허용 조건 |
 | `@return` | 반환값의 의미와 중요한 상태 |
 | `@throws` | 예외가 발생하는 실제 조건 |
-| 지역 변수 | 이름만으로 드러나지 않는 값의 출처, 역할, 단위, 유효 범위, 이후 사용·폐기 시점 |
+| 지역 변수·반응형 상태·참조 | 값의 출처, 사용 목적, UI 영향, 갱신 주체, 수명, 참조 대상 |
 | 조건문·조기 반환 | 조건의 도메인 의미와 이 경로를 종료·건너뛰는 이유 |
 | 반복문 | 반복 대상, 종료 조건, 순서가 중요한 이유 |
-| `try`/`catch`/`finally` | 실패가 상위 흐름에 미치는 영향, 예외 전파·격리·정리 정책 |
-| 외부 API·DB·세션 호출 | 주고받는 값의 용도, 검증·저장 여부, 호출 순서의 이유 |
+| `catch`/`finally` | catch의 기록·변환·삼킴·재전파와 상위 영향, finally가 항상 복구·해제할 상태·자원 |
+| watch·effect·구독·외부 호출 | 실행 조건, 변경 대상, 정리 시점, 호출 순서 |
 | 목록·코드 블록 | 여러 단계의 호출 순서, 상태 전이, 판정 흐름 |
 
 - 문단마다 한 주제만 짧게 쓰고 프로젝트 용어와 기존 형식을 우선한다.
@@ -54,4 +54,11 @@ description: Use when writing or changing code whose responsibilities, contracts
 - 말머리와 긴 배경이 역할을 가림 → 첫 문장에 역할을 쓰고 주제별로 나눈다.
 - 호출자를 보지 않고 추측함 → 실제 호출 경로에서 확인되는 내용만 쓴다.
 
-Java/Javadoc의 정보 밀도와 문단 구성이 필요하면 [익명화된 Java 예시](references/java-javadoc-examples.md)를 읽는다. 예시는 복제용 템플릿이 아니라 판단 기준이다.
+## 언어별 예시
+
+작업 언어 파일 하나만 읽는다. 혼합 작업은 필요한 파일만 함께 읽는다.
+
+- Java: [Javadoc 예시](references/java-javadoc-examples.md)
+- JavaScript·TypeScript·TSX: [JSDoc 예시](references/typescript-jsdoc-examples.md)
+- Vue: [SFC 예시](references/vue-sfc-comment-examples.md)
+- Python: [docstring 예시](references/python-docstring-examples.md)

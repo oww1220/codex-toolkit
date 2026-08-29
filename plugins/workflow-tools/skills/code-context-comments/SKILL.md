@@ -1,28 +1,26 @@
 ---
 name: code-context-comments
-description: Use when writing or changing code whose responsibilities, contracts, data flow, side effects, failure handling, or design rationale need comments to remain understandable to future readers. Trigger on requests for comments, Javadoc, JSDoc, docstrings, or easier code comprehension.
+description: Use when code needs comments explaining responsibilities, contracts, data flow, side effects, failure handling, or rationale, including Javadoc, JSDoc, docstrings, and code-comprehension requests.
 ---
 
 # Code Context Comments
 
 ## 핵심 원칙
 
-주석은 역할과 계약을 빠르게 파악하게 하며 코드를 문장으로 반복하지 않는다.
+주석은 코드 번역이 아니라 역할·계약·이유를 설명한다.
 
 ## 필수 점검 절차
 
 1. 작업 언어의 레퍼런스를 처음부터 끝까지 읽는다.
-2. 구현·호출자·데이터 흐름을 확인하고 `파일 × 필수 적용 범위` 목록을 만든다.
-3. 레퍼런스에 정의된 구문이 있으면 모든 발생 지점을 확인해 목적·영향·이유를 가까이에 설명한다.
-4. 변경 파일과 목록을 다시 대조해 빠진 필수 항목이 없을 때만 완료한다.
+2. 조사 결과로 `파일 × 필수 적용 범위` 목록을 만든다.
+3. 필수 구문의 모든 발생 지점 가까이에 목적·영향·이유를 설명한다.
+4. 대상 전체와 목록을 대조해 누락이 없을 때만 완료한다.
 
-대상 코드의 필수 선언·상태·분기·반복·예외·effect·store·props·템플릿·스타일은 생략하지 않는다. 모든 조건 경로의 의미를 쓰며 인접 경로는 모두 설명될 때만 루트 주석으로 묶는다.
+필수 선언·상태·분기·반복·예외·effect·store·props·템플릿·스타일을 생략하지 않는다. 인접 조건은 모든 경로가 설명될 때만 루트 주석으로 묶는다.
 
-## 사후 독립 검증
+## 서브에이전트 조사와 검증
 
-주석 작성 후 도구가 있으면 reviewer 요청에 사용자 지정 디렉터리·모듈·파일 경로를 모두 명시한다. `reviewer`가 대상 전체와 레퍼런스를 읽기 전용으로 대조하고, 누락은 `파일:위치 / 누락 항목 / 필요한 설명`으로, 없으면 `누락 0건`으로 보고하며 수정하지 않는다.
-
-메인 에이전트가 보완하고 변경했다면 같은 reviewer가 재검토한다. 누락 0건일 때만 완료한다. 도구가 없으면 메인이 별도 재검토한다.
+서브에이전트 도구가 있으면 작성 전에 [서브에이전트 워크플로](references/subagent-comment-review-workflow.md)를 처음부터 끝까지 읽고 따른다. 사전 조사자 2명의 결과를 모두 회수한 뒤 작성하고, 사후 reviewer가 `누락 0건`을 보고해야 완료한다. 도구가 없으면 메인이 같은 조사를 별도 단계로 수행한다.
 
 ## 구문 컨텍스트별 정보 구조
 
@@ -44,8 +42,8 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 ## 정확성과 안전
 
-- 계약이나 흐름이 바뀌면 같은 변경에서 주석도 갱신한다. 확인하지 못한 의도는 추측하지 않는다.
-- 비밀키, 토큰, 실제 개인정보, 내부 접속정보를 기록하지 않고 생성·외부·마이그레이션 산출물은 수정하지 않는다.
+- 계약·흐름 변경과 함께 주석을 갱신하며 확인하지 못한 의도는 추측하지 않는다.
+- 비밀키·토큰·개인정보·내부 접속정보를 기록하지 않고 생성·외부·마이그레이션 산출물은 수정하지 않는다.
 
 ## 생략 범위
 

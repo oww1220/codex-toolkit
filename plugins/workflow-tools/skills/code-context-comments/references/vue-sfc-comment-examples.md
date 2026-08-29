@@ -10,20 +10,24 @@ Vue 예시는 `<script setup>`의 컴포넌트 계약과 반응형 흐름에 집
  * 기존 회원에게 연동 계정을 확인시키고 동의 결과를 상위 흐름에 전달한다.
  *
  * OAuth 인가와 저장 요청은 composable에 맡기며, 이 컴포넌트는 화면 상태만 관리한다.
+ *
+ * @param props 컴포넌트가 표시와 연동 요청에 사용하는 readonly 반응형 입력값.
+ * @param props.memberId 연동 정보를 저장할 기존 회원 ID. 로그인 회원 판정 후 전달된다.
+ * @param props.providerName 제공자 코드가 아니라 화면 제목에 표시할 사용자 친화적 이름.
+ * @param props.maskedAccount 제공자가 돌려준 마스킹 계정 정보. 제공 거부·미제공이면 null.
+ * @returns 연동 대상 계정과 진행 상태를 보여주고 완료 이벤트를 전달하는 화면.
  */
 import { computed, nextTick, reactive, ref, watch } from 'vue'
 
 import { useSocialLink } from '@/composables/useSocialLink'
 
 type Props = {
-  /** 연동 정보를 저장할 기존 회원 ID. 현재 로그인 회원 판정이 끝난 뒤 전달된다. */
   memberId: string
-  /** 제공자 코드가 아니라 화면 제목에 표시할 사용자 친화적 이름. */
   providerName: string
-  /** 제공자가 돌려준 마스킹 계정 정보. 제공 거부·미제공이면 null이다. */
   maskedAccount: string | null
 }
 
+/** 상위 화면에서 전달한 연동 대상과 표시 정보를 읽는 readonly 반응형 입력값이다. */
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
@@ -105,7 +109,7 @@ async function submitConsent() {
 ### 가독성이 좋은 이유
 
 - 컴포넌트와 composable의 책임 경계를 선언 가까이에 적었다.
-- 모든 공개 props는 값의 사용 목적, 전달 시점, `null` 의미를 선언 위치에 설명했다.
+- 모든 공개 props와 반환 화면의 계약을 컴포넌트 JSDoc에 모았다.
 - emit은 단순 이벤트명이 아니라 상위 화면이 이동해도 되는 시점을 설명한다.
 - `reactive` 속성은 UI 영향, `ref`는 DOM 접근 목적, `computed`는 대체 표시 정책을 적었다.
 - `watch`, 조기 반환, 오류 메시지 변환처럼 코드만으로 이유가 숨은 지점만 설명한다.

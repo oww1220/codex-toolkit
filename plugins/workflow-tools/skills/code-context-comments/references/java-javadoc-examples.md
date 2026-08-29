@@ -72,9 +72,13 @@ public interface OAuthProviderClient {
      * <p>토큰은 구현 밖으로 반환하거나 보관하지 않는다. 폐기 API가 만료되거나 존재하지 않는
      * 토큰에도 성공을 반환할 수 있어, 저장한 토큰으로는 실제 해제를 확인할 수 없기 때문이다.</p>
      *
+     * @param session 인가 요청 때 발급한 state가 저장된 사용자 세션
+     * @param code 제공자가 해제 콜백으로 전달한 일회성 인증 코드
+     * @param state 제공자가 해제 콜백으로 돌려준 CSRF 검증값
      * @param expectedExternalUserId 서비스에 연동된 제공자 이용자 식별자
-     * @return 계정 대조와 토큰 폐기 결과
-     * @throws OAuthException state 검증, 토큰 발급 또는 프로필 조회를 완료하지 못한 경우
+     * @return 계정이 일치하면 {@code REVOKED}, 다르면 {@code ACCOUNT_MISMATCH},
+     *         토큰 발급·프로필 조회·폐기 중 실패하면 {@code FAILED}
+     * @throws OAuthException 콜백 state가 없거나 세션 보관값과 달라 안전하게 계속할 수 없는 경우
      */
     UnlinkResult handleUnlinkCallback(
             HttpSession session,

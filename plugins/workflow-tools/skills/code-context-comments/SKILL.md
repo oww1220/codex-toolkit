@@ -35,7 +35,7 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 - 문단마다 한 주제만 짧게 쓰고 프로젝트 용어와 기존 형식을 우선한다.
 - 약어는 처음 한 번만 풀고 외부 식별자는 필요·안정적일 때만 쓴다.
-- 중요한 변수는 선언 가까이에 설명한다. 이름이 충분하면 이름을 고친다.
+- 변수는 선언 가까이에 설명하고 이름이 부족하면 고친다.
 - 상세함과 가독성이 충돌하면 구현 세부사항을 덜고 계약과 이유를 남긴다.
 
 ## 정확성과 안전
@@ -57,10 +57,12 @@ description: Use when writing or changing code whose responsibilities, contracts
 
 ## 언어별 예시
 
-작업 언어 파일 하나만 읽는다. 혼합 작업은 필요한 파일만 함께 읽는다.
+작업에 필요한 언어 파일만 읽는다.
 
 - Java: [Javadoc 예시](references/java-javadoc-examples.md)
 - JavaScript·TypeScript·NestJS: [JSDoc 예시](references/typescript-jsdoc-examples.md)
 - React·TSX: [React 예시](references/react-comment-examples.md)
 - Vue: [SFC 예시](references/vue-sfc-comment-examples.md)
+- EJS·JSP·Thymeleaf: [템플릿 예시](references/template-comment-examples.md)
+- SCSS: [스타일 예시](references/style-comment-examples.md)
 - Python: [docstring 예시](references/python-docstring-examples.md)

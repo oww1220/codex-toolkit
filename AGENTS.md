@@ -1,0 +1,9 @@
+# 플러그인 작성 규칙
+
+- 로컬 소스는 `plugins/<plugin-name>`에서 관리합니다.
+- 새 플러그인을 추가하면 `.agents/plugins/marketplace.json`의 `plugins` 목록에도 반드시 등록하며, `name`과 `source.path`가 해당 플러그인의 이름 및 실제 소스 경로와 일치하도록 작성합니다.
+- 플러그인이나 스킬을 이름 변경·이동·삭제하면 `.agents/plugins/marketplace.json`, 해당 `.codex-plugin/plugin.json`, `README.md`, 다른 스킬의 참조·문서·스크립트를 함께 확인하고 깨진 등록·경로·링크를 정리합니다.
+- 플러그인 스킬은 `SKILL.md`를 기본으로 구성하며, 별도 UI 메타데이터나 호출 정책이 실제로 필요할 때만 `agents/openai.yaml`을 추가합니다.
+- 개인 PC의 절대경로, 설치 캐시 경로, API 키·토큰·비밀번호 등 비밀정보를 스킬·스크립트·문서에 넣지 않습니다. 외부 도구, 환경변수, 권한이 필요하면 이름과 용도를 문서화하고 실행 시점에 제공받습니다.
+- 스킬이나 배포에 포함되는 관련 파일을 추가·수정하면, 해당 `plugins/<plugin-name>/.codex-plugin/plugin.json`을 반드시 수정하여 `version`을 올립니다. 버전업은 배포할 변경 묶음당 한 번 수행하며, 스킬 추가·변경으로 설명이나 설정도 달라지면 같은 파일의 관련 필드를 함께 갱신합니다.
+- 루트 `README.md`나 `AGENTS.md`만 변경하고 플러그인 배포 내용은 바뀌지 않는 경우에는 버전업하지 않습니다.

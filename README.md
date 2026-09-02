@@ -72,8 +72,9 @@ PPT 문서 작업용 Codex 스킬 플러그인입니다.
 
 ### `workflow-tools`
 
-코드 주석, 문서 가독성, 작업 완료, 커밋 워크플로우용 Codex 스킬 플러그인입니다.
+코드 주석, 문서 가독성, 작업 완료, 토큰 절약, 커밋 워크플로우용 Codex 스킬 플러그인입니다.
 
 - `code-context-comments`
 - `completion-summary`
+- `quota-saver`
 - `git-conventional-commit`

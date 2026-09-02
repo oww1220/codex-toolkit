@@ -1,23 +1,24 @@
 {
   "name": "workflow-tools",
-  "version": "0.3.20",
-  "description": "Code and document readability, completion, and git workflow skills for Codex.",
+  "version": "0.3.21",
+  "description": "Code and document readability, completion, token-saving, and git workflow skills for Codex.",
   "author": {
     "name": "idong-geol"
   },
   "license": "UNLICENSED",
-  "keywords": ["codex", "workflow", "comments", "documentation", "readability", "completion", "git", "commit"],
+  "keywords": ["codex", "workflow", "comments", "documentation", "readability", "completion", "token-saving", "git", "commit"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Workflow Tools",
-    "shortDescription": "Code comments, document readability, completion, and commits.",
-    "longDescription": "Workflow Tools packages code context comments, document readability, completion summary, and Conventional Commit skills.",
+    "shortDescription": "Code comments, readable docs, token saving, and commits.",
+    "longDescription": "Workflow Tools packages code context comments, document readability, completion summary, explicit token-saving, and Conventional Commit skills.",
     "developerName": "idong-geol",
     "category": "Productivity",
     "capabilities": ["Skills"],
     "defaultPrompt": [
       "코드의 역할과 흐름을 읽기 쉬운 주석으로 정리해줘.",
       "완료 요약을 정리해줘.",
+      "$quota-saver를 사용해 이 작업을 간결하게 처리해줘.",
       "Conventional Commits 형식으로 커밋해줘."
     ]
   }

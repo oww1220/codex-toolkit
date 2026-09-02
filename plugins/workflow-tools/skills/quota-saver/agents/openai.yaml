@@ -1,0 +1,7 @@
+interface:
+  display_name: "Quota Saver"
+  short_description: "필수 품질을 유지하며 토큰 사용량을 줄입니다."
+  default_prompt: "$quota-saver를 사용해 필수 품질은 유지하고 이 작업을 간결하게 처리해줘."
+
+policy:
+  allow_implicit_invocation: false

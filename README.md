@@ -35,6 +35,7 @@ codex plugin add <plugin-name>@codex-toolkit
 ```
 
 로컬 소스는 `plugins/<plugin-name>`에서 관리합니다.
+플러그인 스킬은 `SKILL.md`를 기본으로 구성하며, 별도 UI 메타데이터나 호출 정책이 실제로 필요할 때만 `agents/openai.yaml`을 추가합니다.
 
 ### `ppt-tools`
 

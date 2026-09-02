@@ -1,4 +1,0 @@
-interface:
-  display_name: "Document Visual Readability"
-  short_description: "정보를 보존하는 HTML 문서와 흐름 시각화·검수"
-  default_prompt: "Use $document-visual-readability to create or improve this document without deleting or inventing information. Default CREATE and EDIT to a self-contained HTML file, unless I specify another format. Use pipeline-centered structure when the source has a real flow, and consult bundled HTML examples for presentation only. For AUDIT, return findings without editing the source or creating HTML."

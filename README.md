@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme-symbol.png" alt="codex-toolkit — 민트색과 짙은 회색의 조립형 블록 심볼" width="150" height="150">
+  <img src="assets/readme-symbol_02.png" alt="codex-toolkit — 민트색과 짙은 회색의 조립형 블록 심볼" width="150" height="150">
 </p>
 
 # codex-toolkit

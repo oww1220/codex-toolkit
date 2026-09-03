@@ -1,4 +1,6 @@
-![codex-toolkit — Plugins & skills for Codex](assets/readme-banner.png)
+<p align="center">
+  <img src="assets/readme-symbol.png" alt="codex-toolkit — 민트색과 짙은 회색의 조립형 블록 심볼" width="300" height="300">
+</p>
 
 # codex-toolkit
 

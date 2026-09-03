@@ -1,6 +1,8 @@
 ---
 name: subagent-orchestration
-description: 큰 작업을 병렬 서브에이전트로 검증, 구현, 리뷰 경계를 나눠 운영할 때 사용한다. Trigger on "서브에이전트 띄워줘", "서브에이전트로 나눠줘", "병렬 에이전트로 검토해줘". Skip when a simple single-agent edit or answer is enough.
+description: >
+  큰 작업을 병렬 서브에이전트로 검증, 구현, 리뷰 경계를 나눠 운영할 때 사용한다. 트리거 — "서브에이전트 띄워줘",
+  "서브에이전트로 나눠줘", "병렬 에이전트로 검토해줘". 비-트리거: 단순한 단일 에이전트 수정이나 답변으로 충분한 경우.
 ---
 
 # Subagent Orchestration

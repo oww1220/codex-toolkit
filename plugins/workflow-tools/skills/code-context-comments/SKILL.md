@@ -1,6 +1,6 @@
 ---
 name: code-context-comments
-description: Use when code needs comments explaining responsibilities, contracts, data flow, side effects, failure handling, or rationale, including Javadoc, JSDoc, docstrings, and code-comprehension requests.
+description: 코드의 책임, 계약, 데이터 흐름, 부작용, 실패 처리 또는 근거를 설명하는 주석이 필요할 때 사용한다. Javadoc, JSDoc, docstring, 코드 이해를 위한 설명 요청을 포함한다.
 ---
 
 # Code Context Comments

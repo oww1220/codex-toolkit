@@ -1,38 +1,41 @@
 ---
 name: skill-enhancer-codex
-description: Codex skills meta-workflow for creating new skills, auditing existing skills, and planning safe skill improvements. Use when the user asks to make a Codex skill, write SKILL.md, check or audit a skill, improve skill structure, validate references/scripts, or use "/skill-enhancer-codex". Skip when the user asks to optimize the runtime behavior of an unrelated app or library rather than the skill package itself.
+description: >
+  새 Codex 스킬 생성, 기존 스킬 감사, 안전한 스킬 개선 계획을 위한 메타 작업 흐름이다. Codex 스킬 생성, SKILL.md 작성, 스킬 점검·감사,
+  스킬 구조 개선, 참조 파일·스크립트 검증 또는 "/skill-enhancer-codex" 사용을 요청할 때 적용한다. 비-트리거: 스킬 패키지가 아닌 일반 앱·라이브러리의
+  실행 성능 최적화 요청.
 ---
 
 # Skill Enhancer Codex
 
-Use this for Codex skill structure, discovery text, bundled references, scripts, and templates. Keep changes small; prefer `SKILL.md` plus only the resources that are actually used.
+Codex 스킬 구조, 탐색용 설명, 함께 제공하는 참조 자료, 스크립트, 템플릿에 사용한다. 변경은 작게 유지하고 실제로 쓰는 리소스만 `SKILL.md`에 추가한다.
 
-Resolve `<skill-root>` to the directory containing this loaded `SKILL.md`. Never assume a global install path.
+`<skill-root>`는 현재 로드한 `SKILL.md`가 들어 있는 디렉터리로 해석한다. 전역 설치 경로를 가정하지 않는다.
 
 ## Modes
 
-Choose the first mode that fits:
+아래에서 처음으로 맞는 모드를 선택한다.
 
-| Mode | Use For | Action |
+| 모드 | 사용 대상 | 수행 작업 |
 |---|---|---|
-| CREATE | New Codex skill | Interview only for missing intent, then run `scripts/scaffold.py` |
-| AUDIT | Existing skill check | Run `scripts/audit.py` and `scripts/refs_check.py` |
-| IMPROVE | Fix a skill after audit | Back up first, patch the smallest set of files, then re-run audit |
-| PROMOTE | Reuse a repeated pattern | Move only durable guidance into references/templates |
+| CREATE | 새 Codex 스킬 | 누락된 의도만 확인한 뒤 `scripts/scaffold.py`를 실행 |
+| AUDIT | 기존 스킬 점검 | `scripts/audit.py`와 `scripts/refs_check.py` 실행 |
+| IMPROVE | 감사 후 스킬 수정 | 먼저 백업하고 최소 파일만 패치한 뒤 감사를 다시 실행 |
+| PROMOTE | 반복 패턴 재사용 | 오래 유지할 안내만 references/templates로 이동 |
 
-If a user decision is required and the tool is available, use `request_user_input`. Otherwise ask one concise question. Do not invent preferences that change public behavior.
+사용자 결정이 필요하고 도구를 사용할 수 있으면 `request_user_input`을 사용한다. 그렇지 않으면 짧은 질문 하나만 한다. 공개 동작을 바꾸는 선호를 임의로 정하지 않는다.
 
 ## CREATE
 
-1. Read `references/create-interview.md` only when the request lacks enough detail to generate the skill.
-2. Write a small config JSON outside the skill install directory, then run:
+1. 요청에 스킬 생성에 필요한 정보가 부족할 때만 `references/create-interview.md`를 읽는다.
+2. 스킬 설치 디렉터리 밖에 작은 설정 JSON을 작성한 뒤 다음을 실행한다.
 
 ```bash
 python3 <skill-root>/scripts/scaffold.py <config.json> <skill-dir>
 ```
 
-3. Fill any remaining placeholders directly in the generated `SKILL.md`.
-4. Validate with:
+3. 남은 placeholder는 생성된 `SKILL.md`에서 직접 채운다.
+4. 다음으로 검증한다.
 
 ```bash
 python3 <skill-root>/scripts/audit.py <skill-dir> --json
@@ -41,42 +44,42 @@ python3 <skill-root>/scripts/refs_check.py <skill-dir>
 
 ## AUDIT
 
-Run both scripts and report HARD/WARN/INFO honestly:
+두 스크립트를 모두 실행하고 HARD/WARN/INFO 결과를 사실대로 보고한다.
 
 ```bash
 python3 <skill-root>/scripts/audit.py <skill-dir> --json
 python3 <skill-root>/scripts/refs_check.py <skill-dir>
 ```
 
-Use `references/audit-rubric.md` for interpreting checks and `references/anti-patterns.md` for fixes.
+검사 결과 해석에는 `references/audit-rubric.md`를, 수정에는 `references/anti-patterns.md`를 사용한다.
 
 ## IMPROVE
 
-1. Turn findings into `{section, change, reason}`.
-2. Back up the target `SKILL.md` before editing.
-3. Patch only files needed for the findings.
-4. Re-run the audit scripts.
+1. 발견 사항을 `{section, change, reason}`으로 정리한다.
+2. 편집 전에 대상 `SKILL.md`를 백업한다.
+3. 발견 사항에 필요한 파일만 패치한다.
+4. 감사 스크립트를 다시 실행한다.
 
 ## References
 
-Read only what the current mode needs:
+현재 모드에 필요한 자료만 읽는다.
 
-| Topic | Reference |
+| 주제 | 참고 자료 |
 |---|---|
-| Methodology | `references/methodology.md` |
-| Create interview | `references/create-interview.md` |
-| Reusable snippets | `references/recipes.md` |
+| 방법론 | `references/methodology.md` |
+| 생성 인터뷰 | `references/create-interview.md` |
+| 재사용 가능한 조각 | `references/recipes.md` |
 | Codex frontmatter | `references/frontmatter-spec.md` |
-| Placement rules | `references/decision-rules.md` |
-| Audit rubric | `references/audit-rubric.md` |
-| Common mistakes | `references/anti-patterns.md` |
-| Ship checklist | `references/authoring-checklist.md` |
-| Self improvement | `references/self-improvement.md` |
+| 배치 규칙 | `references/decision-rules.md` |
+| 감사 기준 | `references/audit-rubric.md` |
+| 흔한 실수 | `references/anti-patterns.md` |
+| 배포 점검표 | `references/authoring-checklist.md` |
+| 자체 개선 | `references/self-improvement.md` |
 
 ## Rules
 
-- Keep `SKILL.md` under 500 lines.
-- Use `references/` for detail that is loaded conditionally.
-- Use `scripts/` only when deterministic repeatability is worth the file.
-- Do not create empty resource directories.
-- Keep temporary reports and scratch files outside the Codex skills directory.
+- `SKILL.md`는 500줄 이하로 유지한다.
+- 조건부로 로드하는 상세 내용은 `references/`에 둔다.
+- 결정적 반복 실행의 가치가 있을 때만 `scripts/`를 사용한다.
+- 비어 있는 리소스 디렉터리는 만들지 않는다.
+- 임시 보고서와 scratch 파일은 Codex 스킬 디렉터리 밖에 둔다.

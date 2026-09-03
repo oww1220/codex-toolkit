@@ -1,6 +1,6 @@
 {
   "name": "workflow-tools",
-  "version": "0.3.21",
+  "version": "0.3.22",
   "description": "Code and document readability, completion, token-saving, and git workflow skills for Codex.",
   "author": {
     "name": "idong-geol"

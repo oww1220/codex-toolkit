@@ -1,6 +1,6 @@
 {
   "name": "skill-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Skill authoring and validation workflow skills for Codex.",
   "author": {
     "name": "idong-geol"

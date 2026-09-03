@@ -1,38 +1,36 @@
 ---
 name: figma-implementation-audit
 description: >
-  Use when comparing a Figma design link, frame, node, or screenshot against an implemented
-  app screen, route, localhost page, or coded UI to check visual and interaction consistency.
-  Trigger on "Figma link matches code", "design vs implementation", "피그마 정합성", "피그마 링크랑 화면
-  비교", "구현 화면 QA". Skip when the user only wants to edit the Figma file or only wants generic
-  frontend debugging without a design source.
+  Figma 디자인 링크, 프레임, 노드 또는 스크린샷을 구현된 앱 화면, 경로, localhost 페이지, 코드 UI와 비교해
+  시각·인터랙션 일치 여부를 점검할 때 사용한다. 트리거 — "Figma link matches code", "design vs implementation", "피그마 정합성", "피그마 링크랑 화면
+  비교", "구현 화면 QA". 비-트리거: Figma 파일 편집만 원하거나 디자인 원본 없이 일반 프론트엔드 디버깅만 원하는 경우.
 ---
 
 # Figma Implementation Audit
 
-Compare a Figma source against the real implemented screen. Report mismatches first; edit code only when the user explicitly asks for fixes.
+Figma 원본과 실제 구현 화면을 비교한다. 불일치를 먼저 보고하고, 사용자가 명시적으로 수정을 요청했을 때만 코드를 편집한다.
 
 ## Rules
 
-- Use Figma tools for `figma.com` links. If calling Figma MCP tools, load `figma:figma-use` first.
-- Use a real browser for the implementation. Prefer Playwright/browser tooling over static code inspection.
-- Check the requested viewport and state. If they are missing, use the current route/default desktop viewport and say so.
-- Compare layout, spacing, typography, colors, assets, responsive behavior, and visible interactions.
-- Separate confirmed mismatches from assumptions, missing state, unavailable assets, or blocked Figma/browser access.
-- Do not claim parity from screenshots alone when DOM or computed styles are needed to explain the mismatch.
-- Do not edit Figma. Do not edit code unless the request includes fixing.
+- `figma.com` 링크에는 Figma 도구를 사용한다. Figma MCP 도구를 호출하면 먼저 `figma:figma-use`를 로드한다.
+- 구현 화면에는 실제 브라우저를 사용한다. 정적 코드 검사보다 Playwright 또는 browser 도구를 우선한다.
+- 요청한 뷰포트와 상태를 확인한다. 없으면 현재 경로 또는 기본 데스크톱 뷰포트를 사용했음을 알린다.
+- 레이아웃, 간격, 타이포그래피, 색상, 자산, 반응형 동작, 보이는 인터랙션을 비교한다.
+- 확인된 불일치와 추정, 누락된 상태, 사용할 수 없는 자산, 차단된 Figma/browser 접근을 구분한다.
+- 불일치를 설명하기 위해 DOM 또는 계산된 스타일이 필요하면 스크린샷만으로 정합성을 주장하지 않는다.
+- Figma는 편집하지 않는다. 요청에 수정이 포함되지 않으면 코드도 편집하지 않는다.
 
 ## Workflow
 
-1. Identify the Figma URL/node, target route, viewport, state, and whether this is audit-only or fix-and-verify.
-2. Capture Figma evidence: screenshot/design context, frame size, visible annotations, tokens, and component intent.
-3. Capture implementation evidence: live route screenshot plus DOM/computed styles for suspicious differences.
-4. Compare by severity: blocking layout/state mismatch, visible visual mismatch, minor polish, or uncertain.
-5. Report only actionable findings. Include expected Figma behavior, actual implementation, evidence, and likely file/selector when found.
+1. Figma URL/node, 대상 경로, 뷰포트, 상태, 감사만 하는지 수정·검증까지 하는지 파악한다.
+2. Figma 근거를 수집한다: 스크린샷·디자인 맥락, 프레임 크기, 보이는 주석, 토큰, 컴포넌트 의도.
+3. 구현 근거를 수집한다: 의심스러운 차이에 대한 실행 중인 경로의 스크린샷과 DOM·계산된 스타일.
+4. 심각도별로 비교한다: 차단되는 레이아웃·상태 불일치, 눈에 보이는 시각 불일치, 경미한 다듬기, 불확실.
+5. 실행 가능한 발견 사항만 보고한다. 예상 Figma 동작, 실제 구현, 근거와 찾을 수 있을 때 파일·selector를 포함한다.
 
 ## Output
 
 - Start with `정합성 결과: pass | partial | fail | blocked`.
-- List mismatches by severity.
-- Include route, viewport, Figma node/frame, and verification method.
-- If blocked, name the exact missing input or failed tool step.
+- 불일치를 심각도별로 나열한다.
+- 경로, 뷰포트, Figma node/frame, 검증 방법을 포함한다.
+- 차단된 경우 정확히 누락된 입력 또는 실패한 도구 단계를 밝힌다.

@@ -1,3 +1,5 @@
+![codex-toolkit — Plugins & skills for Codex](assets/readme-banner.png)
+
 # codex-toolkit
 
 Installable Codex plugins and skills.

@@ -53,7 +53,7 @@ codex plugin add <plugin-name>@codex-toolkit
 
 ### `frontend-tools`
 
-웹 UI 퍼블리싱과 접근성·디자인 정합성·재사용 후보 점검용 플러그인입니다.
+웹 UI 퍼블리싱과 접근성·디자인 정합성·재사용 후보 점검, Playwright E2E 제작용 플러그인입니다.
 
 | 스킬 | 역할 | 호출 조건·요청 예시 | 제외·주의사항 |
 |---|---|---|---|
@@ -61,6 +61,7 @@ codex plugin add <plugin-name>@codex-toolkit
 | [a11y-focus-audit](plugins/frontend-tools/skills/a11y-focus-audit/SKILL.md) | 접근성 코드 품질과 실제 키보드 Tab 포커스 이동 점검 | “접근성 확인해줘”, “탭 포커스 이동 확인해줘”, “a11y 리뷰해줘”, “키보드 접근성 봐줘” | 픽셀 비교만 하는 작업, 접근성과 무관한 서버/API 리뷰, 검토 없이 구현만 요청한 경우는 제외. 브라우저 미확인 항목은 별도 표시 |
 | [figma-implementation-audit](plugins/frontend-tools/skills/figma-implementation-audit/SKILL.md) | Figma 링크·프레임·노드·스크린샷과 구현 화면의 시각·인터랙션 일치 여부 비교 | 디자인 원본과 구현 화면을 비교할 때: “피그마 정합성”, “피그마 링크랑 화면 비교”, “구현 화면 QA” | Figma 파일 편집만 하거나 디자인 원본 없이 일반 프론트엔드 디버깅만 하는 요청은 제외 |
 | [frontend-reuse-scout](plugins/frontend-tools/skills/frontend-reuse-scout/SKILL.md) | 반복 스타일·컴포넌트·훅·유틸의 공통화 후보와 최소 패치·검증 방법 제안 | “공통화 후보 확인해줘”, “공통 스타일/로직 뽑을 거 있는지 봐줘”, “프론트 공통화 스카우트” | 자동 수정 없이 제안까지만 수행. 단일 버그 수정·픽셀 수정·이번 파일만 수정하도록 제한된 요청은 제외 |
+| [playwright-e2e-builder](plugins/frontend-tools/skills/playwright-e2e-builder/SKILL.md) | 자연어 사용자 흐름을 재실행 가능한 Playwright E2E 테스트로 작성·실행·검증 | “E2E 테스트 만들어줘”, “회원가입 흐름을 Playwright 테스트로 만들어줘”, “사용자 흐름을 브라우저 테스트로 남겨줘” | Node.js 웹 프로젝트 전용. 설치·Chromium 다운로드는 각각 동의를 받고 운영 환경에서는 실행하지 않음 |
 
 ### `skill-tools`
 

@@ -65,12 +65,11 @@ codex plugin add <plugin-name>@codex-toolkit
 
 ### `skill-tools`
 
-스킬 제작·검증과 Superpowers 개발 단계 연결용 Codex 스킬 플러그인입니다.
+스킬 제작·검증용 Codex 스킬 플러그인입니다.
 
 | 스킬 | 역할 | 호출 조건·요청 예시 | 제외·주의사항 |
 |---|---|---|---|
 | [skill-enhancer-codex](plugins/skill-tools/skills/skill-enhancer-codex/SKILL.md) | Codex 스킬 생성·감사·구조 개선과 참조 파일·스크립트 검증 | “Codex 스킬 만들어줘”, “SKILL.md 작성해줘”, “스킬 구조 검토해줘”, “참조 파일 검증해줘” | 스킬 패키지가 아닌 일반 앱·라이브러리의 실행 성능 최적화 요청은 제외 |
-| [superpowers-workflow](plugins/skill-tools/skills/superpowers-workflow/SKILL.md) | Superpowers의 설계·계획·구현·리뷰·검증·마무리 단계를 완료 증거에 따라 연결 | 명시적으로 `$superpowers-workflow`를 호출한 다단계 개발 요청 | 자동 호출하지 않음. 실행 방식 선택 전에는 서브에이전트 사용을 승인한 것으로 보지 않음 |
 
 ### `agent-tools`
 

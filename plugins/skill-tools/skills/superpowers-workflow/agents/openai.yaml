@@ -1,7 +1,0 @@
-interface:
-  display_name: "Superpowers Workflow"
-  short_description: "Superpowers 개발 단계를 순서대로 연결합니다."
-  default_prompt: "Use $superpowers-workflow to carry this development request through each required Superpowers stage."
-
-policy:
-  allow_implicit_invocation: false
